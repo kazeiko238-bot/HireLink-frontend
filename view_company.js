@@ -26,7 +26,7 @@ const companyId = params.get("id");
   // ======================
   async function loadReviews() {
     try {
-      const res = await fetch(`/api/review/${companyId}`, {
+      const res = await fetch(`${API_BASE}/api/review/${companyId}`, {
         credentials: "include"
       });
 
@@ -84,7 +84,7 @@ const companyId = params.get("id");
     if (!star) return alert("Select star rating");
 
     try {
-      const res = await fetch("/api/review", {
+      const res = await fetch(`${API_BASE}/api/review`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -149,7 +149,7 @@ async function loadProfile() {
   try {
 
 
-    const res = await fetch("/api/companies", {
+    const res = await fetch(`${API_BASE}/api/companies`, {
       credentials: "include"
     });
 
@@ -184,7 +184,7 @@ loadProfile();
 
 loadReviews();
 
-fetch(`/api/companies/jobs?id=${companyId}`, {
+fetch(`${API_BASE}/api/companies/jobs?id=${companyId}`, {
   method: "GET",
   headers: { "Content-Type": "application/json" },
   credentials: "include",
