@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  
   const container = document.getElementById("peopleContainer");
 
   const profileSearchInput = document.getElementById("profileSearchInput");
