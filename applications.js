@@ -6,7 +6,7 @@ const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
   async function loadMyApplications() {
     try {
-      const res = await fetch("/api/application/my", {
+      const res = await fetch(`${API_BASE}/api/application/my`, {
         credentials: "include"
       });
 
@@ -63,7 +63,7 @@ const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
   async function openChat(otherUserId) {
   try {
-    const res = await fetch("/api/chat/conversation/start", {
+    const res = await fetch(`${API_BASE}/api/chat/conversation/start`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -76,7 +76,7 @@ const API_BASE = "https://hirelink-backend-qnww.onrender.com";
       throw new Error(data.error || "Failed");
     }
 
-    await fetch("/api/chat/context/set", {
+    await fetch(`${API_BASE}/api/chat/context/set`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
