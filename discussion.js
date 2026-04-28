@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   async function loadThreads() {
     try {
-      const res = await fetch("/api/thread", {
+      const res = await fetch(`${API_BASE}/api/thread`, {
         credentials: "include"
       });
 
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
 
         try {
-          const res = await fetch("/api/thread/like", {
+          const res = await fetch(`${API_BASE}/api/thread/like`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!replySection.classList.contains("hidden")) {
           try {
-            const res = await fetch(`/api/thread/comments/${t.thread_id}`, {
+            const res = await fetch(`${API_BASE}/api/thread/comments/${t.thread_id}`, {
               credentials: "include"
             });
 
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!content) return;
 
         try {
-          const res = await fetch("/api/thread/comment", {
+          const res = await fetch(`${API_BASE}/api/thread/comment`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const category = document.getElementById("newThreadCategory").value;
 
     try {
-      const res = await fetch("/api/thread/create", {
+      const res = await fetch(`${API_BASE}/api/thread/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
