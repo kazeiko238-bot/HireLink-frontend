@@ -72,7 +72,7 @@ document.querySelector('.back-btn').addEventListener('click', () => {
 
 async function loadProfile() {
     try {
-      const res = await fetch("/api/profile/company", { credentials: "include" });
+      const res = await fetch(`${API_BASE}/api/profile/company`, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to load profile");
       const data = await res.json();
       console.log("Profile data:", data);
@@ -106,7 +106,7 @@ async function loadProfile() {
     };
 
     try {
-      const res = await fetch("/api/profile/company", {
+      const res = await fetch(`${API_BASE}/api/profile/company`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include" ,
