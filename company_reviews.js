@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================
   async function loadReviews() {
     try {
-      const res = await fetch(`/api/review`, {
+      const res = await fetch(`${API_BASE}/api/review`, {
         credentials: "include"
       });
 
