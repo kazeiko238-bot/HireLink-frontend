@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // GET USER
   // =====================
   async function getMe() {
-    const res = await fetch("/api/me", { credentials: "include" });
+    const res = await fetch(`${API_BASE}/api/me`, { credentials: "include" });
 
     if (!res.ok) return null;
 
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // LOAD CONVERSATIONS
   // =====================
   async function loadConversations() {
-    const res = await fetch("/api/chat/conversation", {
+    const res = await fetch(`${API_BASE}/api/chat/conversation`, {
       credentials: "include"
     });
 
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     await loadMessages();
 
-    fetch(`/api/chat/message/seen/${conversationId}`, {
+    fetch(`${API_BASE}/api/chat/message/seen/${conversationId}`, {
       method: "PUT",
       credentials: "include"
     }).catch(() => {});
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!currentConversationId) return;
 
     try {
-      const res = await fetch(`/api/chat/message/${currentConversationId}`, {
+      const res = await fetch(`${API_BASE}/api/chat/message/${currentConversationId}`, {
         credentials: "include"
       });
 
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!message) return;
 
-    await fetch("/api/chat/message/send", {
+    await fetch(`${API_BASE}/api/chat/message/send`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!context?.otherUserId) return;
 
-    const start = await fetch("/api/chat/conversation/start", {
+    const start = await fetch(`${API_BASE}/api/chat/conversation/start`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
