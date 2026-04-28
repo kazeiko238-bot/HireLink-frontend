@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  
   const dashboard = document.querySelector(".dashboard-content");
   const postJobBtn = document.querySelector("#postJob");
   const cancelBtn = document.querySelector("#cancel");
