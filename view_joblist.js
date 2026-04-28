@@ -10,7 +10,7 @@ document.querySelector('.back-btn')?.addEventListener('click', () => {
 });
 
 // -------- ROLE UI CONTROL --------
-fetch("/api/me", { credentials: "include" })
+fetch(`${API_BASE}/api/me`, { credentials: "include" })
   .then(res => res.json())
   .then(user => {
     if (user.role === "employer") {
@@ -36,7 +36,7 @@ async function loadProfile() {
   if (!jobId) return console.error("No job id in URL");
 
   try {
-    const res = await fetch(`/api/jobpost/${jobId}`, {
+    const res = await fetch(`${API_BASE}/api/jobpost/${jobId}`, {
       credentials: "include"
     });
 
@@ -74,7 +74,7 @@ document.getElementById("applyBtn")?.addEventListener("click", async function ()
   this.innerText = "Applying...";
 
   try {
-    const res = await fetch("/api/application", {
+    const res = await fetch(`${API_BASE}/api/application`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -99,7 +99,7 @@ document.getElementById("applyBtn")?.addEventListener("click", async function ()
 // =====================
 async function openChat(otherUserId) {
   try {
-    const res = await fetch("/api/chat/conversation/start", {
+    const res = await fetch(`${API_BASE}/api/chat/conversation/start`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -112,7 +112,7 @@ async function openChat(otherUserId) {
       throw new Error(data.error || "Failed");
     }
 
-    await fetch("/api/chat/context/set", {
+    await fetch(`${API_BASE}/api/chat/context/set`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -137,7 +137,7 @@ async function loadApplications(jobId) {
   const container = document.getElementById("applicationsContainer");
   if (!container) return;
 
-  const res = await fetch(`/api/application/${jobId}`, {
+  const res = await fetch(`${API_BASE}/api/application/${jobId}`, {
     credentials: "include"
   });
 
@@ -218,7 +218,7 @@ async function loadApplications(jobId) {
 // STATUS UPDATE
 // =====================
 async function setStatus(application_id, status) {
-  await fetch("/api/application/status", {
+  await fetch(`${API_BASE}/api/application/status`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -261,7 +261,7 @@ document.getElementById("jobToggleBtn")?.addEventListener("click", async () => {
 
   const newStatus = currentJobStatus === 1 ? 0 : 1;
 
-  const res = await fetch("/api/jobpost/toggle", {
+  const res = await fetch(`${API_BASE}/api/jobpost/toggle`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
