@@ -1,3 +1,5 @@
+const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+
 const params = new URLSearchParams(window.location.search);
 const jobId = params.get("id");
 
