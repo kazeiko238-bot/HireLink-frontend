@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   // ELEMENTS
   // =====================
+
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  
   const logoutBtn = document.getElementById("logoutBtn");
   const profileName = document.getElementById("profileName");
 
