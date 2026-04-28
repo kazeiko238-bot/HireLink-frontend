@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // GET LOGGED IN USER
   // =========================
   try {
-    const res = await fetch("/api/me", { credentials: "include" });
+    const res = await fetch(`${API_BASE}/api/me`, { credentials: "include" });
     if (res.ok) {
       currentUser = await res.json(); // expects { userId, role }
     }
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // =========================
   // FETCH JOBSEEKERS
   // =========================
-  fetch("/api/jobseekers", { credentials: "include" })
+  fetch(`${API_BASE}/api/jobseekers`, { credentials: "include" })
     .then(res => res.json())
     .then(users => {
 
