@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  
 const provinces = [
 "Abra","Agusan del Norte","Agusan del Sur","Aklan","Albay","Antique","Apayao",
 "Aurora","Basilan","Bataan","Batanes","Batangas","Benguet","Biliran","Bohol",
