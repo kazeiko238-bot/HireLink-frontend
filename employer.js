@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-
+  
+const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  
   const logoutBtn = document.getElementById("logoutBtn");
     logoutBtn.addEventListener("click", () => {
       localStorage.removeItem("userName");
