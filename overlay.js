@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  
   const authArea = document.getElementById("authArea");
   const overlay = document.getElementById("loginOverlay");
   const loginBtn = document.getElementById("loginBtn");
@@ -20,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (logoutBtn) {
       logoutBtn.addEventListener("click", async () => {
         try {
-          await fetch("/api/auth/logout", { method: "POST" });
+          await fetch(`${API_BASE}/api/auth/logout`, { method: "POST" })
         } catch (err) {
           console.error("Logout error:", err);
         }
@@ -63,12 +66,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      try {
-        const res = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        });
+     try {
+  const res = await fetch(`${API_BASE}/api/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
 
         const data = await res.json();
 
