@@ -5,6 +5,8 @@ document.querySelector('.back-btn')?.addEventListener('click', () => {
 });
 
 // Get jobseeker id from URL
+const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+
 const params = new URLSearchParams(window.location.search);
 const jobseekerId = params.get("id");
 
