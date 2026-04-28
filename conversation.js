@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  
   const logoutBtn = document.getElementById("logoutBtn");
   const conversationList = document.getElementById("conversationList");
   const messagesBox = document.getElementById("messages");
