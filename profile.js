@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   async function loadVisibility() {
     try {
-      const res = await fetch("/api/visibility/my");
+      const res = await fetch(`${API_BASE}/api/visibility/my`);
       const data = await res.json();
 
       const isPublic = data.visibility === "public";
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
   toggle?.addEventListener("change", async () => {
     const visibility = toggle.checked ? "public" : "private";
 
-    await fetch("/api/visibility/update", {
+    await fetch(`${API_BASE}/api/visibility/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ visibility }),
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   async function loadProfile() {
     try {
-      const res = await fetch("/api/profile", { credentials: "include" });
+      const res = await fetch(`${API_BASE}/api/profile`, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to load profile");
 
       const data = await res.json();
@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const res = await fetch("/api/profile", {
+      const res = await fetch(`${API_BASE}/api/profile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
