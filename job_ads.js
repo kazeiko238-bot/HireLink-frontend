@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const res = await fetch("/api/jobpost", {
+      const res = await fetch(`${API_BASE}/api/jobpost`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   async function loadJobs() {
     try {
-      const res = await fetch("/api/jobpost", {
+      const res = await fetch(`${API_BASE}/api/jobpost`, {
         method: "GET",
         credentials: "include",
       });
