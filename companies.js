@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- 2. INITIAL FETCH ---
-  fetch("/api/companies")
+  fetch(`${API_BASE}/api/companies`)
     .then((res) => {
       if (!res.ok) throw new Error("Failed to fetch companies");
       return res.json();
