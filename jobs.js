@@ -101,12 +101,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   
-  const btn = document.querySelector(".notif-btn");
-  const dropdown = document.getElementById("notifDropdown");
+ const btn = document.querySelector(".notif-btn");
+const dropdown = document.getElementById("notifDropdown");
 
+if (btn && dropdown) {
   btn.addEventListener("click", () => {
     dropdown.classList.toggle("show");
   });
+}
 
   // Close when clicking outside
   document.addEventListener("click", (e) => {
