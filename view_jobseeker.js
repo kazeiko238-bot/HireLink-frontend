@@ -20,7 +20,7 @@ let resumePath = null;
 // =====================
 // CHECK USER ROLE (FIXED)
 // =====================
-fetch("/api/me", { credentials: "include" })
+fetch(`${API_BASE}/api/me`, { credentials: "include" })
   .then(res => res.json())
   .then(user => {
     if (user?.role === "jobseeker") {
@@ -38,7 +38,7 @@ fetch("/api/me", { credentials: "include" })
 // =====================
 async function loadProfile() {
   try {
-    const res = await fetch("/api/jobseekers", {
+    const res = await fetch(`${API_BASE}/api/jobseekers`, {
       credentials: "include"
     });
 
