@@ -1,0 +1,362 @@
+/* --- Global & Background --- */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding-top: 80px; 
+    color: #ffffff;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url('../images/bg4.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* --- Main Profile Container (Wider) --- */
+.profile-container {
+    max-width: 1300px;
+    margin: 40px auto;
+    display: flex; 
+    background: #111827; 
+    border-radius: 20px;
+    overflow: hidden; 
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- Sidebar --- */
+.company_name {
+    flex: 0 0 350px;
+    background: #0f172a; 
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 25px;
+}
+
+.company-name {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.industry {
+    color: #94a3b8;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sidebar-actions {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.back-btn {
+    font-size: 24px;
+    font-weight: 600;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #ffffff;
+}
+
+.back-btn:hover {
+    color: #002aff;
+}
+
+/* --- Main Content & Information Grid --- */
+.main-content {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #f3f4f6;
+    letter-spacing: 0.5px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.info-box {
+    background: #f3f4f6; 
+    padding: 20px;
+    border-radius: 12px;
+    color: #111827;
+}
+
+.label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    text-decoration: none;
+}
+
+/* --- Description Area (Dark Box) --- */
+.description-section {
+    margin-top: auto; 
+}
+
+.description-box {
+    background: rgba(255, 255, 255, 0.05); 
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    line-height: 1.7;
+    color: #d1d5db;
+}
+
+/* --- Modern Job Cards Section --- */
+.job-section {
+    max-width: 1300px;
+    margin: 80px auto;
+    padding: 0 40px;
+}
+
+.section-heading {
+    font-size: 36px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 60px;
+    color: #ffffff;
+}
+
+/* 🔥 CHANGED: grid → horizontal scroll */
+.job-grid-cards {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 20px;
+}
+
+/* 🔥 ADDED: carousel wrapper */
+.carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 🔥 ADDED: navigation button */
+.nav-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    background: rgba(0,0,0,0.6);
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.nav-btn:hover {
+    background: rgba(0,0,0,0.9);
+}
+
+/* 🔥 ADDED: prevent shrinking */
+.job-card-block {
+    min-width: 320px;
+    flex-shrink: 0;
+
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 40px 25px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.job-card-block:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* --- Pink Icon Circle --- */
+.icon-circle {
+    width: 85px;
+    height: 85px;
+    background: rgba(236, 72, 153, 0.1); 
+    border: 2px solid #ec4899; 
+    color: #ec4899; 
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+.card-content h3 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #94a3b8;
+    margin-bottom: 15px;
+}
+
+.description-subtext {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+/* --- Button --- */
+.btn-gradient {
+    margin-top: 30px;
+    padding: 14px 40px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #1800ee 0%, #6dacfa 100%);
+    box-shadow: 0 5px 15px rgba(168, 85, 247, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5);
+}
+
+/* --- Hide scrollbar (optional but clean) --- */
+.job-grid-cards::-webkit-scrollbar {
+    display: none;
+}
+.job-grid-cards {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* --- Footer --- */
+.site-footer {
+    text-align: center;
+    padding: 60px;
+    color: #64748b;
+    background: rgba(0,0,0,0.5);
+}
+
+/* --- Responsive --- */
+@media (max-width: 1000px) {
+    .profile-container { flex-direction: column; margin: 20px; }
+    .company_name { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .info-grid { grid-template-columns: 1fr; }
+
+    /* 🔥 keep horizontal scroll even on mobile */
+    .job-grid-cards { 
+        display: flex;
+    }
+}
+
+
+.review-section {
+    margin-top: 40px;
+    padding: 20px;
+    background: #0f172a;
+    border-radius: 12px;
+    border: 1px solid #334155;
+}
+
+.review-input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#reviewInput, #starReview {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background: #1e293b;
+    color: white;
+}
+
+#reviewInput {
+    flex: 1;
+}
+
+
+#sendReviewBtn {
+    padding: 10px 15px;
+    background: #2563eb;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.review-btn{
+  background:#2d4ea2;
+  color:white;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.review-card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.review-meta {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.review-stars {
+    color: gold;
+    margin: 5px 0;
+}

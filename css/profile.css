@@ -1,0 +1,541 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+
+  background: linear-gradient(135deg, #4065fa, #0d37a0); 
+  min-height: 100vh;
+}
+
+/* Main container */
+.dashboard-container {
+  background: transparent; /* Changed from white to show the sky blue bg */
+  overflow: hidden;
+
+}
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* space between back button and logo */
+}
+
+.logo {
+  font-size: 25px;
+  color: white;
+  font-weight: 600;
+}
+.back-btn {
+    font-size: 24px;
+    font-weight: 600;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #ffffff;
+}
+
+.back-btn:hover {
+    color: #ffffff; /* optional hover effect */
+}
+
+
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  border-bottom: 1px solid #eee;
+  background: #2563eb;
+}
+
+.topbar nav a {
+  margin: 0 15px;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.topbar nav .active {
+  color: #ffffff;
+  font-style: italic;
+}
+
+.topbar nav a:hover {
+  cursor: pointer;
+}
+
+.auth-area {
+  margin-left: 20px;
+}
+
+.logout-btn {
+  text-decoration: none;
+  padding: 8px 18px;
+  border: 2px solid rgb(109, 184, 254);
+  border-radius: 20px;
+  color: #2885ff;
+  font-weight: 600;
+  transition: 0.3s ease;
+  background-color: rgb(255, 253, 253);
+}
+
+.logout-btn:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 4px 8px rgba(23, 144, 249, 0.1);
+}
+
+.profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  background: #d1d5db;
+  border-radius: 50%;
+}
+
+/* Layout */
+.dashboard-content {
+  display: flex;
+  padding: 40px;
+  gap: 40px;
+}
+
+.main-panel {
+  flex: 3;
+}
+
+.side-panel {
+  flex: 1;
+}
+
+/* Titles */
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #ffffff;
+  margin-bottom: 25px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Cards */
+.card {
+  background: #f9fafb;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-grid .full {
+  grid-column: span 2;
+}
+
+label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+/* Projects */
+.project-grid {
+  display: flex;
+  gap: 20px;
+}
+
+.project-card {
+  background: rgb(255, 255, 255);
+  padding: 15px;
+  border-radius: 10px;
+  flex: 1;
+  text-align: center;
+}
+
+.project-thumb {
+  height: 100px;
+  background: #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Buttons */
+
+/* Styling for the Upload and View Resume buttons */
+#uploadResumeBtn, #viewResumeBtn {
+    background: linear-gradient(135deg, #0e4eb7 0%, #4277e9 100%);
+    color: white;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    margin-right: 8px; /* Space between the two buttons */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+#uploadResumeBtn:hover, #viewResumeBtn:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #0e43d3 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px -2px rgba(37, 99, 235, 0.3);
+}
+
+#uploadResumeBtn:active, #viewResumeBtn:active {
+    transform: translateY(0);
+}
+
+
+#updateBtn, .primary-btn {
+    background: linear-gradient(135deg, #296edb 0%, #2563eb 100%);
+    color: white;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 12px 30px;
+    border-radius: 50px; /* Kept the pill shape from your screenshot */
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
+
+#updateBtn:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+    transform: scale(1.02);
+}
+
+
+#resumeInput {
+    padding: 8px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+/* Styling the "Choose File" container and button */
+#resumeInput {
+    padding: 6px;
+    background: #ffffff;
+    border: 2px dashed #000000; /* Dashed border gives a "drop zone" feel */
+    border-radius: 10px;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+#resumeInput:hover {
+    border-color: #3b82f6;
+    background-color: #f0f9ff;
+}
+
+/* Styling the actual button inside the input */
+#resumeInput::file-selector-button {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin-right: 15px;
+    color: #1e293b;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#resumeInput::file-selector-button:hover {
+    background: #e2e8f0;
+    border-color: #94a3b8;
+}
+
+/* Side Panel */
+/* Avatar Upload */
+.avatar-upload {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 15px;
+}
+
+.avatar-upload img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #729eff;
+}
+
+.avatar-upload input {
+  display: none;
+}
+
+.upload-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  text-align: center;
+  font-size: 12px;
+  padding: 6px 0;
+  border-radius: 0 0 50% 50%;
+  cursor: pointer;
+}
+
+/* Visibility Card */
+.visibility-card {
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+/* Switch (iPhone style) */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #22c55e;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.visibility-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visibility-status {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #555;
+}
+
+.skills-container { /*Skills*/
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-tag {
+  background: #e0ecff;
+  color: #2563eb;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/*Experience*/
+.experience-item {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #eee;
+}
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exp-header h4 {
+  font-size: 16px;
+}
+
+.exp-year {
+  font-size: 13px;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.company {
+  font-weight: 500;
+  color: #555;
+  margin: 5px 0;
+}
+
+.exp-description {
+  font-size: 14px;
+  color: #666;
+}
+
+.education-item {  /*Education*/
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #eee;
+}
+
+.edu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edu-year {
+  font-size: 13px;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.school {
+  color: #555;
+  margin-top: 5px;
+}
+
+.site-footer {
+  background: #111827;
+  color: #d1d5db;
+  text-align: center;
+  padding: 24px;
+  margin-top: 60px;
+  font-size: 14px;
+}
+
+
+.person-card .view-details-btn {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 12px !important;
+  padding: 10px 0 !important;
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 25px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: 0.3s ease !important;
+}
+
+.person-card .view-details-btn:hover {
+  background-color: #1e40af !important;
+  transform: translateY(-2px);
+}
+
+
+.resume-viewer {
+  width: 100%;
+  height: 600px;
+  margin-top: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.resume-viewer iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.hidden {
+  display: none;
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company | HireLink</title>
+    <link rel="stylesheet" href="css/view_company.css">
+    <link rel="stylesheet" href="css/header.css">
+     <link rel="stylesheet" href="css/footer.css">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<header class="header">
+    <div class="brand">
+        <button class="back-btn">&lt;</button>
+        <h2>HireLink</h2>
+    </div>
+    
+    <div class="auth-area" id="authArea">
+        <button class="signin-btn" id="signInBtn">Sign In</button>
+    </div>
+</header>
+
+<body>
+    <section class="hero">
+           <h2>Available Companies</h2>
+           <p>Find the right company, not just the right job </p>
+        
+        <div class="search-bar">
+            <div class="location-group">
+                <div class="location-icon"></div>
+                <div class="multi-dropdown" id="provinceDropdown">
+                    <input type="text" id="provinceInput" placeholder="Select province" autocomplete="off" />
+                    <ul id="provinceList"></ul>
+                </div>
+            </div>
+
+            <div class="search-group">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search public profiles..." />
+                </div>
+                <button class="search-btn">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="profile-container" id="companyProfile">
+        
+        <div class="company_name">
+            <img src="images/avatar.png" class="profile-img" id="profile_picture" alt="Company Logo">
+            <div class="company-info-text">
+                <div class="company-name" id="company_name">TechNova Solutions</div>
+                <div class="industry" id="industry_subtext">Software Development</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="section">
+                <div class="section-title">Company Information</div>
+                <div class="info-grid">
+                    <div class="info-box">
+                        <div class="label">Industry</div>
+                        <div class="value" id="industry">Technology</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">Company Email</div>
+                        <a class="value" id="company_email" href="mailto:contact@technova.com">
+                            contact@technova.com
+                        </a>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">Company Size</div>
+                        <div class="value" id="company_size">50 - 100 Employees</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="label">Location</div>
+                        <div class="value" id="location">123 Road, San Francisco, CA</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="description-section">
+                <div class="section-title">Company Description</div>
+                <div class="description-box" id="description">
+                    TechNova Solutions is a leading technology company focused on building scalable
+                    software solutions for businesses worldwide. We specialize in AI-driven 
+                    analytics and cloud infrastructure designed for modern enterprises.
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div class="jobs-section">
+  <div>
+    <h2 class="section-heading">Available Positions</h2>
+  </div>
+
+  <div class="carousel-wrapper">
+    <div class="job-grid-cards" id="jobsContainer"></div>
+    <button class="nav-btn" id="nextBtn">&#8250;</button>
+  </div>
+
+  <button class="review-btn">See All</button>
+</div>
+
+<div class="review-section">
+
+  <!-- AVERAGE RATING -->
+  <div id="avgRating"></div>
+
+  <!-- INPUT AREA -->
+  <div class="review-input-row">
+
+    <!-- STAR SELECT (MISSING BEFORE) -->
+    <select id="starReview">
+      <option value="5">★★★★★ (5)</option>
+      <option value="4">★★★★☆ (4)</option>
+      <option value="3">★★★☆☆ (3)</option>
+      <option value="2">★★☆☆☆ (2)</option>
+      <option value="1">★☆☆☆☆ (1)</option>
+    </select>
+
+    <input type="text" id="reviewInput" placeholder="Write a review..." />
+    <button id="sendReviewBtn">Send</button>
+
+  </div>
+
+  <!-- REVIEWS LIST -->
+  <div id="reviewContainer"></div>
+
+</div>
+
+    <footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2 class="footer-logo">HIRELINK</h2>
+            <p class="footer-slogan">A click-step away from your career success.</p>
+        </div>
+
+        <hr class="footer-divider">
+
+        <ul class="footer-links">
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="#">CONTACT</a></li>
+            <li><a href="terms.html">TERMS OF SERVICE</a></li>
+            <li><a href="#">PRIVACY POLICY</a></li>
+        </ul>
+
+        <div class="footer-socials">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">r</a>
+            <a href="#" class="social-icon">g+</a>
+            <a href="#" class="social-icon">..</a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HireLink. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+    <script src="view_company.js"></script>
+    <script src="overlay.js"></script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+}
+
+/* Main container */
+.dashboard-container {
+  background: white;
+  overflow: hidden;
+}
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* space between back button and logo */
+}
+
+.logo {
+  font-size: 25px;
+  color: white;
+  font-weight: 600;
+}
+.back-btn {
+    font-size: 24px;
+    font-weight: 600;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #ffffff;
+}
+
+.back-btn:hover {
+    color: #ffffff; /* optional hover effect */
+}
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  border-bottom: 1px solid #eee;
+  background: #2563eb;
+}
+
+.topbar nav a {
+  margin: 0 15px;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.topbar nav .active {
+  color: #ffffff;
+  font-style: italic;
+}
+
+.topbar nav a:hover {
+  cursor: pointer;
+}
+
+.auth-area {
+  margin-left: 20px;
+}
+
+.logout-btn {
+  text-decoration: none;
+  padding: 8px 18px;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 20px;
+  color: #ffffff;
+  font-weight: 600;
+  transition: 0.3s ease;
+  background-color: rgb(0, 0, 0);
+}
+
+.logout-btn:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  background: #d1d5db;
+  border-radius: 50%;
+}
+
+/* Layout */
+.dashboard-content {
+  display: flex;
+  padding: 40px;
+  gap: 40px;
+}
+
+.main-panel {
+  flex: 3;
+}
+
+.side-panel {
+  flex: 1;
+}
+
+/* Titles */
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+/* Cards */
+.card {
+  background: #f9fafb;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-grid .full {
+  grid-column: span 2;
+}
+
+label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+/* Projects */
+.project-grid {
+  display: flex;
+  gap: 20px;
+}
+
+.project-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  flex: 1;
+  text-align: center;
+}
+
+.project-thumb {
+  height: 100px;
+  background: #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Buttons */
+.primary-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: #e5e7eb;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+/* Side Panel */
+/* Avatar Upload */
+.avatar-upload {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 15px;
+}
+
+.avatar-upload img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #2563eb;
+}
+
+.avatar-upload input {
+  display: none;
+}
+
+.upload-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  text-align: center;
+  font-size: 12px;
+  padding: 6px 0;
+  border-radius: 0 0 50% 50%;
+  cursor: pointer;
+}
+
+/* Visibility Card */
+.visibility-card {
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+/* Switch (iPhone style) */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #22c55e;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.visibility-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visibility-status {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #555;
+}
+
+.skills-container { /*Skills*/
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-tag {
+  background: #e0ecff;
+  color: #2563eb;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/*Experience*/
+.experience-item {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #eee;
+}
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exp-header h4 {
+  font-size: 16px;
+}
+
+.exp-year {
+  font-size: 13px;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.company {
+  font-weight: 500;
+  color: #555;
+  margin: 5px 0;
+}
+
+.exp-description {
+  font-size: 14px;
+  color: #666;
+}
+
+.education-item {  /*Education*/
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #eee;
+}
+
+.edu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edu-year {
+  font-size: 13px;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.school {
+  color: #555;
+  margin-top: 5px;
+}
+
+.site-footer {
+  background: #111827;
+  color: #d1d5db;
+  text-align: center;
+  padding: 24px;
+  margin-top: 60px;
+  font-size: 14px;
+}

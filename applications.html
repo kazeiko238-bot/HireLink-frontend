@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications | HireLink</title>
+    <link rel="stylesheet" href="css/applications.css">
+    <link rel="stylesheet" href="css/header.css">
+     <link rel="stylesheet" href="css/overlay.css">
+     <link rel="stylesheet" href="css/footer.css">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="header">
+    <div class="brand">
+         <button class="back-btn" onclick="history.back()">&lt;</button>
+        <h2>HireLink</h2>
+    </div>
+    
+    <div class="auth-area" id="authArea">
+        <button class="signin-btn" id="signInBtn">Sign In</button>
+    </div>
+</header>
+
+<div id="applicationContainer" class="application-container"></div>
+
+
+    <script src="applications.js"></script>
+
+    <script src="overlay.js"></script>
+    
+ 
+    <div id="loginOverlay" class="overlay hidden">
+  <div class="auth-modal">
+    <form id="login" class="auth-form active">
+            <h2 class="form-title">Welcome Back</h2>
+            
+            <div class="form-group">
+                <label for="login-email">Email Address</label>
+                <input type="email" id="login-email" name="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" class="form-control" placeholder="Enter your password" required>
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+            
+            <div class="remember-me">
+                <input type="checkbox" id="remember-me" name="remember">
+                <label for="remember-me">Remember me</label>
+            </div>
+            
+           <button type="button" class="btn" id="loginBtn">Login</button>
+            
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <div class="social-login">
+                <button type="button" class="social-btn google-btn">
+                    Google
+                </button>
+                <button type="button" class="social-btn facebook-btn">
+                    Facebook
+                </button>
+            </div>
+    </form>
+  </div>
+  </div>
+
+   <footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2 class="footer-logo">HIRELINK</h2>
+            <p class="footer-slogan">A click-step away from your career success.</p>
+        </div>
+
+        <hr class="footer-divider">
+
+        <ul class="footer-links">
+             <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="terms.html">TERMS OF SERVICE</a></li>
+                <li><a href="privacy.html">PRIVACY POLICY</a></li>
+        </ul>
+
+        <div class="footer-socials">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">r</a>
+            <a href="#" class="social-icon">g+</a>
+            <a href="#" class="social-icon">..</a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HireLink. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+    
+</body>
+</html>

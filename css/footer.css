@@ -1,0 +1,111 @@
+/* ============================================================
+   HIRELINK FOOTER STYLES
+============================================================ */
+.site-footer {
+    background-color: #0f172a; /* Deep charcoal for a premium look */
+    color: #ffffff;
+    padding: 80px 20px 40px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 200px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Brand Section */
+.footer-logo {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    margin: 0 0 8px 0;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.footer-slogan {
+    font-size: 14px;
+    color: #94a3b8; /* Muted blue-grey */
+    font-weight: 400;
+    margin-bottom: 40px;
+}
+
+/* Horizontal Divider */
+.footer-divider {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 10px auto;
+    width: 100%;
+}
+
+/* Navigation Links */
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+}
+
+/* Social Media Icons */
+.footer-socials {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+    background-color: #ffffff;
+    color: #0f172a;
+    border-color: #ffffff;
+    transform: translateY(-3px);
+}
+
+/* Bottom Copyright */
+.footer-bottom p {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 768px) {
+    .footer-links {
+        flex-direction: row;
+        justify-content: center;
+        gap: 30px;
+    }
+}

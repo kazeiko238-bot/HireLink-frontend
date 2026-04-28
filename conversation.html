@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat | HireLink</title>
+
+<link rel="stylesheet" href="css/conversation.css">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/header.css">
+</head>
+
+<body>
+
+<div class="chat-container">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <div class="logo-container">
+            <button class="back-btn" onclick="history.back()">&lt;</button>
+            <div class="logo">HireLink Chat</div>
+        </div>
+
+        <button class="logout-btn" id="logoutBtn">Log Out</button>
+    </header>
+
+    <!-- MAIN CHAT AREA -->
+    <div class="chat-body">
+
+        <!-- LEFT: CONVERSATIONS -->
+        <div class="conversation-list">
+            <h3>Messages</h3>
+            <div id="conversationList"></div>
+        </div>
+
+        <!-- RIGHT: CHAT BOX -->
+        <div class="chat-box">
+
+            <div id="chatHeader" class="chat-header">
+                Select a conversation
+            </div>
+
+            <div id="messages" class="messages"></div>
+
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type a message...">
+                <button id="sendBtn">Send</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="conversation.js">3</script>
+
+</body>
+</html>

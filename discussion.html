@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discussions | HireLink</title>
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/discussion.css">
+     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/overlay.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="brand">
+            <img src="images/logo.png" alt="logo" class="logo">
+            <h2>HireLink</h2>
+        </div>
+        <nav class="navpages">
+            <a href="jobs.html">Jobs</a>
+            <a href="people.html">People</a>
+            <a href="companies.html">Companies</a>
+            <a href="discussion.html">Discussions</a>
+             <a href="conversation.html">Chats</a>
+            <a href="applications.html">Applications</a>
+        </nav>
+        <div class="auth-area" id="authArea">
+            <button class="signin-btn" id="signInBtn">Sign In</button>
+        </div>
+    </header>
+
+    <header class="thread-header">
+        <h1>Thread Room</h1>
+        <div class="thread-actions">
+            <input type="search" id="threadSearch" placeholder="Search discussions..." />
+            <button class="create-thread-btn" id="openModalBtn">+ Create Thread</button>
+        </div>
+    </header>
+
+    <div class="thread-container" id="discussionContainer">
+        <aside class="thread-sidebar">
+            <h3>Categories</h3>
+            <ul id="categoryList">
+                <li class="active" data-category="all">All Discussions</li>
+                <li data-category="Career Advice">Career Advice</li>
+                <li data-category="Job Opportunities">Job Opportunities</li>
+                <li data-category="Interview Tips">Interview Tips</li>
+                <li data-category="IT & Tech">IT & Tech</li>
+                <li data-category="Engineering">Engineering</li>
+                <li data-category="Healthcare">Healthcare</li>
+            </ul>
+        </aside>
+
+        <div class="thread-main" id="threadContainer">
+        </div>
+
+       
+    </div>
+
+    <div id="threadModal" class="overlay hidden">
+        <div class="auth-modal">
+            <h2 class="form-title">Create New Thread</h2>
+            <form id="createThreadForm">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="newThreadTitle" class="form-control" placeholder="Thread title" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="newThreadCategory" class="form-control" required>
+                        <option value="Career Advice">Career Advice</option>
+                        <option value="Job Opportunities">Job Opportunities</option>
+                        <option value="Interview Tips">Interview Tips</option>
+                        <option value="IT & Tech">IT & Tech</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Healthcare">Healthcare</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea id="newThreadContent" class="form-control" rows="5" placeholder="Share your thoughts..." required></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn">POST THREAD</button>
+                    <button type="button" class="btn cancel-btn" id="closeModal">CANCEL</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="loginOverlay" class="overlay hidden">
+        <div class="auth-modal">
+            <form id="login" class="auth-form active">
+                <h2 class="form-title">Welcome Back</h2>
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" name="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" class="form-control" placeholder="Enter your password" required>
+                    <div class="forgot-password"><a href="#">Forgot password?</a></div>
+                </div>
+                <div class="remember-me">
+                    <input type="checkbox" id="remember-me" name="remember">
+                    <label for="remember-me">Remember me</label>
+                </div>
+                <button type="button" class="btn" id="loginBtn">Login</button>
+                <div class="divider"><span>OR</span></div>
+                <div class="social-login">
+                    <button type="button" class="social-btn google-btn">Google</button>
+                    <button type="button" class="social-btn facebook-btn">Facebook</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="discussion.js"></script>
+    <script src="overlay.js"></script>
+
+    <footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2 class="footer-logo">HIRELINK</h2>
+            <p class="footer-slogan">A click-step away from your career success.</p>
+        </div>
+
+        <hr class="footer-divider">
+
+        <ul class="footer-links">
+             <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="terms.html">TERMS OF SERVICE</a></li>
+                <li><a href="privacy.html">PRIVACY POLICY</a></li>
+        </ul>
+
+        <div class="footer-socials">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">r</a>
+            <a href="#" class="social-icon">g+</a>
+            <a href="#" class="social-icon">..</a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HireLink. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

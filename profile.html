@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account | HireLink</title>
+<link rel="stylesheet" href="css/profile.css">
+<link rel="icon" type="image/png" href="images/logo.png">
+
+  <link rel="stylesheet" href="css/header.css">
+   <link rel="stylesheet" href="css/footer.css">
+</head>
+
+<body>
+<div class="dashboard-container">
+
+    <!-- Top Navigation -->
+    <header class="topbar">
+       <div class="logo-container">
+           <button class="back-btn">&lt;</button>
+           <div class="logo">HireLink</div>
+       </div>
+        <div class="auth-area" id="authArea">
+            <button class="logout-btn" id="logoutBtn">Log Out</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+
+        <!-- LEFT SIDE -->
+        <div class="main-panel">
+
+            <h1>Manage Your Profile</h1>
+            <p class="subtitle">Keep your profile updated to attract employers</p>
+
+            <!-- Tabs -->
+            <div class="tabs" style="display: none;">
+                <button class="tab" data-target="profile">Profile</button>
+                <button class="tab" data-target="skills">Skills</button>
+                <button class="tab" data-target="experience">Experience</button>
+                <button class="tab" data-target="education">Education</button>
+                <button class="tab" data-target="project">Projects</button>
+            </div>
+
+            <!-- Profile Card -->
+            <div class="card" id="profile">
+                <div class="form-grid">
+                    <div>
+                        <label>First Name</label>
+                        <input type="text" id="firstNameinput" placeholder="Edit your first name">
+                    </div>
+                    <div>
+                        <label>Middle Name</label>
+                        <input type="text" id="middleNameinput" placeholder="Enter your middle name">
+                    </div>
+                    <div>
+                        <label>Last Name</label>
+                        <input type="text" id="lastNameInput" placeholder="Edit your last name">
+                    </div>
+                    <div>
+                        <label>Suffix</label>
+                        <input type="text" id="suffixNameInput" placeholder="Enter your suffix">
+                    </div>
+                    <div class="full">
+                        <label>Profession</label>
+                        <input type="text" id="professionInput" placeholder="Enter your profession">
+                    </div>
+                    <div>
+                        <label>Contact Number</label>
+                        <input type="text" id="contactInput" placeholder="Enter your contact number">
+                    </div>
+                    <div>
+                        <label>Email Address</label>
+                        <input type="text" id="emailInput" placeholder="Enter your email address">
+                    </div>
+                     <div>
+                        <label>Job Position</label>
+                        <input type="text" id="jobpositionInput" placeholder="Enter your job position">
+                    </div>
+                    <div>
+                        <label>Current Company</label>
+                        <input type="text" id="currentcompanyInput" placeholder="Enter your current company">
+                    </div>
+                    <div>
+                        <label>Graduated At</label>
+                        <input type="text" id="graduatedatInput" placeholder="Enter where you graduated at">
+                    </div>
+                    <div>
+                        <label>Location</label>
+                        <input type="text" id="locationInput" placeholder="Enter your location">
+                    </div>
+                    <div class="full">
+                        <label>Bio</label>
+                        <textarea id="bioInput" placeholder="Write something about yourself..."></textarea>
+                    </div>
+
+                    <div>
+                        <label>Expected Salary</label>
+                        <input type="text" id="expectedsalaryInput" placeholder="Enter your expected salary">
+                    </div>
+
+                    <div>
+<label>Upload Resume</label>
+
+<input type="file" id="resumeInput">
+
+  <button id="uploadResumeBtn">Upload Resume</button>
+
+  <button id="viewResumeBtn">View Resume</button>
+
+<div id="resumeViewer" class="resume-viewer hidden">
+  <iframe id="resumeFrame"></iframe>
+</div>
+
+</div>
+                </div>
+            </div>
+
+            <!-- Skills Card -->
+            <div class="card" id="skills">
+                <div class="card-header">
+                    <h3>Skills</h3>
+                    <button class="primary-btn">+ Add Skill</button>
+                </div>
+                <div class="skills-container">
+                    <span class="skill-tag">HTML</span>
+                    <span class="skill-tag">CSS</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Figma</span>
+                    <span class="skill-tag">UI/UX Design</span>
+                </div>
+            </div>
+
+            <!-- Experience Card -->
+            <div class="card" id="experience">
+                <div class="card-header">
+                    <h3>Experience</h3>
+                    <button class="primary-btn">+ Add Experience</button>
+                </div>
+            </div>
+
+            <!-- Education Card -->
+            <div class="card" id="education">
+                <div class="card-header">
+                    <h3>Education</h3>
+                    <button class="primary-btn">+ Add Education</button>
+                </div>
+            </div>
+
+            <!-- Projects Card -->
+            <div class="card" id="project">
+                <div class="card-header">
+                    <h3>Projects</h3>
+                    <button class="primary-btn">+ Add Project</button>
+                </div>
+                <div class="project-grid"></div>
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="action-buttons">
+                <button class="primary-btn" id="updateBtn">Update</button>
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE SUMMARY -->
+       <div class="side-panel">
+
+          <div class="profile-summary">
+            <div class="avatar-upload">
+              <img id="profilePreview" src="images/avatar.png" alt="Profile">
+              <input type="file" id="profileImageInput" accept="image/*">
+              <label for="profileImageInput" class="upload-overlay">Change</label>
+            </div>
+
+            <h3 id="profileName">Jane Smith</h3>
+          </div>
+
+         <div class="visibility-card">
+  <div class="visibility-header">
+    <span>Profile Visibility</span>
+    <label class="switch">
+      <input type="checkbox" id="profileToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="visibility-status" id="visibilityStatus"></div>
+</div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="profile.js"></script>
+</body>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2 class="footer-logo">HIRELINK</h2>
+            <p class="footer-slogan">A click-step away from your career success.</p>
+        </div>
+
+        <hr class="footer-divider">
+
+        <ul class="footer-links">
+         <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="terms.html">TERMS OF SERVICE</a></li>
+                <li><a href="privacy.html">PRIVACY POLICY</a></li>
+        </ul>
+
+        <div class="footer-socials">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">r</a>
+            <a href="#" class="social-icon">g+</a>
+            <a href="#" class="social-icon">..</a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HireLink. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+</html>

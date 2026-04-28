@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account | HireLink</title>
+<link rel="stylesheet" href="css/job_ads.css">
+<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="css/overlay.css">
+ <link rel="stylesheet" href="css/footer.css">
+<link rel="icon" type="image/png" href="images/logo.png">
+</head>
+<body>
+
+
+
+   <header class="header">
+        <div class="brand">
+        <img src="images/logo.png" alt="weblogo" class="logo">
+            <h2>HireLink</h2>
+        </div>
+        <nav class="navpages">
+            <a href="job_ads.html">Job Ads</a>
+            <a href="jobseekers.html">Jobseekers</a>
+            <a href="company_reviews.html">Company Reviews</a>
+            <a href="conversation.html">Chats</a>
+        </nav>
+        
+        <!-- 🔥 RIGHT SIDE -->
+        <div class="auth-area" id="authArea">
+            <button class="signin-btn" id="signInBtn">Sign In</a>
+        </div>
+  </header>
+
+ 
+
+      <div class="action-buttons">
+                <button class="primary-btn" id="postJob">Post a Job</button>
+            </div>
+    <!-- Main Content -->
+    <div class="dashboard-content" style="display: none;">
+
+        <!-- LEFT SIDE -->
+        <div class="main-panel">
+
+            <h1>Create Job Post</h1>
+            <p class="subtitle">Make hiring easier</p>
+
+
+            <!-- Profile Card -->
+            <div class="card" id="about">
+
+                <div class="form-grid">
+                    <div>
+                        <label>Title</label>
+                        <input type="text" id="jobtitleInput" placeholder="Enter the job title">
+                    </div>
+
+                    <div>
+                        <label>Job Type</label>
+                        <input type="text" id="jobtypeInput" placeholder="Enter the job type">
+                    </div>
+
+                    <div class="full">
+                        <label>Location</label>
+                        <input type="text" id="joblocationInput" placeholder="Enter location">
+                    </div>
+
+                    <div class="full">
+                        <label>Description</label>
+                        <textarea id="jobdescriptionInput" placeholder="Write the job description..."></textarea>
+                    </div>
+
+                     <div class="full">
+                        <label>Skills</label>
+                        <textarea id="jobskillsInput" placeholder="Write the required skills..."></textarea>
+                    </div>
+
+                    <div>
+                        <label>Salary Minimum</label>
+                        <input type="text" id="salaryminInput" placeholder="Enter the minimum salary">
+                    </div>
+
+                    <div>
+                        <label>Salary Maximum</label>
+                         <input type="text" id="salarymaxInput" placeholder="Enter your maximum salary">
+                    </div>
+
+                     <div>
+                        <label>Contact No.</label>
+                         <input type="text" id="contactInput" placeholder="Enter your contact number">
+                    </div>
+
+                    <div>
+                        <label>Email Address</label>
+                         <input type="text" id="emailInput" placeholder="Enter your email address">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="action-buttons">
+                <button class="primary-btn" id="post">Post</button>
+            </div>
+            <div class="action-buttons">
+                <button class="primary-btn" id="cancel">Cancel</button>
+            </div>
+        </div>
+
+</div>
+
+<div class="jobs-section">
+  <div>
+    <h2>My Job Ads</h2>
+  
+  </div>
+
+  <div class="carousel-wrapper">
+    <div class="jobs-container" id="jobsContainer"></div>
+    <button class="nav-btn" id="nextBtn">&#8250;</button>
+  </div>
+  <button class="review-btn">See All</button>
+</div>
+
+<script src="overlay.js"></script>
+
+<div id="loginOverlay" class="overlay hidden">
+  <div class="auth-modal">
+    <form id="login" class="auth-form active">
+            <h2 class="form-title">Welcome Back</h2>
+            
+            <div class="form-group">
+                <label for="login-email">Email Address</label>
+                <input type="email" id="login-email" name="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" class="form-control" placeholder="Enter your password" required>
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+            
+            <div class="remember-me">
+                <input type="checkbox" id="remember-me" name="remember">
+                <label for="remember-me">Remember me</label>
+            </div>
+            
+           <button type="button" class="btn" id="loginBtn">Login</button>
+            
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <div class="social-login">
+                <button type="button" class="social-btn google-btn">
+                    Google
+                </button>
+                <button type="button" class="social-btn facebook-btn">
+                    Facebook
+                </button>
+            </div>
+    </form>
+  </div>
+  </div>
+
+    
+
+<script src="job_ads.js"></script>
+
+</body>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2 class="footer-logo">HIRELINK</h2>
+            <p class="footer-slogan">A click-step away from your career success.</p>
+        </div>
+
+        <hr class="footer-divider">
+
+        <ul class="footer-links">
+             <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="terms.html">TERMS OF SERVICE</a></li>
+                <li><a href="privacy.html">PRIVACY POLICY</a></li>
+        </ul>
+
+        <div class="footer-socials">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">r</a>
+            <a href="#" class="social-icon">g+</a>
+            <a href="#" class="social-icon">..</a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HireLink. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</html>

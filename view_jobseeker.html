@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job | HireLink</title>
+    <link rel="stylesheet" href="css/view_jobseeker.css">
+      <link rel="stylesheet" href="css/header.css">
+       <link rel="stylesheet" href="css/footer.css">
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+</head>
+
+<header class="header">
+        <div class="brand">
+           <button class="back-btn">&lt;</button>
+            <h2>HireLink</h2>
+        </div>
+       
+        <!-- 🔥 RIGHT SIDE -->
+        <div class="auth-area" id="authArea">
+            <button class="signin-btn" id="signInBtn">Sign In</a>
+        </div>
+  </header>
+
+<body>
+ 
+<div class="profile-container" id="jobProfile">
+
+    <div class="job_name">
+
+        <img src="images/avatar.png" class="profile-img" id="profile_picture">
+
+        <div>
+            <div class="company-name" id="full_name">TechNova Solutions</div>
+           
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">Jobseeker Information</div>
+
+        <div class="info-grid">
+
+          <div class="info-box">
+<div class="label">Profession</div>
+<div class="value" id="profession">UI/UX Designer</div>
+</div>
+
+<div class="info-box">
+<div class="label">Job Position</div>
+<div class="value" id="job_position">Senior Designer</div>
+</div>
+
+<div class="info-box">
+<div class="label">Current Company</div>
+<div class="value" id="current_company">TechNova Solutions</div>
+</div>
+
+<div class="info-box">
+<div class="label">Expected Salary</div>
+<div class="value" id="expected_salary">₱60,000</div>
+</div>
+
+<div class="info-box">
+<div class="label">Location</div>
+<div class="value" id="location">Quezon City</div>
+</div>
+
+<div class="info-box">
+<div class="label">Email Address</div>
+<a class="value" id="email" href="mailto:email@example.com">
+email@example.com
+</a>
+</div>
+
+</div>
+</div>
+
+    <div class="section">
+
+        <div class="section-title">Jobseeker Description</div>
+
+        <div class="description" id="description">
+            TechNova Solutions is a leading technology company focused on building scalable
+            software solutions for businesses worldwide.
+        </div>
+
+    </div>
+
+    <div class="section">
+
+        
+
+</div>
+
+<button id="viewResumeBtn">View Resume</button>
+
+<div id="resumeViewer" class="resume-viewer hidden">
+  <iframe id="resumeFrame"></iframe>
+</div>
+
+<script src="view_jobseeker.js"></script>
+<script src="overlay.js"></script>
+</body>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2 class="footer-logo">HIRELINK</h2>
+            <p class="footer-slogan">A click-step away from your career success.</p>
+        </div>
+
+        <hr class="footer-divider">
+
+        <ul class="footer-links">
+           <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="terms.html">TERMS OF SERVICE</a></li>
+                <li><a href="privacy.html">PRIVACY POLICY</a></li>
+        </ul>
+
+        <div class="footer-socials">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">r</a>
+            <a href="#" class="social-icon">g+</a>
+            <a href="#" class="social-icon">..</a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HireLink. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+</html>

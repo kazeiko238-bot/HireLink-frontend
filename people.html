@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jobseekers | HireLink</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/overlay.css">
+  <link rel="stylesheet" href="css/people.css">
+   <link rel="stylesheet" href="css/footer.css">
+</head>
+
+<body>
+ <header class="header">
+        <div class="brand">
+        <img src="images/logo.png" alt="weblogo" class="logo">
+            <h2>HireLink</h2>
+        </div>
+        <nav class="navpages">
+            <a href="jobs.html">Jobs</a>
+            <a href="people.html">People</a>
+            <a href="companies.html">Companies</a>
+            <a href="discussion.html">Discussions</a>
+             <a href="conversation.html">Chats</a>
+            <a href="applications.html">Applications</a>
+        </nav>
+
+        <!-- 🔥 RIGHT SIDE -->
+        <div class="auth-area" id="authArea">
+            <button class="signin-btn" id="signInBtn">Sign In</a>
+        </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Available Profile Showcase</h2>
+    <p>Discover people who allowed their profile to be showcased</p>
+    
+    <div class="search-bar">
+       <div class="location-group">
+  <div class="location-icon"></div>
+
+  <div class="multi-dropdown" id="provinceDropdown">
+    <input 
+      type="text" 
+      id="provinceInput" 
+      placeholder="Select province"
+      autocomplete="off"
+    />
+    <ul id="provinceList"></ul>
+  </div>
+</div>
+
+      <div class="search-input-wrapper">
+    <span class="search-icon">🔍</span>
+    <input type="search" id="profileSearchInput" placeholder="Search public profiles..." />
+</div>
+    </div>
+   
+  </section>
+
+
+
+  <!-- MAIN CONTENT -->
+  <div class="people-container" id="peopleContainer"></div>
+
+<script src="people.js"></script>
+
+
+  <script src="overlay.js"></script>
+  <script src="provinces.js"></script>
+
+  <div id="loginOverlay" class="overlay hidden">
+  <div class="auth-modal">
+    <form id="login" class="auth-form active">
+            <h2 class="form-title">Welcome Back</h2>
+            
+            <div class="form-group">
+                <label for="login-email">Email Address</label>
+                <input type="email" id="login-email" name="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" class="form-control" placeholder="Enter your password" required>
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+            
+            <div class="remember-me">
+                <input type="checkbox" id="remember-me" name="remember">
+                <label for="remember-me">Remember me</label>
+            </div>
+            
+           <button type="button" class="btn" id="loginBtn">Login</button>
+            
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <div class="social-login">
+                <button type="button" class="social-btn google-btn">
+                    Google
+                </button>
+                <button type="button" class="social-btn facebook-btn">
+                    Facebook
+                </button>
+            </div>
+    </form>
+  </div>
+  </div>
+
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2 class="footer-logo">HIRELINK</h2>
+            <p class="footer-slogan">A click-step away from your career success.</p>
+        </div>
+
+        <hr class="footer-divider">
+
+        <ul class="footer-links">
+             <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="terms.html">TERMS OF SERVICE</a></li>
+                <li><a href="privacy.html">PRIVACY POLICY</a></li>
+        </ul>
+
+        <div class="footer-socials">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">r</a>
+            <a href="#" class="social-icon">g+</a>
+            <a href="#" class="social-icon">..</a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HireLink. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

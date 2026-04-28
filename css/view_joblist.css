@@ -1,0 +1,239 @@
+/* --- Global & Background --- */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding-top: 70px; 
+    color: #ffffff;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('../images/bg4.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* --- Semi-Transparent Container --- */
+.profile-container {
+    max-width: 1500px;
+    margin: 30px auto; 
+    background: rgba(255, 255, 255, 0.05); /* Transparent style */
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); /* Optional: adds a glass effect */
+}
+
+/* --- Header Section --- */
+.header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 25px;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 30px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.company-name {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.industry {
+    color: #94a3b8;
+    margin-top: 5px;
+}
+
+/* --- Layout Sections --- */
+.section {
+    margin-top: 40px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffffff;
+    border-left: 4px solid #a855f7; /* Purple accent */
+    padding-left: 12px;
+}
+
+/* --- Info Grid & Boxes --- */
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.info-box {
+    background: rgba(255, 255, 255, 0.03); /* Transparent info boxes */
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.label {
+    font-weight: 800;
+    color: #64748b;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.value {
+    margin-top: 8px;
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+    display: block;
+}
+
+.description {
+    line-height: 1.8;
+    color: #d1d5db;
+}
+
+/* --- Buttons --- */
+.back-btn {
+    font-size: 24px;
+    font-weight: 600;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #ffffff;
+}
+
+.back-btn:hover {
+    color: #a855f7;
+}
+
+/* --- Gradient Apply Button --- */
+.review-btn {
+    background: linear-gradient(135deg, #1800ee 0%, #6dacfa 100%);
+    box-shadow: 0 5px 15px rgba(168, 85, 247, 0.3);
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+    margin-top: 30px;
+}
+
+.review-btn:hover {
+    transform: translateY(-2px);
+   
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
+}
+
+.app-row {
+  border-bottom: 1px solid #ccc;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.msg-btn {
+  padding: 5px 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.msg-btn:hover {
+  background: #0056b3;
+}
+
+.app-date {
+  font-size: 12px;
+  color: gray;
+  margin-top: 4px;
+}
+
+
+.status-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.status-btn {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.status-menu {
+  display: none;
+  position: absolute;
+  background: rgb(75, 68, 68);
+  border: 1px solid #ccc;
+  min-width: 140px;
+  z-index: 100;
+}
+
+.status-menu div {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.status-menu div:hover {
+  background: #383434;
+}
+
+.status-dropdown:hover .status-menu {
+  display: block;
+}
+
+
+.toggle-job-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 10px;
+
+  background-color: #2d6cdf;
+  color: white;
+}
+
+/* hover when active */
+.toggle-job-btn:hover {
+  background-color: #1f56c2;
+  transform: translateY(-1px);
+}
+
+/* CLOSED STATE */
+.toggle-job-btn.closed {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.toggle-job-btn.closed:hover {
+  background-color: #c0392b;
+}

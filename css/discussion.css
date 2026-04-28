@@ -1,0 +1,315 @@
+/* --- GLOBAL BODY STYLES --- */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding-top: 70px; /* Space for your header */
+    color: #ffffff;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('../images/bg2.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* --- THREAD HEADER --- */
+.thread-header {
+    background: #0f172a; /* Solid Deep Navy */
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #334155; 
+    color: #ffffff;
+}
+
+.thread-actions input {
+    padding: 10px 15px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    margin-right: 10px;
+    color: #ffffff;
+    outline: none;
+}
+
+.thread-actions input::placeholder {
+    color: #94a3b8;
+}
+
+.create-thread-btn {
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+
+.create-thread-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+}
+
+/* --- LAYOUT GRID --- */
+.thread-container {
+    display: grid;
+    grid-template-columns: 240px 1fr 280px;
+    gap: 25px;
+    padding: 30px 40px;
+}
+
+/* --- LEFT SIDEBAR (Categories) --- */
+.thread-sidebar {
+    background: #0f172a;
+    padding: 25px;
+    border-radius: 16px;
+    border: 2px solid #334155;
+    height: fit-content;
+}
+
+.thread-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.thread-sidebar li {
+    padding: 10px 0;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: all 0.3s ease;
+}
+
+.thread-sidebar li.active,
+.thread-sidebar li:hover {
+    color: #3b82f6;
+    font-weight: 600;
+    transform: translateX(5px);
+}
+
+/* --- THREAD CARDS --- */
+.thread-card {
+    background: #1e293b; 
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid #334155;
+    color: #ffffff;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                box-shadow 0.4s ease, 
+                border-color 0.4s ease;
+    cursor: pointer;
+}
+
+.thread-card:hover {
+    transform: scale(1.01) translateY(-5px);
+    border-color: #3b82f6; 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.thread-content {
+    flex: 1;
+}
+
+.thread-meta {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+}
+
+.thread-preview {
+    font-size: 15px;
+    margin-top: 10px;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+/* --- STATS SECTION --- */
+.thread-stats {
+    text-align: right;
+    border-left: 1px solid #334155;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    min-width: 80px;
+}
+
+.stat-item {
+    font-size: 14px;
+    color: #3b82f6;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.like-btn.liked {
+    color: #ef4444; /* Change color when active */
+}
+
+/* --- RIGHT SIDEBAR --- */
+.thread-right {
+    background: #0f172a;
+    padding: 25px;
+    border-radius: 16px;
+    border: 2px solid #334155;
+    height: fit-content;
+}
+
+.thread-right h3 {
+    border-bottom: 1px solid #334155;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.top-user {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #cbd5e1;
+    padding: 5px 0;
+}
+
+/* --- CREATE THREAD MODAL (Glassmorphism) --- */
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.cancel-btn {
+    background: #0069fb !important;
+}
+
+.cancel-btn:hover {
+    background: #71acff !important;
+}
+
+/* Form controls inside modal */
+.form-control {
+    width: 100%;
+    padding: 12px;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: white;
+    margin-top: 5px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* --- FOOTER --- */
+.site-footer {
+    background: #020617;
+    color: #94a3b8;
+    text-align: center;
+    padding: 30px;
+    margin-top: 60px;
+    border-top: 1px solid #1e293b;
+}
+
+/* --- CATEGORY SELECT STYLING --- */
+#newThreadCategory {
+    appearance: none; /* Removes default browser arrow */
+    background: linear-gradient(90deg, #1e293b, #0f172a);
+    border: 2px solid #334155;
+    color: #ffffff;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 15px) center;
+    padding-right: 40px; /* Space for the new arrow */
+}
+
+/* Hover & Focus Animation */
+#newThreadCategory:hover {
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+}
+
+#newThreadCategory:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: linear-gradient(90deg, #1e293b, #1d4ed8);
+}
+
+
+#newThreadCategory option {
+    background-color: #0f172a; /* Solid dark background for readability */
+    color: #ffffff;
+    padding: 10px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Subtle pulse animation for the form-group when active */
+.form-group:focus-within label {
+    color: #3b82f6;
+    transition: 0.3s;
+}
+
+
+
+
+.reply-section {
+  margin-top: 15px;
+  border-top: 1px solid #334155;
+  padding-top: 10px;
+}
+
+.reply-list {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.reply-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #1e293b;
+  font-size: 14px;
+}
+
+.reply-meta {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.reply-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.reply-input {
+  flex: 1;
+  padding: 8px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: white;
+}
+
+.send-reply-btn {
+  background: #2563eb;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+

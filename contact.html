@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | HireLink</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/contact.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header">
+        <div class="brand">
+            <button class="back-btn" onclick="history.back()">&lt;</button>
+            <h2>HireLink</h2>
+        </div>
+        <div class="auth-area">
+            <button class="signin-btn">Sign In</button>
+        </div>
+    </header>
+
+    <main class="contact-wrapper">
+        <div class="contact-header">
+            <h1>Contact HireLink</h1>
+            <p>Have a question or need assistance? We're here to help.</p>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-card form-side">
+                <form action="https://formspree.io/f/your-id-here" method="POST">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label>Your Name</label>
+                            <input type="text" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Company Name (optional)</label>
+                            <input type="text" name="company" placeholder="Enter company name">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Your Email</label>
+                        <input type="email" name="_replyto" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Your Message</label>
+                        <textarea name="message" rows="5" placeholder="How can we help you?" required></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label>What is your inquiry about?</label>
+                        <select name="inquiry-type">
+                            <option value="General">General Question</option>
+                            <option value="Employer">Employer Partnership</option>
+                            <option value="JobSeeker">Job Seeker Support</option>
+                            <option value="Feedback">Platform Feedback</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="send-btn">Send Message ✉</button>
+                </form>
+            </div>
+
+            <div class="contact-card info-side">
+                <div class="direct-contact">
+                    <h3>Get in touch directly</h3>
+                    <div class="contact-item">
+                        <span class="icon">✉</span>
+                        <div>
+                            <strong>Direct email</strong>
+                            <p>verydemureglecery@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="icon">📍</span>
+                        <div>
+                            <strong>Location</strong>
+                            <p>PRMSU, Iba, Zambales, Philippines</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-preview">
+                    <h3>Helpful Resources</h3>
+                    <ul>
+        
+        <li><a href="https://www.dole.gov.ph/" target="_blank">Employer partnership guide & Labor Laws</a></li>
+        
+        <li><a href="https://www.privacy.gov.ph/data-privacy-act/" target="_blank">Account security & Data Privacy help</a></li>
+    </ul>
+</div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2 class="footer-logo">HIRELINK</h2>
+                <p class="footer-slogan">A click-step away from your career success.</p>
+            </div>
+
+            <hr class="footer-divider">
+
+            <ul class="footer-links">
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="terms.html">TERMS OF SERVICE</a></li>
+                <li><a href="privacy.html">PRIVACY POLICY</a></li>
+            </ul>
+
+            <div class="footer-socials">
+                <a href="#" class="social-icon">f</a>
+                <a href="#" class="social-icon">t</a>
+                <a href="#" class="social-icon">r</a>
+                <a href="#" class="social-icon">in</a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 HireLink. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+
+body {
+  font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding-top: 70px; /* Space for your header */
+    color: #ffffff;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('../images/bg5.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps image still while you scroll */
+    background-repeat: no-repeat;
+}
+.jobseekers-section{
+  max-width:1200px;
+  margin:auto;
+  padding:40px 20px;
+}
+
+.jobseekers-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.review-btn{
+  background:#2d4ea2;
+  color:white;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.carousel-wrapper{
+  position:relative;
+}
+
+/* --- UPDATED JOBSEEKERS GRID LAYOUT --- */
+.jobseekers-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 40px; /* Space between the cards */
+    padding: 60px 40px; /* Vertical room for shadow bloom */
+}
+
+.jobseekers-container::-webkit-scrollbar{
+  display:none;
+}
+
+
+/* Company Card */
+
+.jobseekers-card{
+   min-width: 240px;
+    min-height: 220px;
+    background: linear-gradient (135deg,  #061c97 0%, #005bed 50%, #0091ff 100%);
+
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    overflow: hidden; /* Keeps badge contained on zoom */
+  box-shadow: 
+        0 15px 60px -10px rgba(6, 28, 151, 0.7),  /* Base color shadow */
+        0 20px 80px -5px rgba(0, 145, 255, 0.5);  /* Lighter bloom color */
+}
+
+.jobseekers-card:hover{
+   transform: scale(1.08); 
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+.logo{
+  width:60px;
+  height:60px;
+  object-fit:contain;
+  margin-bottom:10px;
+}
+
+.jobseekers-card h3{
+    font-size: 18px;
+    font-weight: 700;
+    margin: 5px 0;
+    color: #ffffff;
+}
+
+.job-badge{
+  display:inline-block;
+  background:#e6eef8;
+  color:#2d4ea2;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:13px;
+}
+
+/* Navigation Button */
+
+.nav-btn{
+  position:absolute;
+  right:-10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:none;
+  background:white;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  cursor:pointer;
+  font-size:24px;
+}
+
+
+.jobseekers-card .view-details-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.jobseekers-card .view-details-btn:hover {
+  background-color: #1e40af;
+  transform: translateY(-2px);
+}
+
+.profile-pic {
+  width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+
+.headline {
+  font-size: 14px;
+  color: #555;
+}
+
+.location {
+  font-size: 13px;
+  color: #888;
+}

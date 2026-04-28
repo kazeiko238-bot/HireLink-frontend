@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Listings | HireLink</title>
+  <link rel="icon" type="image/png" href="images/logo.png">
+  
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/overlay.css">
+  <link rel="stylesheet" href="css/jobs.css">
+   <link rel="stylesheet" href="css/footer.css">
+</head>
+
+<body>
+ <header class="header">
+        <div class="brand">
+        <img src="images/logo.png" alt="weblogo" class="logo">
+            <h2>HireLink</h2>
+        </div>
+        <nav class="navpages">
+            <a href="jobs.html">Jobs</a>
+            <a href="people.html">People</a>
+            <a href="companies.html">Companies</a>
+            <a href="discussion.html">Discussions</a>
+            <a href="conversation.html">Chats</a>
+            <a href="applications.html">Applications</a>
+        </nav>
+
+
+        <!--
+<div class="notif-container">
+  <button class="notif-btn">
+    🔔
+    <span class="notif-badge">3</span>
+  </button>
+
+  <div class="notif-dropdown" id="notifDropdown">
+    <div class="notif-header">Notifications</div>
+
+    <div class="notif-item unread">
+      <strong>John Doe</strong> liked your post
+      <span class="time">2m ago</span>
+    </div>
+
+    <div class="notif-item">
+      <strong>Anna</strong> commented on your photo
+      <span class="time">10m ago</span>
+    </div>
+
+    <div class="notif-item">
+      <strong>Mike</strong> sent you a message
+      <span class="time">1h ago</span>
+    </div>
+  </div>
+</div>
+-->
+
+        <!-- 🔥 RIGHT SIDE -->
+        <div class="auth-area" id="authArea">
+            <button class="signin-btn" id="signInBtn">Sign In</a>
+        </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+     <h2>Available Job Listings</h2>
+    <p>Explore opportunities that match your skills and career goals</p>
+    <div class="search-bar">
+     <div class="location-group">
+  <div class="location-icon"></div>
+
+  <div class="multi-dropdown" id="provinceDropdown">
+    <input 
+      type="text" 
+      id="provinceInput" 
+      placeholder="Select province"
+      autocomplete="off"
+    />
+    <ul id="provinceList"></ul>
+  </div>
+</div>
+
+   <div class="search-group">
+  <div class="search-input-wrapper">
+    <span class="search-icon">🔍</span>
+    <input type="search" id="jobSearchInput" placeholder="Search job title..." />
+  </div>
+  <button class="search-btn">Search</button>
+</div>
+  </section>
+
+
+ 
+
+
+  <div class="jobs-section">
+  <div>
+    <h2>Explore Hirings</h2>
+  
+  </div>
+
+  <div class="carousel-wrapper">
+    <div class="jobs-container" id="jobsContainer"></div>
+    <button class="nav-btn" id="nextBtn">&#8250;</button>
+  </div>
+  <button class="review-btn">See All</button>
+</div>
+ <script src="jobs.js"></script>
+
+  <!-- FOOTER -->
+    <footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2 class="footer-logo">HIRELINK</h2>
+            <p class="footer-slogan">A click-step away from your career success.</p>
+        </div>
+
+        <hr class="footer-divider">
+
+        <ul class="footer-links">
+           <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="terms.html">TERMS OF SERVICE</a></li>
+                <li><a href="privacy.html">PRIVACY POLICY</a></li>
+        </ul>
+
+        <div class="footer-socials">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">r</a>
+            <a href="#" class="social-icon">g+</a>
+            <a href="#" class="social-icon">..</a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HireLink. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+  <!-- SLIDE-IN JOB DETAILS PANEL -->
+  <div id="job-panel">
+
+    <!-- HERO -->
+    <div class="panel-hero">
+      <div class="panel-hero-overlay">
+        <h2 id="panel-title"></h2>
+        <p id="panel-company"></p>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="panel-content">
+    </div>
+  </div>
+
+  
+
+  <script src="overlay.js"></script>
+  <script src="provinces.js"></script>
+
+  <div id="loginOverlay" class="overlay hidden">
+  <div class="auth-modal">
+    <form id="login" class="auth-form active">
+            <h2 class="form-title">Welcome Back</h2>
+            
+            <div class="form-group">
+                <label for="login-email">Email Address</label>
+                <input type="email" id="login-email" name="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" class="form-control" placeholder="Enter your password" required>
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+            
+            <div class="remember-me">
+                <input type="checkbox" id="remember-me" name="remember">
+                <label for="remember-me">Remember me</label>
+            </div>
+            
+           <button type="button" class="btn" id="loginBtn">Login</button>
+            
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <div class="social-login">
+                <button type="button" class="social-btn google-btn">
+                    Google
+                </button>
+                <button type="button" class="social-btn facebook-btn">
+                    Facebook
+                </button>
+            </div>
+    </form>
+  </div>
+  </div>
+
+</body>
+</html>

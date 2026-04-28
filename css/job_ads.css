@@ -1,0 +1,251 @@
+/* Layout */
+
+body {
+ font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding-top: 70px; /* Space for your header */
+    color: #ffffff;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('../images/bg5.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps image still while you scroll */
+    background-repeat: no-repeat;
+}
+
+.dashboard-content {
+  display: flex;
+  padding: 40px;
+  gap: 40px;
+}
+
+.main-panel {
+  flex: 3;
+}
+
+.side-panel {
+  flex: 1;
+}
+
+/* Titles */
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #fff2f2;
+  margin-bottom: 25px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+
+
+/* Form */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-grid .full {
+  grid-column: span 2;
+}
+
+label {
+  font-size: 13px;
+  color: #ffffff;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+/* Updated Action Buttons Container */
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    padding-right: 60px; /* Moves the buttons farther from the right edge */
+    margin-top: 30px;
+}
+
+/* The Enhanced Primary Button */
+.primary-btn {
+    position: relative;
+    background: linear-gradient(135deg, #061c97 0%, #0091ff 100%);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 50px; /* Modern pill shape */
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* Breathing Animation */
+    animation: pulseGlow 3s infinite ease-in-out;
+}
+
+/* Hover States */
+.primary-btn:hover:not(:disabled) {
+    transform: scale(1.05) translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0, 145, 255, 0.6);
+    background: linear-gradient(135deg, #005bed 0%, #00d2ff 100%);
+}
+
+.primary-btn:active {
+    transform: scale(0.98);
+}
+
+/* Disabled State Logic */
+.primary-btn:disabled {
+    background: #333;
+    opacity: 0.5;
+    cursor: not-allowed;
+    animation: none;
+    box-shadow: none;
+}
+
+
+.jobs-section{
+  max-width:1200px;
+  margin:auto;
+  padding:40px 20px;
+}
+
+.jobs-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.review-btn{
+  background:#2d4ea2;
+  color:white;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.carousel-wrapper{
+  position:relative;
+}
+
+
+.jobs-container {
+    display: flex;          /* Align cards in a row */
+     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 50px;              /* Space between cards */
+    padding: 30px 20px;     /* Room for the hover scale effect */
+    overflow-x: auto;       /* Enable horizontal scrolling */
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* Hide scrollbar IE/Edge */
+    scrollbar-width: none;     /* Hide scrollbar Firefox */
+}
+
+/* Hide scrollbar for Chrome/Safari */
+.jobs-container::-webkit-scrollbar {
+    display: none;
+}
+
+#jobsContainer:empty::before {
+    content: "Loading jobs or none found...";
+    color: white;
+    font-style: italic;
+}
+
+/* Company Card */
+
+.jobs-card{
+    min-width: 280px;
+    min-height: 220px;
+    background: linear-gradient (135deg,  #061c97 0%, #005bed 50%, #0091ff 100%);
+
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 18px;
+    padding: 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+   transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    overflow: hidden; /* Keeps badge contained on zoom */
+  box-shadow: 
+        0 15px 60px -10px rgba(6, 28, 151, 0.7),  /* Base color shadow */
+        0 20px 80px -5px rgba(0, 145, 255, 0.5);  /* Lighter bloom color */
+}
+
+.jobs-card:hover{
+   transform: scale(1.08); 
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+.logo{
+  width:60px;
+  height:60px;
+  object-fit:contain;
+  margin-bottom:10px;
+}
+
+.jobs-card h3{
+  font-size:16px;
+  margin:10px 0;
+}
+
+/* Navigation Button */
+
+.nav-btn{
+  position:absolute;
+  right:-10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:none;
+  background:white;
+  box-shadow:0 2px 8px rgba(0,0,0,0.2);
+  cursor:pointer;
+  font-size:24px;
+}

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | HireLink</title>
+    <link rel="stylesheet" href="css/index.css">
+     <link rel="stylesheet" href="css/footer.css">
+    <link rel="icon" type="image/png" href="images/logo.png">
+</head>
+<body>
+
+<div class="bg-container">
+    <img src="images/background.jpg" alt="HireLink Background" class="static-bg">
+    <div class="bg-overlay"></div>
+</div>
+
+    <header class="header">
+        <div class="brand">
+        <img src="images/logo.png" alt="weblogo" class="logo">
+            <h2>HireLink</h2>
+        </div>
+        <nav class="navpages">
+            <a href="job_ads.html">Job Ads</a>
+            <a href="jobseekers.html">Jobseekers</a>
+            <a href="company_reviews.html">Company Review</a>
+        </nav>
+    </header>
+
+    <main class="content">
+        <div class="left">
+    <p>Welcome to <span>Hirelink | Employer Site</span></p>
+    <p>A click-step away from your career success.</p>
+    
+    <div class="role-switch-container">
+        <a href="index-jobseeker.html" class="role-option inactive">JOBSEEKER</a>
+        <a href="index-company.html" class="role-option active">EMPLOYER</a>
+    </div>
+</div>
+
+        <div class="right">
+             <!-- Login Form -->
+            <form id="login" class="auth-form active" method="POST" action="">
+            <h2 class="form-title">Welcome Back</h2>
+            
+            <div class="form-group">
+                <label for="login-email">Email Address</label>
+                <input type="email" id="login-email" name="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" class="form-control" placeholder="Enter your password" required>
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+            </div>
+            
+            <div class="remember-me">
+                <input type="checkbox" id="remember-me" name="remember">
+                <label for="remember-me">Remember me</label>
+            </div>
+            
+            <button type="button" name="login-btn" class="btn">Login</button>
+            
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <div class="social-login">
+                <button type="button" class="social-btn google-btn">
+                    Google
+                </button>
+                <button type="button" class="social-btn facebook-btn">
+                    Facebook
+                </button>
+            </div>
+             <div class="form-footer">
+                Don't have an account? <a href="#" class="tab-link" data-tab="register">Register</a>
+            </div>
+            </form>
+            <form id="register" class="auth-form" method="POST" action="">
+            
+        <!-- Employer Fields -->
+        <div id="employer-fields">
+        <h2 class="form-title">Create Account</h2>
+
+
+    <div class="form-group">
+        <label>Company Name</label>
+        <input type="text" id="company-name" class="form-control" placeholder="Enter your company name" required>
+    </div>
+
+    <div class="form-group">
+        <label>Industry</label>
+        <input type="text" id="industry" class="form-control" placeholder="Enter your industry" required>
+    </div>
+
+    <div class="form-group">
+        <label>Company Size</label>
+        <input type="text" id="company-size" class="form-control" placeholder="Enter your company size" required>
+    </div>
+
+    <div class="form-group">
+        <label>Company Email</label>
+        <input type="email" id="company-email" class="form-control" placeholder="Enter your email" required>
+    </div>
+
+    <div class="form-group">
+        <label>Company Address</label>
+        <input type="text" id="company-address" class="form-control" placeholder="Enter your address" required>
+    </div>
+
+    <div class="form-group">
+    <label>Password</label>
+    <input type="password" id="company-password" class="form-control" placeholder="Create a password" required>
+</div>
+
+<div class="form-group">
+    <label>Confirm Password</label>
+    <input type="password" id="company-confirm-password" class="form-control" placeholder="Confirm your password" required>
+</div>
+
+    </div>
+        <div class="remember-me">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+            </div>
+            
+            <div class="verify" id="verify-section" style="display: none;">
+  <h2>Email Verification</h2>
+  <p class="verify-subtext">
+    Enter the 6-digit code sent to your email
+  </p>
+
+  <div class="code-inputs">
+    <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+    <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+    <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+    <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+    <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+    <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*">
+  </div>
+
+  <button class="verify-btn">Verify</button>
+
+   <p class="resend-text">
+    Didn't get the code? 
+    <span id="resend-code" class="resend-link">Resend</span>
+  </p>
+</div>
+
+            <button type="button" name="create-btn" class="btn">Create Account</button>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <div class="social-login">
+                <button type="button" class="social-btn google-btn">
+                    Google
+                </button>
+                <button type="button" class="social-btn facebook-btn">
+                    Facebook
+                </button>
+            </div>
+            
+            <div class="form-footer">
+                Already have an account? <a href="#" class="tab-link" data-tab="login">Login</a>
+            </div>
+
+            
+        </form>
+    </div>
+    
+            
+        </form>
+    </div>
+    </main>
+    <script src="index-company.js"></script>
+
+     <!-- FOOTER -->
+ <footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2 class="footer-logo">HIRELINK</h2>
+            <p class="footer-slogan">A click-step away from your career success.</p>
+        </div>
+
+        <hr class="footer-divider">
+
+        <ul class="footer-links">
+           <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="terms.html">TERMS OF SERVICE</a></li>
+                <li><a href="privacy.html">PRIVACY POLICY</a></li>
+        </ul>
+
+        <div class="footer-socials">
+            <a href="#" class="social-icon">f</a>
+            <a href="#" class="social-icon">t</a>
+            <a href="#" class="social-icon">r</a>
+            <a href="#" class="social-icon">g+</a>
+            <a href="#" class="social-icon">..</a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 HireLink. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

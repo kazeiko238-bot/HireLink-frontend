@@ -1,0 +1,183 @@
+/* Layout */
+
+body {
+font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding-top: 70px; /* Space for your header */
+    color: #ffffff;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('../images/bg3.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps image still while you scroll */
+    background-repeat: no-repeat;
+}
+
+.dashboard-content {
+  display: flex;
+  padding: 40px;
+  gap: 40px;
+}
+
+.main-panel {
+  flex: 3;
+}
+
+.side-panel {
+  flex: 1;
+}
+
+/* Titles */
+h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #f9fafb;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+/* Cards */
+.card {
+  background: #f9fafb;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-grid .full {
+  grid-column: span 2;
+}
+
+label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+.review-filters {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.review-btn {
+    background: linear-gradient(90deg, #7aadff, #026edb);
+    color: #fff;
+    border: 1px solid rgb(29, 103, 231);
+    width: 100px;
+    padding: 12px 40px 12px 24px; 
+    border-radius: 40px; 
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    /* Critical for Select styling */
+    appearance: none; 
+    -webkit-appearance: none;
+    outline: none;
+    
+    /* Adding a custom white arrow */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 5px top 50%;
+    background-size: 8px auto;
+}
+
+
+.review-btn option {
+    background-color: #1268f2; 
+    color: white;
+}
+
+.review-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgb(84, 169, 255); /* Changed shadow to blue */
+    filter: brightness(1.1);
+}
+
+.review-filters {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.review-filters select {
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.avg-rating {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.review-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 12px;
+  background: #0f172a;
+}
+
+.review-meta {
+  font-size: 13px;
+  color: gray;
+}
+
+.review-stars {
+  margin: 5px 0;
+  font-size: 16px;
+}
+

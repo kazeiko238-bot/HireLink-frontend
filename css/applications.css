@@ -1,0 +1,302 @@
+/* ============================================================
+   1. GLOBAL RESET & BACKGROUND
+============================================================ */
+:root {
+    --primary: #2d6cdf;
+    --primary-hover: #1f56c2;
+    --bg-overlay: rgba(245, 247, 251, 0.85);
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --text-main: #1a1f36;
+    --text-muted: #64748b;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-main);
+    min-height: 100vh;
+    /* BACKGROUND IMAGE SETTINGS */
+    background: linear-gradient(var(--bg-overlay), var(--bg-overlay)), 
+                url('../images/bg5.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* ============================================================
+   2. HEADER & NAVIGATION
+============================================================ */
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    box-sizing: border-box;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.brand h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin: 0;
+    color: var(--primary);
+}
+
+.back-btn {
+    background: rgb(254, 254, 254);
+    border: 1px solid #000000;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    background: var(--primary);
+    color: rgb(62, 118, 247);
+    border-color: var(--primary);
+}
+
+.signin-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.signin-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* ============================================================
+   3. APPLICATION CARDS
+============================================================ */
+.application-container {
+    max-width: 900px;
+    margin: 110px auto 60px;
+    padding: 0 20px;
+}
+
+.application-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 1fr auto auto; /* Aligns Title, Status, Button */
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Decorative left accent */
+    border-left: 6px solid #cbd5e1; 
+}
+
+.application-card:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Content Layout */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.job-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0;
+    color: #111827;
+}
+
+.company-name {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.date {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-top: 6px;
+}
+
+/* Status Badges */
+.status {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    min-width: 100px;
+}
+
+.status.applied { background: #f1f5f9; color: #475569; }
+.status.shortlisted { background: #fef3c7; color: #92400e; }
+.status.hired { background: #dcfce7; color: #166534; }
+.status.rejected { background: #fee2e2; color: #991b1b; }
+
+/* Status-based Card Accents */
+.application-card:has(.shortlisted) { border-left-color: #f59e0b; }
+.application-card:has(.hired) { border-left-color: #10b981; }
+.application-card:has(.rejected) { border-left-color: #ef4444; }
+
+.msg-btn {
+    background: white;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.msg-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* ============================================================
+   4. LOGIN OVERLAY & MODAL
+============================================================ */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: 0.3s;
+}
+
+.hidden { display: none; }
+
+.auth-modal {
+    background: white;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.form-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.form-group { margin-bottom: 20px; }
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid #3387f6;
+    background: #f8fafc;
+    box-sizing: border-box;
+    transition: 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(45, 108, 223, 0.1);
+}
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: rgb(13, 127, 249);
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* ============================================================
+   5. FOOTER & MISC
+============================================================ */
+.site-footer {
+    background: #111827;
+  color: #d1d5db;
+  text-align: center;
+  padding: 24px;
+  margin-top: 30px;
+  font-size: 14px;
+}
+
+.empty-state {
+    text-align: center;
+    background: var(--glass-bg);
+    padding: 60px;
+    border-radius: 20px;
+    color: var(--text-muted);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .application-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .header { padding: 0 20px; }
+}
+

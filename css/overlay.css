@@ -1,0 +1,200 @@
+
+/* Login box */
+.overlay {
+  position: fixed;
+    inset: 0;
+    top: 80; /* Changed to 0 so the blur covers the whole screen including header area */
+    backdrop-filter: blur(12px); /* Increased blur for a more premium feel */
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(0, 10, 30, 0.4); /* Dark blue-tinted overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 900; /* Ensure it's above everything */
+}
+
+.hidden {
+  display: none;
+}
+
+.auth-modal {
+    background: linear-gradient(
+        135deg, 
+        rgba(255, 255, 255, 0.12) 0%, 
+        rgba(18, 89, 240, 0.15) 100%
+    );
+    
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(77, 163, 255, 0.3);
+    
+    box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.3), 
+        0 30px 60px rgba(0, 0, 0, 0.4), 
+        inset 0 0 12px rgba(255, 255, 255, 0.05);
+
+    width: 480px;
+    max-width: 95%;
+    padding: 50px;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- Added a Decorative Glow Flare (Optional) --- */
+.auth-modal::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(77, 163, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+        .form-title {
+            color: #ffffff; /* White text for the glass background */
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+        }
+
+        .form-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 24px;
+            background-color: #4568dc;
+            margin-right: 12px;
+            border-radius: 3px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+         display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control {
+         padding: 0.85rem;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+        }
+
+
+        .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.form-control:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #4da3ff;
+    box-shadow: 0 0 15px rgba(77, 163, 255, 0.3);
+}
+
+      /* --- Login Button (High Contrast) --- */
+.btn {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    background-color: #111111;
+}
+        .forgot-password {
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+       
+        /* --- Links & Dividers --- */
+.forgot-password a, .remember-me label {
+    color: #4da3ff;
+    font-size: 0.9rem;
+}
+
+.forgot-password a:hover {
+    color: #4da3ff;
+}
+        .remember-me input {
+            margin-right: 0.5rem;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: #888;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: #e0e0e0;
+        }
+
+        .divider span {
+            padding: 0 1rem;
+            font-size: 0.9rem;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+            background-color: white;
+            color: #555;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .google-btn {
+            color: #ea4335;
+        }
+
+        .facebook-btn {
+            color: #3b5998;
+        }

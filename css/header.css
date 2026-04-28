@@ -1,0 +1,587 @@
+/* HEADER LAYOUT */
+.header {
+     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 60px;
+    margin-top: auto;
+    background: rgba(4, 48, 142, 0.658); /* Transparent version of your blue */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(14, 50, 91, 0.581);
+     position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; 
+
+}
+
+/* Ensure Logo has no shadow as requested */
+.logo {
+    max-height: 45px;
+    filter: none !important; 
+    box-shadow: none !important;
+}
+
+/* Brand (logo + name together) */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Website name */
+.brand h2 {
+    color: #ffffff;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* NAVIGATION */
+.navpages {
+    display: flex;
+    gap: 30px;
+}
+
+.navpages a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    position: relative;
+    padding: 8px 15px;
+    z-index: 1;
+    overflow: hidden;
+    transition: color 0.4s;
+}
+
+/* The Paint Brush Stroke Layer */
+.navpages a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* Start off-screen to the left */
+    width: 100%;
+    height: 100%;
+    /* Gradient Brush color */
+    background: linear-gradient(90deg, transparent, rgba(77, 163, 255, 0.4), #2563eb);
+    transition: all 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+    z-index: -1;
+    border-radius: 4px;
+    transform: skewX(-20deg); /* Gives it that slanted brush look */
+}
+
+/* Hover Animation: Sliding the stroke in */
+.navpages a:hover::before {
+    left: 0;
+}
+
+.navpages a:active::before {
+    background: #2563eb;
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.8);
+    transition: 0.1s;
+}
+
+.navpages a:hover {
+    color: #ffffff;
+}
+
+
+/* THE GLASS PILL BUTTON (UNIFIED STYLE) */
+.signin-btn {
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    border: none; /* Removed the default solid border */
+    position: relative;
+    z-index: 1;
+    overflow: hidden; /* Important for paint stroke clipping */
+    background: rgba(255, 255, 255, 0.08); /* Transparent frosted white */
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 8px 15px rgba(0, 0, 0, 0.2), 
+        0 15px 35px rgba(0, 0, 0, 0.3), 
+        inset 0 0 10px rgba(255, 255, 255, 0.03); /* Interior white edge */
+    border-radius: 50px; /* Pill shape */
+    padding: 12px 30px; /* Spacious, modern padding */
+    color: #ffffff; /* Crisp white text */
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+/* The "Paint" Layer (Hidden off-screen) */
+.signin-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -110%; /* Starts off-screen to the left */
+    width: 100%;
+    height: 100%;
+    
+    /* Vibrant Blue Gradient (Paint color) */
+    background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(37, 99, 235, 0.8), /* Soft blue edge */
+        #2563eb                  /* Deep brand blue */
+    );
+     transform: skewX(-20deg); 
+     transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1); /* Professional brush stroke timing */
+    z-index: -1; 
+}
+
+/* Hover State (Subtle background lift) */
+.signin-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* --- THE CLICK (ACTIVE) ANIMATION: Paintslides in --- */
+.signin-btn:active::before {
+    left: 0; /* Slides the paint stroke to cover the button */
+    transition: all 0.2s cubic-bezier(0.77, 0, 0.175, 1); /* Faster on click */
+}
+
+/* Click State Glow */
+.signin-btn:active {
+    background: rgba(37, 99, 235, 0.1); /* Subtle blue base tint */
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.7); /* Deep blue glow */
+    border-color: rgba(77, 163, 255, 0.4);
+}
+/*stay logged in state*/
+.user-name {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  margin-right: 10px; 
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.user-name:hover {
+  text-decoration: underline;
+}
+
+.logout-btn {
+  padding: 6px 14px;
+  border: none;
+  background: white;
+  color: #2563eb;
+  border-radius: 15px;
+  cursor: pointer;
+}
+/* HERO NORMAL */
+.hero {
+    /* 1. Glass Look: Transparent white with a heavy blur */
+    background: rgba(255, 255, 255, 0.07); 
+    backdrop-filter: blur(20px) saturate(120%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    
+    /* 2. Border & Glow */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    
+    /* 3. Layout & Spacing */
+    margin: 30px auto;
+    width: 92%;
+    max-width: 1200px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 42px;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* Makes white text pop */
+}
+
+.hero p {
+  opacity: 0.9;
+  font-size: 16px;
+  max-width: 600px;
+}
+
+.hero h2 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  opacity: 0.9;
+  font-size: 16px;
+}
+.hero {
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); /* For Safari support */
+    border: 1px solid rgba(255, 255, 255, 0.387);
+    border-radius: 24px;
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+
+/* Inner spacing */
+.hero-inner {
+  padding: 80px 20px;
+}
+
+/* COLLAPSED HERO */
+.hero.collapsed {
+  height: 0;
+  padding: 0;
+}
+
+.hero.collapsed .hero-inner {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* TOGGLE BUTTON (Always Visible) */
+.hero-toggle {
+  position: fixed;
+  top: 80px; /* below header */
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: #2563eb;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Arrow */
+.hero-toggle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition: 0.3s ease;
+}
+
+/* Rotate when open */
+.hero.open + .hero-toggle::before {
+  transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+/* =========================
+   SEARCH BAR (FIXED VERSION)
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 20px auto;
+  width: 100%;
+}
+
+/* LOCATION GROUP */
+.location-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.location-icon {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  background: #000000;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  margin-right: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.location-icon::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  top: 6px;
+  left: 6px;
+}
+
+/* DROPDOWN */
+.multi-dropdown {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.multi-dropdown input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.multi-dropdown input:focus {
+  outline: none;
+  border-color: #0a66c2;
+  box-shadow: 0 0 0 2px rgba(10,102,194,0.1);
+}
+
+/* Dropdown list */
+.multi-dropdown ul {
+  position: absolute;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-top: 5px;
+  padding: 0;
+  list-style: none;
+  display: none; /* hidden by default */
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+   color: #222;
+}
+
+/* List items */
+.multi-dropdown li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.15s ease;
+  color: #222;
+}
+
+.multi-dropdown li:hover {
+  background: #ffffff;
+}
+
+
+
+/* SEARCH GROUP */
+.search-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-input-wrapper {
+  position: relative;
+}
+
+.search-input-wrapper input {
+  padding: 10px 12px 10px 38px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  width: 280px;
+  height: 42px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #777;
+}
+
+/* SEARCH BUTTON */
+.search-btn {
+  height: 42px;
+  padding: 0 20px;
+  border: none;
+  background: #000000;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.search-btn:hover {
+  background: #1e40af;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .location-group,
+  .search-group {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .multi-dropdown input,
+  .search-input-wrapper input {
+    width: 100%;
+  }
+
+  .search-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-btn {
+    width: 100%;
+  }
+}
+
+.site-footer {
+  background: #111827;
+  color: #d1d5db;
+  text-align: center;
+  padding: 24px;
+  margin-top: 60px;
+  font-size: 14px;
+}
+
+
+
+
+/* Container */
+.notif-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Button */
+.notif-btn {
+  position: relative;
+  background: #f0f2f5;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.2s;
+}
+
+.notif-btn:hover {
+  background: #1b2e5e;
+}
+
+/* Badge */
+.notif-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #e41e3f;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+/* Dropdown */
+.notif-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 300px;
+  max-height: 350px;
+  overflow-y: auto;
+
+  background: #1b2e5e;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+  display: none;
+  flex-direction: column;
+
+  font-size: 14.5px; /* ~11pt */
+  font-family: Arial, sans-serif;
+}
+
+/* Show state */
+.notif-dropdown.show {
+  display: flex;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Header */
+.notif-header {
+  padding: 10px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Notification items */
+.notif-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  line-height: 1.4;
+}
+
+.notif-item:hover {
+  background: #1b2e5e;
+}
+
+/* Unread */
+.notif-item.unread {
+  background: #1b2e5e;
+}
+
+/* Time */
+.notif-item .time {
+  display: block;
+  font-size: 12px;
+  color: gray;
+  margin-top: 3px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

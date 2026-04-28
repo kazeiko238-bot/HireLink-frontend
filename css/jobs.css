@@ -1,0 +1,157 @@
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding-top: 70px; /* Space for your header */
+    color: #ffffff;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('../images/bg5.jpg'); 
+    
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps image still while you scroll */
+    background-repeat: no-repeat;
+    
+    
+}
+
+/* Jobs Section */
+.jobs-section {
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.jobs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.review-btn {
+  background: #2d4ea2;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.carousel-wrapper {
+    position: relative;
+    padding: 20px 0; /* Vertical room for card zoom */
+}
+
+.jobs-container {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 30px 15px; /* Extra padding so the zoom doesn't hit the edges */
+    flex-wrap: nowrap;
+}
+
+.jobs-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Job Card */
+
+.jobs-card {
+    min-width: 240px;
+    min-height: 220px;
+    background: linear-gradient (135deg,  #061c97 0%, #005bed 50%, #0485e7 100%);
+
+    border: 3px solid rgb(0, 0, 0);
+    border-radius: 30px;
+    padding: 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                box-shadow 0.4s ease, 
+                border-color 0.4s ease;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover Animation - The "Pop Out/Zoom" Effect */
+.jobs-card:hover {
+    transform: scale(1.08); 
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+.jobs-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 10px 0;
+    color: #ffffff;
+}
+
+.jobs-card p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: rgba(255, 255, 255, 0.8); /* Slightly faded white for subtext */
+}
+
+.review-btn {
+    /* Matches Gradient 4 colors */
+    background: linear-gradient(90deg, #013486, #026edb);
+    color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 12px 24px;
+    border-radius: 50px; /* Pill shape */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.review-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
+    filter: brightness(1.1);
+}
+
+/* Navigation Button - Glass & Zoom */
+.nav-btn {
+    position: absolute;
+    right: -15px; /* Moved slightly further out to avoid overlapping zoomed cards */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    
+    /* Glass Effect */
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    color: white;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover Effect: Zoom and Change Color */
+.nav-btn:hover {
+    transform: translateY(-50%) scale(1.2); /* Zooms out while staying vertically centered */
+    background: linear-gradient(135deg, #0e49a9, #0c6fd2); /* Matches Card/Review button */
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5);
+}
+
+/* Active click effect */
+.nav-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
