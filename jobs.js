@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  
   const container = document.getElementById("jobsContainer");
   const nextBtn = document.getElementById("nextBtn");
   
@@ -44,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- 2. FETCH ---
-  fetch("/api/jobpost/list")
+  fetch(`${API_BASE}/api/jobpost/list`)
     .then((res) => res.json())
     .then((jobs) => {
       allJobs = jobs; 
