@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     await fetch(`${API_BASE}/api/visibility/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ visibility }),
     });
 
@@ -180,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch(`${API_BASE}/api/profile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
@@ -207,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("resume", file);
 
     try {
-      const res = await fetch("/api/resume/resume", {
+      const res = await fetch(`${API_BASE}/api/resume/resume`, {
         method: "POST",
         credentials: "include",
         body: formData
