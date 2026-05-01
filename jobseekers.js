@@ -1,6 +1,8 @@
+const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  
 document.addEventListener("DOMContentLoaded", () => {
 
-  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+ 
   
   const container = document.getElementById("jobseekersContainer");
 
@@ -9,9 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-fetch(`${API_BASE}/api/jobseekers`, {
-  credentials: "include"
-})
+fetch(`${API_BASE}/api/jobseekers`, { credentials: "include"})
     .then(res => {
       if (!res.ok) {
         throw new Error("Failed to fetch jobseekers");
