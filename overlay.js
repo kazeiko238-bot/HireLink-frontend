@@ -22,14 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (logoutBtn) {
       logoutBtn.addEventListener("click", async () => {
         try {
-          await fetch(`${API_BASE}/api/auth/logout`, { method: "POST" })
+          await fetch(`${API_BASE}/api/auth/logout`, { 
+  method: "POST",
+  credentials: "include"
+})
         } catch (err) {
           console.error("Logout error:", err);
         }
 
         localStorage.removeItem("userName");
         localStorage.removeItem("userRole");
-        window.location.href = "index-jobseeker.html";
+        window.location.href = "index.html";
       });
     }
 
@@ -66,11 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
      try {
-  const res = await fetch(`${API_BASE}/api/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+const res = await fetch(`${API_BASE}/api/auth/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  credentials: "include",
+  body: JSON.stringify({ email, password }),
+});
 
         const data = await res.json();
 
