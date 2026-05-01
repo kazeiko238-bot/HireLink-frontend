@@ -9,7 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  fetch(`${API_BASE}/api/jobseekers`)
+fetch(`${API_BASE}/api/jobseekers`, {
+  credentials: "include"
+})
     .then(res => {
       if (!res.ok) {
         throw new Error("Failed to fetch jobseekers");
