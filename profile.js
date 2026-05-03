@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isResumeOpen) {
       resumeViewer.classList.remove("hidden");
-      resumeFrame.src = `${API_BASE}${resumePath}#toolbar=0`;
+    resumeFrame.src = resumePath.startsWith("http") ? resumePath : `${API_BASE}${resumePath}`;
       resumeBtn.textContent = "Hide Resume";
     } else {
       resumeViewer.classList.add("hidden");
