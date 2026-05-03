@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
-  
+
   const dashboard = document.querySelector(".dashboard-content");
   const postJobBtn = document.querySelector("#postJob");
   const cancelBtn = document.querySelector("#cancel");
@@ -12,16 +12,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const dashboardInputs = dashboard.querySelectorAll("input, textarea");
 
+  // =====================
+  // FIELD VALIDATION
+  // =====================
   function checkFields() {
     let allFilled = true;
+
     dashboardInputs.forEach(input => {
       if (!input.value.trim()) allFilled = false;
     });
+
     submitBtn.disabled = !allFilled;
   }
 
   // =====================
-  // OPEN POST FORM
+  // OPEN FORM
   // =====================
   postJobBtn?.addEventListener("click", () => {
     dashboard.style.display = "block";
@@ -32,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   cancelBtn?.addEventListener("click", () => {
     dashboard.style.display = "none";
     postJobBtn.style.display = "inline-block";
+
     dashboardInputs.forEach(input => input.value = "");
     submitBtn.disabled = true;
   });
@@ -41,14 +47,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
-  // POST JOB
+  // POST JOB (FIXED)
   // =====================
   submitBtn?.addEventListener("click", async () => {
+
+    const salaryMinRaw = document.getElementById("salaryminInput").value.trim();
+    const salaryMaxRaw = document.getElementById("salarymaxInput").value.trim();
+
     const jobData = {
       title: document.getElementById("jobtitleInput").value.trim(),
       description: document.getElementById("jobdescriptionInput").value.trim(),
-      salary_min: parseInt(document.getElementById("salaryminInput").value.trim()),
-      salary_max: parseInt(document.getElementById("salarymaxInput").value.trim()),
+      salary_min: salaryMinRaw ? Number(salaryMinRaw) : null,
+      salary_max: salaryMaxRaw ? Number(salaryMaxRaw) : null,
       location: document.getElementById("joblocationInput").value.trim(),
       job_type: document.getElementById("jobtypeInput").value.trim(),
       contact_no: document.getElementById("contactInput").value.trim(),
@@ -58,37 +68,45 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch(`${API_BASE}/api/jobpost`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         credentials: "include",
         body: JSON.stringify(jobData)
       });
 
       const data = await res.json();
-      if (!res.ok) return alert(data.error || "Failed to post job");
+
+      if (!res.ok) {
+        console.error("JOB POST ERROR:", data);
+        alert(data.error || "Failed to post job");
+        return;
+      }
 
       alert("Job posted successfully!");
 
       dashboard.style.display = "none";
       postJobBtn.style.display = "inline-block";
+
       dashboardInputs.forEach(input => input.value = "");
       submitBtn.disabled = true;
 
-      loadJobs(); // refresh list
+      loadJobs();
 
     } catch (err) {
-      console.error(err);
-      alert("Server error");
+      console.error("POST JOB ERROR:", err);
+      alert("Server error while posting job");
     }
   });
 
   // =====================
-  // LOAD JOBS (FIXED)
+  // LOAD JOBS
   // =====================
   async function loadJobs() {
     try {
       const res = await fetch(`${API_BASE}/api/jobpost`, {
         method: "GET",
-        credentials: "include",
+        credentials: "include"
       });
 
       const jobs = await res.json();
@@ -105,7 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const card = document.createElement("div");
         card.classList.add("jobs-card");
 
-        // IMPORTANT: include is_active in dataset
         card.dataset.id = job.id;
         card.dataset.active = job.is_active;
 
@@ -123,7 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
           <p class="salary">${minSalary} - ${maxSalary}</p>
         `;
 
-        // CLICK → VIEW JOB
         card.addEventListener("click", () => {
           window.location.href = `view_joblist.html?id=${job.id}`;
         });
@@ -132,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
     } catch (err) {
-      console.error("Error fetching job posts:", err);
+      console.error("LOAD JOBS ERROR:", err);
       container.innerHTML = "<p>Failed to load jobs</p>";
     }
   }
