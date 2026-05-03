@@ -125,7 +125,7 @@ body {
     padding-bottom: 20px;
 }
 
-.view-resume-btn {
+#viewResumeBtn {
     background: var(--navy-gradient);
     color: #ffffff;
     padding: 16px 45px;
