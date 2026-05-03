@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
   imageInput?.addEventListener("change", function () {
     const file = this.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = e => preview.src = e.target.result;
     reader.readAsDataURL(file);
@@ -61,28 +60,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // UPLOAD PROFILE IMAGE
   // =====================
   profileImageUploadBtn?.addEventListener("click", async () => {
-
     const file = imageInput?.files?.[0];
-
     if (!file) {
       alert("Select an image first");
       return;
     }
-
     const formData = new FormData();
     formData.append("profileImage", file);
-
     try {
       const res = await fetch(`${API_BASE}/api/profile/upload-image`, {
         method: "POST",
         credentials: "include",
         body: formData
       });
-
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.error || "Upload failed");
-
       alert("Profile image updated!");
     } catch (err) {
       console.error(err);
@@ -98,35 +90,28 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch(`${API_BASE}/api/visibility/my`, {
         credentials: "include"
       });
-
       const data = await res.json();
-
       const isPublic = data.visibility === "public";
-      toggle.checked = isPublic;
-
-      statusText.textContent = isPublic
+      if (toggle) toggle.checked = isPublic;
+      if (statusText) statusText.textContent = isPublic
         ? "Your profile is Public"
         : "Your profile is Private";
-
     } catch (err) {
-      console.error(err);
+      console.error("Visibility load error:", err);
     }
   }
 
   loadVisibility();
 
   toggle?.addEventListener("change", async () => {
-
     const visibility = toggle.checked ? "public" : "private";
-
     await fetch(`${API_BASE}/api/visibility/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({ visibility })
     });
-
-    statusText.textContent = toggle.checked
+    if (statusText) statusText.textContent = toggle.checked
       ? "Your profile is Public"
       : "Your profile is Private";
   });
@@ -139,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch(`${API_BASE}/api/profile`, {
         credentials: "include"
       });
-
       const data = await res.json();
 
       document.getElementById("firstNameinput").value = data.first_name || "";
@@ -157,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("expectedsalaryInput").value = data.expected_salary || "";
 
       resumePath = data.resume || null;
+      console.log("Resume path from profile:", resumePath);
 
     } catch (err) {
       console.error("Error loading profile:", err);
@@ -169,7 +154,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // UPDATE PROFILE
   // =====================
   document.getElementById("updateBtn")?.addEventListener("click", async () => {
-
     const payload = {
       first_name: document.getElementById("firstNameinput").value,
       middle_name: document.getElementById("middleNameinput").value,
@@ -193,11 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
         credentials: "include",
         body: JSON.stringify(payload)
       });
-
       const result = await res.json();
-
       alert(result.success ? "Profile updated!" : result.error || "Error updating profile");
-
     } catch (err) {
       console.error(err);
     }
@@ -206,9 +187,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   // RESUME UPLOAD
   // =====================
+  console.log("uploadBtn element:", uploadBtn);
+  console.log("fileInput element:", fileInput);
+
   uploadBtn?.addEventListener("click", async () => {
+    console.log("UPLOAD BTN CLICKED");
 
     const file = fileInput?.files?.[0];
+    console.log("File selected:", file?.name);
 
     if (!file) {
       alert("Select a resume file first");
@@ -218,6 +204,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const formData = new FormData();
     formData.append("resume", file);
 
+    console.log("Sending to:", `${API_BASE}/api/resume/resume`);
+
     try {
       const res = await fetch(`${API_BASE}/api/resume/resume`, {
         method: "POST",
@@ -225,26 +213,28 @@ document.addEventListener("DOMContentLoaded", () => {
         body: formData
       });
 
+      console.log("Response status:", res.status);
       const data = await res.json();
+      console.log("Response data:", data);
 
       if (!res.ok) throw new Error(data.error || "Upload failed");
 
       alert("Resume uploaded successfully!");
       resumePath = data.path || data.resume;
+      console.log("New resume path:", resumePath);
 
     } catch (err) {
-      console.error(err);
+      console.error("Upload error:", err);
       alert(err.message);
     }
   });
 
   // =====================
-  // VIEW / HIDE RESUME (TOGGLE FIX)
+  // VIEW / HIDE RESUME
   // =====================
   resumeBtn?.addEventListener("click", () => {
-
     if (!resumePath) {
-      alert("No resume uploaded");
+      alert("No resume uploaded yet");
       return;
     }
 
@@ -252,7 +242,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isResumeOpen) {
       resumeViewer.classList.remove("hidden");
-    resumeFrame.src = resumePath.startsWith("http") ? resumePath : `${API_BASE}${resumePath}`;
+      resumeFrame.src = resumePath.startsWith("http")
+        ? resumePath
+        : `${API_BASE}${resumePath}`;
       resumeBtn.textContent = "Hide Resume";
     } else {
       resumeViewer.classList.add("hidden");
