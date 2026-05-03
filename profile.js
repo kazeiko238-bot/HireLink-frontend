@@ -201,49 +201,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // =====================
-  // VIEW / HIDE RESUME
-  // =====================
-  resumeBtn?.addEventListener("click", () => {
-    if (!resumePath) { alert("No resume uploaded yet"); return; }
+ // =====================
+// VIEW / HIDE RESUME
+// =====================
+resumeBtn?.addEventListener("click", () => {
+  if (!resumePath) { alert("No resume uploaded yet"); return; }
 
-    isResumeOpen = !isResumeOpen;
-
-    if (isResumeOpen) {
-      resumeViewer.classList.remove("hidden");
-      resumeBtn.textContent = "Hide Resume";
-
-      if (resumePath.startsWith("data:")) {
-        // base64 — load directly in iframe
-        resumeFrame.src = resumePath;
-
-        // Also add open in new tab button for browsers that block base64 iframes
-        let openBtn = document.getElementById("openResumeBtn");
-        if (!openBtn) {
-          openBtn = document.createElement("button");
-          openBtn.id = "openResumeBtn";
-          openBtn.textContent = "📄 Open Resume in New Tab";
-          openBtn.style.cssText = "display:block; margin-top:10px; padding:8px 16px; background:#2563eb; color:white; border:none; border-radius:8px; cursor:pointer; font-size:14px;";
-          openBtn.onclick = () => {
-            const win = window.open();
-            win.document.write(`<iframe src="${resumePath}" style="width:100%;height:100vh;border:none;"></iframe>`);
-          };
-          resumeViewer.appendChild(openBtn);
-        }
-
-      } else if (resumePath.startsWith("http")) {
-        // Cloudinary or external URL
-        resumeFrame.src = resumePath;
-      } else {
-        // Old local path
-        resumeFrame.src = `${API_BASE}${resumePath}`;
-      }
-
-    } else {
-      resumeViewer.classList.add("hidden");
-      resumeFrame.src = "";
-      resumeBtn.textContent = "View Resume";
-    }
-  });
-
+  if (resumePath.startsWith("data:")) {
+    // Open base64 PDF directly in new tab
+    const win = window.open();
+    win.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head><title>Resume</title></head>
+      <body style="margin:0;padding:0;">
+        <iframe src="${resumePath}" style="width:100vw;height:100vh;border:none;"></iframe>
+      </body>
+      </html>
+    `);
+  } else if (resumePath.startsWith("http")) {
+    window.open(resumePath, "_blank");
+  } else {
+    window.open(`${API_BASE}${resumePath}`, "_blank");
+  }
+});
 });
