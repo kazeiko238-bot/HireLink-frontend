@@ -15,9 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.getElementById("profileToggle");
   const statusText = document.getElementById("visibilityStatus");
 
-  const tabs = document.querySelectorAll(".tab");
-  const cards = document.querySelectorAll(".main-panel .card");
-
   const fileInput = document.getElementById("resumeInput");
   const uploadBtn = document.getElementById("uploadResumeBtn");
 
@@ -27,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let resumePath = null;
   let isResumeOpen = false;
+  let uploadListenerAdded = false;
 
   // =====================
   // LOGOUT
@@ -61,10 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   profileImageUploadBtn?.addEventListener("click", async () => {
     const file = imageInput?.files?.[0];
-    if (!file) {
-      alert("Select an image first");
-      return;
-    }
+    if (!file) { alert("Select an image first"); return; }
     const formData = new FormData();
     formData.append("profileImage", file);
     try {
@@ -87,15 +82,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   async function loadVisibility() {
     try {
-      const res = await fetch(`${API_BASE}/api/visibility/my`, {
-        credentials: "include"
-      });
+      const res = await fetch(`${API_BASE}/api/visibility/my`, { credentials: "include" });
       const data = await res.json();
       const isPublic = data.visibility === "public";
       if (toggle) toggle.checked = isPublic;
-      if (statusText) statusText.textContent = isPublic
-        ? "Your profile is Public"
-        : "Your profile is Private";
+      if (statusText) statusText.textContent = isPublic ? "Your profile is Public" : "Your profile is Private";
     } catch (err) {
       console.error("Visibility load error:", err);
     }
@@ -111,9 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
       credentials: "include",
       body: JSON.stringify({ visibility })
     });
-    if (statusText) statusText.textContent = toggle.checked
-      ? "Your profile is Public"
-      : "Your profile is Private";
+    if (statusText) statusText.textContent = toggle.checked ? "Your profile is Public" : "Your profile is Private";
   });
 
   // =====================
@@ -121,9 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   async function loadProfile() {
     try {
-      const res = await fetch(`${API_BASE}/api/profile`, {
-        credentials: "include"
-      });
+      const res = await fetch(`${API_BASE}/api/profile`, { credentials: "include" });
       const data = await res.json();
 
       document.getElementById("firstNameinput").value = data.first_name || "";
@@ -169,7 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
       bio: document.getElementById("bioInput").value,
       expected_salary: document.getElementById("expectedsalaryInput").value
     };
-
     try {
       const res = await fetch(`${API_BASE}/api/profile`, {
         method: "POST",
@@ -185,67 +171,76 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
-  // RESUME UPLOAD
+  // RESUME UPLOAD (single listener fix)
   // =====================
-  console.log("uploadBtn element:", uploadBtn);
-  console.log("fileInput element:", fileInput);
+  if (uploadBtn && !uploadListenerAdded) {
+    uploadListenerAdded = true;
+    uploadBtn.addEventListener("click", async () => {
+      console.log("UPLOAD BTN CLICKED");
 
-  uploadBtn?.addEventListener("click", async () => {
-    console.log("UPLOAD BTN CLICKED");
+      const file = fileInput?.files?.[0];
+      console.log("File selected:", file?.name);
 
-    const file = fileInput?.files?.[0];
-    console.log("File selected:", file?.name);
+      if (!file) { alert("Select a resume file first"); return; }
 
-    if (!file) {
-      alert("Select a resume file first");
-      return;
-    }
+      const formData = new FormData();
+      formData.append("resume", file);
 
-    const formData = new FormData();
-    formData.append("resume", file);
+      try {
+        const res = await fetch(`${API_BASE}/api/resume/resume`, {
+          method: "POST",
+          credentials: "include",
+          body: formData
+        });
 
-    console.log("Sending to:", `${API_BASE}/api/resume/resume`);
+        console.log("Response status:", res.status);
+        const data = await res.json();
+        console.log("Response data:", data);
 
-    try {
-      const res = await fetch(`${API_BASE}/api/resume/resume`, {
-        method: "POST",
-        credentials: "include",
-        body: formData
-      });
+        if (!res.ok) throw new Error(data.error || "Upload failed");
 
-      console.log("Response status:", res.status);
-      const data = await res.json();
-      console.log("Response data:", data);
+        alert("Resume uploaded successfully!");
+        resumePath = data.path || data.resume;
+        console.log("New resume path:", resumePath);
 
-      if (!res.ok) throw new Error(data.error || "Upload failed");
-
-      alert("Resume uploaded successfully!");
-      resumePath = data.path || data.resume;
-      console.log("New resume path:", resumePath);
-
-    } catch (err) {
-      console.error("Upload error:", err);
-      alert(err.message);
-    }
-  });
+      } catch (err) {
+        console.error("Upload error:", err);
+        alert(err.message);
+      }
+    });
+  }
 
   // =====================
   // VIEW / HIDE RESUME
   // =====================
   resumeBtn?.addEventListener("click", () => {
-    if (!resumePath) {
-      alert("No resume uploaded yet");
-      return;
-    }
+    if (!resumePath) { alert("No resume uploaded yet"); return; }
 
     isResumeOpen = !isResumeOpen;
 
     if (isResumeOpen) {
       resumeViewer.classList.remove("hidden");
-      resumeFrame.src = resumePath.startsWith("http")
+
+      const url = resumePath.startsWith("http")
         ? resumePath
         : `${API_BASE}${resumePath}`;
+
+      resumeFrame.src = url;
       resumeBtn.textContent = "Hide Resume";
+      console.log("Loading resume from:", url);
+
+      // Add download link as fallback
+      let downloadLink = document.getElementById("resumeDownloadLink");
+      if (!downloadLink) {
+        downloadLink = document.createElement("a");
+        downloadLink.id = "resumeDownloadLink";
+        downloadLink.textContent = "📄 Open / Download Resume";
+        downloadLink.target = "_blank";
+        downloadLink.style.cssText = "display:block; margin-top:8px; color:#2563eb; font-weight:600;";
+        resumeViewer.appendChild(downloadLink);
+      }
+      downloadLink.href = url;
+
     } else {
       resumeViewer.classList.add("hidden");
       resumeFrame.src = "";
