@@ -2,11 +2,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
+  // =====================
+  // ELEMENTS
+  // =====================
   const logoutBtn = document.getElementById("logoutBtn");
   const profileName = document.getElementById("profileName");
 
   const imageInput = document.getElementById("profileImageInput");
   const preview = document.getElementById("profilePreview");
+  const profileImageUploadBtn = document.getElementById("uploadProfileBtn");
 
   const toggle = document.getElementById("profileToggle");
   const statusText = document.getElementById("visibilityStatus");
@@ -21,10 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const resumeViewer = document.getElementById("resumeViewer");
   const resumeFrame = document.getElementById("resumeFrame");
 
-  const profileImageUploadBtn = document.getElementById("uploadProfileBtn");
-
   let resumePath = null;
-  let profileImagePath = null;
+  let isResumeOpen = false;
 
   // =====================
   // LOGOUT
@@ -39,7 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // PROFILE NAME
   // =====================
   const storedName = localStorage.getItem("userName");
-  if (storedName && profileName) profileName.textContent = storedName;
+  if (storedName && profileName) {
+    profileName.textContent = storedName;
+  }
 
   // =====================
   // IMAGE PREVIEW
@@ -75,20 +79,11 @@ document.addEventListener("DOMContentLoaded", () => {
         body: formData
       });
 
-      const text = await res.text();
-      let data;
-
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error("Server did not return JSON: " + text);
-      }
+      const data = await res.json();
 
       if (!res.ok) throw new Error(data.error || "Upload failed");
 
       alert("Profile image updated!");
-      profileImagePath = data.path;
-
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -100,7 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   async function loadVisibility() {
     try {
-      const res = await fetch(`${API_BASE}/api/visibility/my`);
+      const res = await fetch(`${API_BASE}/api/visibility/my`, {
+        credentials: "include"
+      });
+
       const data = await res.json();
 
       const isPublic = data.visibility === "public";
@@ -114,16 +112,18 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(err);
     }
   }
+
   loadVisibility();
 
   toggle?.addEventListener("change", async () => {
+
     const visibility = toggle.checked ? "public" : "private";
 
     await fetch(`${API_BASE}/api/visibility/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ visibility }),
+      body: JSON.stringify({ visibility })
     });
 
     statusText.textContent = toggle.checked
@@ -191,10 +191,11 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload)
       });
 
       const result = await res.json();
+
       alert(result.success ? "Profile updated!" : result.error || "Error updating profile");
 
     } catch (err) {
@@ -203,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
-  // RESUME UPLOAD (FIXED)
+  // RESUME UPLOAD
   // =====================
   uploadBtn?.addEventListener("click", async () => {
 
@@ -224,19 +225,11 @@ document.addEventListener("DOMContentLoaded", () => {
         body: formData
       });
 
-      const text = await res.text();
-      let data;
-
-      try {
-        data = JSON.parse(text);
-      } catch {
-        throw new Error("Server did not return JSON: " + text);
-      }
+      const data = await res.json();
 
       if (!res.ok) throw new Error(data.error || "Upload failed");
 
       alert("Resume uploaded successfully!");
-
       resumePath = data.path || data.resume;
 
     } catch (err) {
@@ -246,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
-  // VIEW RESUME
+  // VIEW / HIDE RESUME (TOGGLE FIX)
   // =====================
   resumeBtn?.addEventListener("click", () => {
 
@@ -255,8 +248,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    resumeViewer.classList.remove("hidden");
-    resumeFrame.src = resumePath + "#toolbar=0";
+    isResumeOpen = !isResumeOpen;
+
+    if (isResumeOpen) {
+      resumeViewer.classList.remove("hidden");
+      resumeFrame.src = `${API_BASE}${resumePath}#toolbar=0`;
+      resumeBtn.textContent = "Hide Resume";
+    } else {
+      resumeViewer.classList.add("hidden");
+      resumeFrame.src = "";
+      resumeBtn.textContent = "View Resume";
+    }
   });
 
 });
