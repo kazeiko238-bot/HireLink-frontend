@@ -1,11 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // =====================
-  // ELEMENTS
-  // =====================
-
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
-  
+
   const logoutBtn = document.getElementById("logoutBtn");
   const profileName = document.getElementById("profileName");
 
@@ -18,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const tabs = document.querySelectorAll(".tab");
   const cards = document.querySelectorAll(".main-panel .card");
 
-  // ✅ RESUME ELEMENTS (FIXED)
   const fileInput = document.getElementById("resumeInput");
   const uploadBtn = document.getElementById("uploadResumeBtn");
 
@@ -26,7 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const resumeViewer = document.getElementById("resumeViewer");
   const resumeFrame = document.getElementById("resumeFrame");
 
+  const profileImageUploadBtn = document.getElementById("uploadProfileBtn");
+
   let resumePath = null;
+  let profileImagePath = null;
 
   // =====================
   // LOGOUT
@@ -48,10 +46,52 @@ document.addEventListener("DOMContentLoaded", () => {
   // =====================
   imageInput?.addEventListener("change", function () {
     const file = this.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = e => preview.src = e.target.result;
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = e => preview.src = e.target.result;
+    reader.readAsDataURL(file);
+  });
+
+  // =====================
+  // UPLOAD PROFILE IMAGE
+  // =====================
+  profileImageUploadBtn?.addEventListener("click", async () => {
+
+    const file = imageInput?.files?.[0];
+
+    if (!file) {
+      alert("Select an image first");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("profileImage", file);
+
+    try {
+      const res = await fetch(`${API_BASE}/api/profile/upload-image`, {
+        method: "POST",
+        credentials: "include",
+        body: formData
+      });
+
+      const text = await res.text();
+      let data;
+
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Server did not return JSON: " + text);
+      }
+
+      if (!res.ok) throw new Error(data.error || "Upload failed");
+
+      alert("Profile image updated!");
+      profileImagePath = data.path;
+
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
     }
   });
 
@@ -92,43 +132,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
-  // TABS
-  // =====================
-  function showTab(tabId) {
-    cards.forEach(c => c.style.display = "none");
-    tabs.forEach(t => t.classList.remove("active"));
-
-    const target = document.getElementById(tabId);
-    if (target) target.style.display = "block";
-
-    const activeTab = document.querySelector(`.tab[data-target="${tabId}"]`);
-    if (activeTab) activeTab.classList.add("active");
-
-    localStorage.setItem("activeProfileTab", tabId);
-  }
-
-  const savedTab = localStorage.getItem("activeProfileTab");
-  showTab(savedTab && document.getElementById(savedTab) ? savedTab : "profile");
-
-  tabs.forEach(tab =>
-    tab.addEventListener("click", () => showTab(tab.dataset.target))
-  );
-
-  // =====================
-  // BACK BUTTON
-  // =====================
-  document.querySelector('.back-btn')?.addEventListener('click', () => {
-    if (document.referrer) window.history.back();
-    else window.location.href = '/';
-  });
-
-  // =====================
-  // LOAD PROFILE (IMPORTANT: includes resume)
+  // LOAD PROFILE
   // =====================
   async function loadProfile() {
     try {
-      const res = await fetch(`${API_BASE}/api/profile`, { credentials: "include" });
-      if (!res.ok) throw new Error("Failed to load profile");
+      const res = await fetch(`${API_BASE}/api/profile`, {
+        credentials: "include"
+      });
 
       const data = await res.json();
 
@@ -146,7 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("bioInput").value = data.bio || "";
       document.getElementById("expectedsalaryInput").value = data.expected_salary || "";
 
-      // ✅ SAVE RESUME PATH FROM DB
       resumePath = data.resume || null;
 
     } catch (err) {
@@ -194,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
-  // RESUME UPLOAD (FIXED - ONLY ONE HANDLER)
+  // RESUME UPLOAD (FIXED)
   // =====================
   uploadBtn?.addEventListener("click", async () => {
 
@@ -215,14 +224,20 @@ document.addEventListener("DOMContentLoaded", () => {
         body: formData
       });
 
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Server did not return JSON: " + text);
+      }
 
       if (!res.ok) throw new Error(data.error || "Upload failed");
 
       alert("Resume uploaded successfully!");
 
-      // update instantly
-      resumePath = data.path;
+      resumePath = data.path || data.resume;
 
     } catch (err) {
       console.error(err);
