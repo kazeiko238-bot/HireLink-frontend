@@ -2,29 +2,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
-  // =====================
-  // ELEMENTS
-  // =====================
   const logoutBtn = document.getElementById("logoutBtn");
   const profileName = document.getElementById("profileName");
-
   const imageInput = document.getElementById("profileImageInput");
   const preview = document.getElementById("profilePreview");
   const profileImageUploadBtn = document.getElementById("uploadProfileBtn");
-
   const toggle = document.getElementById("profileToggle");
   const statusText = document.getElementById("visibilityStatus");
-
   const fileInput = document.getElementById("resumeInput");
   const uploadBtn = document.getElementById("uploadResumeBtn");
-
   const resumeBtn = document.getElementById("viewResumeBtn");
   const resumeViewer = document.getElementById("resumeViewer");
   const resumeFrame = document.getElementById("resumeFrame");
 
   let resumePath = null;
   let isResumeOpen = false;
-  let uploadListenerAdded = false;
 
   // =====================
   // LOGOUT
@@ -39,9 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // PROFILE NAME
   // =====================
   const storedName = localStorage.getItem("userName");
-  if (storedName && profileName) {
-    profileName.textContent = storedName;
-  }
+  if (storedName && profileName) profileName.textContent = storedName;
 
   // =====================
   // IMAGE PREVIEW
@@ -128,7 +118,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("expectedsalaryInput").value = data.expected_salary || "";
 
       resumePath = data.resume || null;
-      console.log("Resume path from profile:", resumePath);
+      console.log("Resume loaded:", resumePath ? "EXISTS" : "NONE");
+
+      // Show view button only if resume exists
+      if (resumeBtn) {
+        resumeBtn.style.display = resumePath ? "inline-block" : "none";
+      }
 
     } catch (err) {
       console.error("Error loading profile:", err);
@@ -171,44 +166,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
-  // RESUME UPLOAD (single listener fix)
+  // RESUME UPLOAD
   // =====================
-  if (uploadBtn && !uploadListenerAdded) {
-    uploadListenerAdded = true;
-    uploadBtn.addEventListener("click", async () => {
-      console.log("UPLOAD BTN CLICKED");
+  uploadBtn?.addEventListener("click", async () => {
+    console.log("UPLOAD BTN CLICKED");
+    const file = fileInput?.files?.[0];
+    if (!file) { alert("Select a resume file first"); return; }
 
-      const file = fileInput?.files?.[0];
-      console.log("File selected:", file?.name);
+    const formData = new FormData();
+    formData.append("resume", file);
 
-      if (!file) { alert("Select a resume file first"); return; }
+    try {
+      const res = await fetch(`${API_BASE}/api/resume/resume`, {
+        method: "POST",
+        credentials: "include",
+        body: formData
+      });
 
-      const formData = new FormData();
-      formData.append("resume", file);
+      console.log("Response status:", res.status);
+      const data = await res.json();
+      console.log("Response:", data.success ? "SUCCESS" : data.error);
 
-      try {
-        const res = await fetch(`${API_BASE}/api/resume/resume`, {
-          method: "POST",
-          credentials: "include",
-          body: formData
-        });
+      if (!res.ok) throw new Error(data.error || "Upload failed");
 
-        console.log("Response status:", res.status);
-        const data = await res.json();
-        console.log("Response data:", data);
+      alert("Resume uploaded successfully!");
+      resumePath = data.path;
 
-        if (!res.ok) throw new Error(data.error || "Upload failed");
+      // Show view button after upload
+      if (resumeBtn) resumeBtn.style.display = "inline-block";
 
-        alert("Resume uploaded successfully!");
-        resumePath = data.path || data.resume;
-        console.log("New resume path:", resumePath);
-
-      } catch (err) {
-        console.error("Upload error:", err);
-        alert(err.message);
-      }
-    });
-  }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert(err.message);
+    }
+  });
 
   // =====================
   // VIEW / HIDE RESUME
@@ -220,26 +211,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isResumeOpen) {
       resumeViewer.classList.remove("hidden");
-
-      const url = resumePath.startsWith("http")
-        ? resumePath
-        : `${API_BASE}${resumePath}`;
-
-      resumeFrame.src = url;
       resumeBtn.textContent = "Hide Resume";
-      console.log("Loading resume from:", url);
 
-      // Add download link as fallback
-      let downloadLink = document.getElementById("resumeDownloadLink");
-      if (!downloadLink) {
-        downloadLink = document.createElement("a");
-        downloadLink.id = "resumeDownloadLink";
-        downloadLink.textContent = "📄 Open / Download Resume";
-        downloadLink.target = "_blank";
-        downloadLink.style.cssText = "display:block; margin-top:8px; color:#2563eb; font-weight:600;";
-        resumeViewer.appendChild(downloadLink);
+      if (resumePath.startsWith("data:")) {
+        // base64 — load directly in iframe
+        resumeFrame.src = resumePath;
+
+        // Also add open in new tab button for browsers that block base64 iframes
+        let openBtn = document.getElementById("openResumeBtn");
+        if (!openBtn) {
+          openBtn = document.createElement("button");
+          openBtn.id = "openResumeBtn";
+          openBtn.textContent = "📄 Open Resume in New Tab";
+          openBtn.style.cssText = "display:block; margin-top:10px; padding:8px 16px; background:#2563eb; color:white; border:none; border-radius:8px; cursor:pointer; font-size:14px;";
+          openBtn.onclick = () => {
+            const win = window.open();
+            win.document.write(`<iframe src="${resumePath}" style="width:100%;height:100vh;border:none;"></iframe>`);
+          };
+          resumeViewer.appendChild(openBtn);
+        }
+
+      } else if (resumePath.startsWith("http")) {
+        // Cloudinary or external URL
+        resumeFrame.src = resumePath;
+      } else {
+        // Old local path
+        resumeFrame.src = `${API_BASE}${resumePath}`;
       }
-      downloadLink.href = url;
 
     } else {
       resumeViewer.classList.add("hidden");
