@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (overlay) overlay.classList.remove("hidden");
     if (signInBtn) {
       signInBtn.addEventListener("click", () => {
-        window.location.href = "index-jobseeker.html";
+        window.location.href = "index.html";
       });
     }
   }
