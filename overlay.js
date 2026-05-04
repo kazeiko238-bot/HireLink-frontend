@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         localStorage.removeItem("userName");
         localStorage.removeItem("userRole");
-        window.location.href = "/index.html";
+        window.location.href = "index.html";
       });
     }
     if (signInBtn) signInBtn.style.display = "none";
