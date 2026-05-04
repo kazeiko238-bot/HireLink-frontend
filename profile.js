@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   logoutBtn?.addEventListener("click", () => {
     localStorage.removeItem("userName");
     localStorage.removeItem("userRole");
-    window.location.href = "index-jobseeker.html";
+    window.location.href = "index.html";
   });
 
   // =====================
