@@ -160,9 +160,9 @@ if (loginBtn) {
       if (overlay) overlay.classList.add("hidden");
 
       if (data.role === "jobseeker") {
-        window.location.href = "/jobs.html";
+        window.location.href = "jobs.html";
       } else if (data.role === "employer") {
-        window.location.href = "/people.html";
+        window.location.href = "people.html";
       }
 
     } catch (err) {
