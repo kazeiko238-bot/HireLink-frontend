@@ -140,42 +140,50 @@ document.addEventListener("DOMContentLoaded", () => {
       const replyInput = card.querySelector(".reply-input");
       const sendBtn = card.querySelector(".send-reply-btn");
 
-      // TOGGLE + LOAD COMMENTS (browsing — no auth required)
-      toggleBtn.addEventListener("click", async (e) => {
+      // TOGGLE + LOAD COMMENTS (now requires login)
+      toggleBtn.addEventListener("click", (e) => {
         e.stopPropagation();
 
-        replySection.classList.toggle("hidden");
+        const proceed = async () => {
+          replySection.classList.toggle("hidden");
 
-        if (!replySection.classList.contains("hidden")) {
-          try {
-            const res = await fetch(`${API_BASE}/api/thread/comments/${t.thread_id}`, {
-              credentials: "include"
-            });
+          if (!replySection.classList.contains("hidden")) {
+            try {
+              const res = await fetch(`${API_BASE}/api/thread/comments/${t.thread_id}`, {
+                credentials: "include"
+              });
 
-            const comments = await res.json();
-            replyList.innerHTML = "";
+              const comments = await res.json();
+              replyList.innerHTML = "";
 
-            comments.forEach(c => {
-              const div = document.createElement("div");
-              div.className = "reply-item";
+              comments.forEach(c => {
+                const div = document.createElement("div");
+                div.className = "reply-item";
 
-              div.innerHTML = `
-                <div class="reply-meta">
-                  ${c.first_name || "User"} • 
-                  ${new Date(c.created_at).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                  })}
-                </div>
-                <div>${c.content}</div>
-              `;
+                div.innerHTML = `
+                  <div class="reply-meta">
+                    ${c.first_name || "User"} • 
+                    ${new Date(c.created_at).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit"
+                    })}
+                  </div>
+                  <div>${c.content}</div>
+                `;
 
-              replyList.appendChild(div);
-            });
+                replyList.appendChild(div);
+              });
 
-          } catch (err) {
-            console.error(err);
+            } catch (err) {
+              console.error(err);
+            }
           }
+        };
+
+        if (typeof window.requireAuth === "function") {
+          if (window.requireAuth(proceed)) proceed();
+        } else {
+          proceed();
         }
       });
 
