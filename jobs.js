@@ -38,10 +38,17 @@ document.addEventListener("DOMContentLoaded", () => {
           <p class="salary">${minSalary} - ${maxSalary}</p>
         `;
 
-      card.addEventListener("click", () => {
-        window.location.href = `view_joblist.html?id=${job.id}`;
-      });
+    card.addEventListener("click", () => {
+  const proceed = () => {
+    window.location.href = `view_joblist.html?id=${job.id}`;
+  };
 
+  if (typeof window.requireAuth === "function") {
+    if (window.requireAuth(proceed)) proceed();
+  } else {
+    proceed(); // fallback if overlay.js didn't load for some reason
+  }
+});
       container.appendChild(card);
     });
   }
