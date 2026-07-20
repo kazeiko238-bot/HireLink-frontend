@@ -38,10 +38,16 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
       // Go to company profile
-      card.addEventListener("click", () => {
-        window.location.href = `view_company.html?id=${company.id}`;
-      });
-
+     card.addEventListener("click", () => {
+  const proceed = () => {
+    window.location.href = `view_company.html?id=${company.id}`;
+  };
+  if (typeof window.requireAuth === "function") {
+    if (window.requireAuth(proceed)) proceed();
+  } else {
+    proceed();
+  }
+});
       container.appendChild(card);
     });
   }
