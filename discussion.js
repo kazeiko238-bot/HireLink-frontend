@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
-  
+
   const threadContainer = document.getElementById("threadContainer");
   const searchInput = document.getElementById("threadSearch");
   const categoryItems = document.querySelectorAll("#categoryList li");
@@ -97,29 +97,37 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       // =========================
-      // LIKE BUTTON
+      // LIKE BUTTON (requires login)
       // =========================
       const likeBtn = card.querySelector(".like-btn");
 
-      likeBtn.addEventListener("click", async (e) => {
+      likeBtn.addEventListener("click", (e) => {
         e.stopPropagation();
 
-        try {
-          const res = await fetch(`${API_BASE}/api/thread/like`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({ thread_id: t.thread_id })
-          });
+        const proceed = async () => {
+          try {
+            const res = await fetch(`${API_BASE}/api/thread/like`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({ thread_id: t.thread_id })
+            });
 
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
 
-          let count = parseInt(likeBtn.innerText.replace("❤️", "").trim());
-          likeBtn.innerText = `❤️ ${count + 1}`;
+            let count = parseInt(likeBtn.innerText.replace("❤️", "").trim());
+            likeBtn.innerText = `❤️ ${count + 1}`;
 
-        } catch (err) {
-          alert(err.message);
+          } catch (err) {
+            alert(err.message);
+          }
+        };
+
+        if (typeof window.requireAuth === "function") {
+          if (window.requireAuth(proceed)) proceed();
+        } else {
+          proceed();
         }
       });
 
@@ -132,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const replyInput = card.querySelector(".reply-input");
       const sendBtn = card.querySelector(".send-reply-btn");
 
-      // TOGGLE + LOAD COMMENTS
+      // TOGGLE + LOAD COMMENTS (browsing — no auth required)
       toggleBtn.addEventListener("click", async (e) => {
         e.stopPropagation();
 
@@ -171,41 +179,49 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // SEND REPLY
-      sendBtn.addEventListener("click", async (e) => {
+      // SEND REPLY (requires login)
+      sendBtn.addEventListener("click", (e) => {
         e.stopPropagation();
 
         const content = replyInput.value.trim();
         if (!content) return;
 
-        try {
-          const res = await fetch(`${API_BASE}/api/thread/comment`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({
-              thread_id: t.thread_id,
-              content
-            })
-          });
+        const proceed = async () => {
+          try {
+            const res = await fetch(`${API_BASE}/api/thread/comment`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({
+                thread_id: t.thread_id,
+                content
+              })
+            });
 
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error);
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
 
-          // 🔥 INSTANT UI UPDATE (PREPEND)
-          const div = document.createElement("div");
-          div.className = "reply-item";
+            // 🔥 INSTANT UI UPDATE (PREPEND)
+            const div = document.createElement("div");
+            div.className = "reply-item";
 
-          div.innerHTML = `
-            <div class="reply-meta">You • just now</div>
-            <div>${content}</div>
-          `;
+            div.innerHTML = `
+              <div class="reply-meta">You • just now</div>
+              <div>${content}</div>
+            `;
 
-          replyList.prepend(div);
-          replyInput.value = "";
+            replyList.prepend(div);
+            replyInput.value = "";
 
-        } catch (err) {
-          alert(err.message);
+          } catch (err) {
+            alert(err.message);
+          }
+        };
+
+        if (typeof window.requireAuth === "function") {
+          if (window.requireAuth(proceed)) proceed();
+        } else {
+          proceed();
         }
       });
 
@@ -214,12 +230,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // SEARCH
+  // SEARCH (browsing — no auth required)
   // =========================
   searchInput.addEventListener("input", renderThreads);
 
   // =========================
-  // CATEGORY FILTER
+  // CATEGORY FILTER (browsing — no auth required)
   // =========================
   categoryItems.forEach(item => {
     item.addEventListener("click", () => {
@@ -232,40 +248,56 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =========================
-  // MODAL
+  // MODAL (requires login to open)
   // =========================
-  openModalBtn.onclick = () => modal.classList.remove("hidden");
+  openModalBtn.onclick = () => {
+    const proceed = () => modal.classList.remove("hidden");
+
+    if (typeof window.requireAuth === "function") {
+      if (window.requireAuth(proceed)) proceed();
+    } else {
+      proceed();
+    }
+  };
   closeModalBtn.onclick = () => modal.classList.add("hidden");
 
   // =========================
-  // CREATE THREAD
+  // CREATE THREAD (requires login)
   // =========================
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const title = document.getElementById("newThreadTitle").value;
-    const content = document.getElementById("newThreadContent").value;
-    const category = document.getElementById("newThreadCategory").value;
+    const proceed = async () => {
+      const title = document.getElementById("newThreadTitle").value;
+      const content = document.getElementById("newThreadContent").value;
+      const category = document.getElementById("newThreadCategory").value;
 
-    try {
-      const res = await fetch(`${API_BASE}/api/thread/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ title, content, category })
-      });
+      try {
+        const res = await fetch(`${API_BASE}/api/thread/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ title, content, category })
+        });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to create thread");
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to create thread");
 
-      modal.classList.add("hidden");
-      form.reset();
+        modal.classList.add("hidden");
+        form.reset();
 
-      loadThreads();
+        loadThreads();
 
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
+      } catch (err) {
+        console.error(err);
+        alert(err.message);
+      }
+    };
+
+    if (typeof window.requireAuth === "function") {
+      if (window.requireAuth(proceed)) proceed();
+    } else {
+      proceed();
     }
   });
 
