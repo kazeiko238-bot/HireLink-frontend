@@ -5,6 +5,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginBtn = document.getElementById("loginBtn");
   const signInBtn = document.getElementById("signInBtn");
 
+  // Nav links that should only show when logged in
+  const chatsLink = document.querySelector('.navpages a[href="conversation.html"]');
+  const applicationsLink = document.querySelector(
+    '.navpages a[href="applications.html"], .navpages a[href="application.html"]'
+  );
+
+  function updateAuthOnlyNav(loggedIn) {
+    if (chatsLink) chatsLink.style.display = loggedIn ? "" : "none";
+    if (applicationsLink) applicationsLink.style.display = loggedIn ? "" : "none";
+  }
+
   function renderLoggedInHeader(name) {
     if (!authArea) return;
     const role = localStorage.getItem("userRole") || "jobseeker";
@@ -34,14 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const userName = localStorage.getItem("userName");
 
-  // CHANGED: overlay stays hidden on load either way — browsing is always allowed.
   if (userName) {
     renderLoggedInHeader(userName);
-  } else if (signInBtn) {
-    // Sign In button in header still opens the overlay directly, that's fine.
-    signInBtn.addEventListener("click", () => {
-      overlay?.classList.remove("hidden");
-    });
+    updateAuthOnlyNav(true);
+  } else {
+    updateAuthOnlyNav(false);
+    if (signInBtn) {
+      signInBtn.addEventListener("click", () => {
+        overlay?.classList.remove("hidden");
+      });
+    }
   }
 
   if (loginBtn) {
@@ -67,9 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem("userRole", data.role);
           if (overlay) overlay.classList.add("hidden");
           renderLoggedInHeader(data.name);
+          updateAuthOnlyNav(true);
 
-          // CHANGED: if the overlay was triggered by an interaction (not the
-          // header Sign In button), resume that action instead of redirecting.
           const pendingAction = window.__pendingAuthAction;
           if (pendingAction) {
             window.__pendingAuthAction = null;
@@ -87,8 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // NEW: exposed globally so jobs.js (or any other script) can gate an
-  // interaction behind login. Returns true if the user may proceed.
   window.requireAuth = function (onSuccessAfterLogin) {
     const loggedIn = !!localStorage.getItem("userName");
     if (loggedIn) return true;
