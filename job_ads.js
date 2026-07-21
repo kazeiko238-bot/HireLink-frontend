@@ -2,6 +2,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
+  // Private dashboard page — require login before doing anything else
+  const isLoggedIn = !!localStorage.getItem("userName");
+  if (!isLoggedIn) {
+    if (typeof window.requireAuth === "function") {
+      window.requireAuth(() => window.location.reload());
+    }
+    return;
+  }
+
   const dashboard = document.querySelector(".dashboard-content");
   const postJobBtn = document.querySelector("#postJob");
   const cancelBtn = document.querySelector("#cancel");
