@@ -13,21 +13,18 @@ body {
     
     
 }
-
 /* Jobs Section */
 .jobs-section {
   max-width: 1200px;
   margin: auto;
   padding: 40px 20px;
 }
-
 .jobs-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
-
 .review-btn {
   background: #2d4ea2;
   color: #fff;
@@ -36,12 +33,10 @@ body {
   border-radius: 8px;
   cursor: pointer;
 }
-
 .carousel-wrapper {
     position: relative;
     padding: 20px 0; /* Vertical room for card zoom */
 }
-
 .jobs-container {
     display: flex;
     gap: 30px;
@@ -50,18 +45,14 @@ body {
     padding: 30px 15px; /* Extra padding so the zoom doesn't hit the edges */
     flex-wrap: nowrap;
 }
-
 .jobs-container::-webkit-scrollbar {
   display: none;
 }
-
 /* Job Card */
-
 .jobs-card {
     min-width: 240px;
     min-height: 220px;
     background: linear-gradient (135deg,  #061c97 0%, #005bed 50%, #0485e7 100%);
-
     border: 3px solid rgb(0, 0, 0);
     border-radius: 30px;
     padding: 24px;
@@ -76,8 +67,8 @@ body {
                 border-color 0.4s ease;
     cursor: pointer;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    position: relative; /* needed so the bookmark button can anchor to the card */
 }
-
 /* Hover Animation - The "Pop Out/Zoom" Effect */
 .jobs-card:hover {
     transform: scale(1.08); 
@@ -85,20 +76,17 @@ body {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     z-index: 10;
 }
-
 .jobs-card h3 {
     font-size: 18px;
     font-weight: 700;
     margin: 10px 0;
     color: #ffffff;
 }
-
 .jobs-card p {
     font-size: 14px;
     margin: 5px 0;
     color: rgba(255, 255, 255, 0.8); /* Slightly faded white for subtext */
 }
-
 .review-btn {
     /* Matches Gradient 4 colors */
     background: linear-gradient(90deg, #013486, #026edb);
@@ -110,13 +98,11 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
 }
-
 .review-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
     filter: brightness(1.1);
 }
-
 /* Navigation Button - Glass & Zoom */
 .nav-btn {
     position: absolute;
@@ -142,7 +128,6 @@ body {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
-
 /* Hover Effect: Zoom and Change Color */
 .nav-btn:hover {
     transform: translateY(-50%) scale(1.2); /* Zooms out while staying vertically centered */
@@ -150,8 +135,38 @@ body {
     border-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5);
 }
-
 /* Active click effect */
 .nav-btn:active {
     transform: translateY(-50%) scale(0.95);
+}
+
+/* Bookmark Button */
+.bookmark-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    z-index: 5;
+}
+.bookmark-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+}
+.bookmark-btn.active {
+    color: #f5c518;
+    background: rgba(245, 197, 24, 0.15);
+    border-color: rgba(245, 197, 24, 0.4);
 }
