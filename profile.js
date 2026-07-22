@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const profileName = document.getElementById("profileName");
   const imageInput = document.getElementById("profileImageInput");
   const preview = document.getElementById("profilePreview");
-  const profileImageUploadBtn = document.getElementById("uploadProfileBtn");
   const toggle = document.getElementById("profileToggle");
   const statusText = document.getElementById("visibilityStatus");
   const fileInput = document.getElementById("resumeInput");
@@ -34,24 +33,21 @@ document.addEventListener("DOMContentLoaded", () => {
   if (storedName && profileName) profileName.textContent = storedName;
 
   // =====================
-  // IMAGE PREVIEW
+  // PROFILE IMAGE: preview immediately, then upload right away
   // =====================
-  imageInput?.addEventListener("change", function () {
+  imageInput?.addEventListener("change", async function () {
     const file = this.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => preview.src = e.target.result;
-    reader.readAsDataURL(file);
-  });
 
-  // =====================
-  // UPLOAD PROFILE IMAGE
-  // =====================
-  profileImageUploadBtn?.addEventListener("click", async () => {
-    const file = imageInput?.files?.[0];
-    if (!file) { alert("Select an image first"); return; }
+    // Instant local preview
+    const reader = new FileReader();
+    reader.onload = e => { preview.src = e.target.result; };
+    reader.readAsDataURL(file);
+
+    // Actually save it
     const formData = new FormData();
     formData.append("profileImage", file);
+
     try {
       const res = await fetch(`${API_BASE}/api/profile/upload-image`, {
         method: "POST",
@@ -60,6 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
+
+      if (data.path) {
+        preview.src = data.path;
+      }
+
       alert("Profile image updated!");
     } catch (err) {
       console.error(err);
@@ -117,10 +118,14 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("bioInput").value = data.bio || "";
       document.getElementById("expectedsalaryInput").value = data.expected_salary || "";
 
+      // Load saved profile image
+      if (data.profile_picture && preview) {
+        preview.src = data.profile_picture;
+      }
+
       resumePath = data.resume || null;
       console.log("Resume loaded:", resumePath ? "EXISTS" : "NONE");
 
-      // Show view button only if resume exists
       if (resumeBtn) {
         resumeBtn.style.display = resumePath ? "inline-block" : "none";
       }
@@ -169,7 +174,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // RESUME UPLOAD
   // =====================
   uploadBtn?.addEventListener("click", async () => {
-    console.log("UPLOAD BTN CLICKED");
     const file = fileInput?.files?.[0];
     if (!file) { alert("Select a resume file first"); return; }
 
@@ -183,16 +187,12 @@ document.addEventListener("DOMContentLoaded", () => {
         body: formData
       });
 
-      console.log("Response status:", res.status);
       const data = await res.json();
-      console.log("Response:", data.success ? "SUCCESS" : data.error);
-
       if (!res.ok) throw new Error(data.error || "Upload failed");
 
       alert("Resume uploaded successfully!");
       resumePath = data.path;
 
-      // Show view button after upload
       if (resumeBtn) resumeBtn.style.display = "inline-block";
 
     } catch (err) {
@@ -201,28 +201,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
- // =====================
-// VIEW / HIDE RESUME
-// =====================
-resumeBtn?.addEventListener("click", () => {
-  if (!resumePath) { alert("No resume uploaded yet"); return; }
+  // =====================
+  // VIEW / HIDE RESUME
+  // =====================
+  resumeBtn?.addEventListener("click", () => {
+    if (!resumePath) { alert("No resume uploaded yet"); return; }
 
-  if (resumePath.startsWith("data:")) {
-    // Open base64 PDF directly in new tab
-    const win = window.open();
-    win.document.write(`
-      <!DOCTYPE html>
-      <html>
-      <head><title>Resume</title></head>
-      <body style="margin:0;padding:0;">
-        <iframe src="${resumePath}" style="width:100vw;height:100vh;border:none;"></iframe>
-      </body>
-      </html>
-    `);
-  } else if (resumePath.startsWith("http")) {
-    window.open(resumePath, "_blank");
-  } else {
-    window.open(`${API_BASE}${resumePath}`, "_blank");
-  }
-});
+    if (resumePath.startsWith("data:")) {
+      const win = window.open();
+      win.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head><title>Resume</title></head>
+        <body style="margin:0;padding:0;">
+          <iframe src="${resumePath}" style="width:100vw;height:100vh;border:none;"></iframe>
+        </body>
+        </html>
+      `);
+    } else if (resumePath.startsWith("http")) {
+      window.open(resumePath, "_blank");
+    } else {
+      window.open(`${API_BASE}${resumePath}`, "_blank");
+    }
+  });
 });
