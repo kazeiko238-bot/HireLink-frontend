@@ -471,7 +471,6 @@ updateInterviewFields();
 document.getElementById("sendInterview").addEventListener("click", async () => {
 
     const modal = document.getElementById("interviewModal");
-    const modal = document.getElementById("interviewModal");
 
     const application_id = modal.dataset.application;
     const jobseeker_id = modal.dataset.jobseeker;
