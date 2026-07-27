@@ -263,9 +263,6 @@ function renderApplications(applications) {
 // FILTER
 // =====================
 
-const filterBtn = document.getElementById("filterBtn");
-const filterDropdown = document.getElementById("filterDropdown");
-
 let currentFilter = "all";
 
 function filterApplications(status) {
