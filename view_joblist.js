@@ -133,9 +133,7 @@ async function openChat(otherUserId) {
   }
 }
 
-// =====================
-// APPLICATIONS
-// =====================
+
 // =====================
 // APPLICATIONS
 // =====================
@@ -178,29 +176,35 @@ function renderApplications(applications) {
                     ${app.first_name} ${app.last_name}
                 </div>
 
-                <div class="app-actions">
+<div class="app-actions">
 
-                    <button class="msg-btn">Message</button>
+    <button class="msg-btn">Message</button>
 
-                    <div class="status-dropdown">
+    <div class="status-dropdown">
 
-                        <button class="status-btn">
-                            ${app.status
-                                ? app.status.charAt(0).toUpperCase() + app.status.slice(1)
-                                : "Status ▾"}
-                        </button>
+        <button class="status-btn">
+            ${app.status
+                ? app.status.charAt(0).toUpperCase() + app.status.slice(1)
+                : "Status ▾"}
+        </button>
 
-                        <div class="status-menu">
-                            <div data-status="viewed">Viewed</div>
-                            <div data-status="shortlisted">Shortlist</div>
-                            <div data-status="interviewed">Interview</div>
-                            <div data-status="hired">Hire</div>
-                            <div data-status="rejected">Reject</div>
-                        </div>
+        <div class="status-menu">
+            <div data-status="viewed">Viewed</div>
+            <div data-status="shortlisted">Shortlist</div>
+            <div data-status="interviewed">Interview</div>
+            <div data-status="hired">Hire</div>
+            <div data-status="rejected">Reject</div>
+        </div>
 
-                    </div>
+    </div>
 
-                </div>
+    ${
+        app.status === "shortlisted"
+            ? `<button class="schedule-btn">Schedule Interview</button>`
+            : ""
+    }
+
+</div>
 
             </div>
 
