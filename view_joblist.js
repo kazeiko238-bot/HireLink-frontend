@@ -6,6 +6,38 @@ const jobId = params.get("id");
 const filterBtn = document.getElementById("filterBtn");
 const filterDropdown = document.getElementById("filterDropdown");
 
+const interviewOverlay =
+    document.getElementById("interviewModal").parentElement;
+
+const interviewModal =
+    document.getElementById("interviewModal");
+
+const closeInterviewBtn =
+    document.getElementById("closeInterviewModal");
+
+const cancelInterviewBtn =
+    document.getElementById("cancelInterview");
+
+function closeInterviewModal() {
+
+    interviewOverlay.style.display = "none";
+
+}
+
+closeInterviewBtn.addEventListener("click", closeInterviewModal);
+
+cancelInterviewBtn.addEventListener("click", closeInterviewModal);
+
+interviewOverlay.addEventListener("click", (e) => {
+
+    if (e.target === interviewOverlay) {
+
+        closeInterviewModal();
+
+    }
+
+});
+
 // -------- Back button --------
 document.querySelector('.back-btn')?.addEventListener('click', () => {
   if (document.referrer) window.history.back();
@@ -417,37 +449,6 @@ document.getElementById("jobToggleBtn")?.addEventListener("click", async () => {
   updateJobButtonUI(btn);
 });
 
-const interviewOverlay =
-    document.getElementById("interviewModal").parentElement;
-
-const interviewModal =
-    document.getElementById("interviewModal");
-
-const closeInterviewBtn =
-    document.getElementById("closeInterviewModal");
-
-const cancelInterviewBtn =
-    document.getElementById("cancelInterview");
-
-function closeInterviewModal() {
-
-    interviewOverlay.style.display = "none";
-
-}
-
-closeInterviewBtn.addEventListener("click", closeInterviewModal);
-
-cancelInterviewBtn.addEventListener("click", closeInterviewModal);
-
-interviewOverlay.addEventListener("click", (e) => {
-
-    if (e.target === interviewOverlay) {
-
-        closeInterviewModal();
-
-    }
-
-});
 
 // =====================
 // INIT
