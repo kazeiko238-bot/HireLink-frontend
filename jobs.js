@@ -99,10 +99,17 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         if (typeof window.requireAuth === "function") {
-          if (window.requireAuth(proceed)) proceed();
-        } else {
-          proceed();
-        }
+  if (window.requireAuth(proceed)) proceed();
+} else {
+  // Safe fallback: check localStorage directly instead of assuming logged in
+  const loggedIn = !!localStorage.getItem("userName");
+  if (loggedIn) {
+    proceed();
+  } else {
+    const overlay = document.getElementById("loginOverlay");
+    if (overlay) overlay.classList.remove("hidden");
+  }
+}
       });
 
       container.appendChild(card);
