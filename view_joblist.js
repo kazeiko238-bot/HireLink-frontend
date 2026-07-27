@@ -136,115 +136,183 @@ async function openChat(otherUserId) {
 // =====================
 // APPLICATIONS
 // =====================
+// =====================
+// APPLICATIONS
+// =====================
+
+let allApplications = [];
+let currentJobId = null;
+
 async function loadApplications(jobId) {
-  const container = document.getElementById("applicationsContainer");
-  if (!container) return;
+    currentJobId = jobId;
 
-  const res = await fetch(`${API_BASE}/api/application/${jobId}`, {
-    credentials: "include"
-  });
+    const container = document.getElementById("applicationsContainer");
+    if (!container) return;
 
-  const data = await res.json();
-  if (!res.ok) return;
-
-  container.innerHTML = "";
-
-  data.forEach(app => {
-    const row = document.createElement("div");
-    row.className = "app-row";
-    row.dataset.id = app.application_id;
-
-    row.innerHTML = `
-      <div class="app-top">
-
-        <div class="app-name">
-          ${app.first_name} ${app.last_name}
-        </div>
-
-        <div class="app-actions">
-
-          <button class="msg-btn">Message</button>
-
-          <div class="status-dropdown">
-            <button class="status-btn">
-              ${app.status
-                ? app.status.charAt(0).toUpperCase() + app.status.slice(1)
-                : "Status ▾"}
-            </button>
-
-            <div class="status-menu">
-              <div data-status="viewed">Viewed</div>
-              <div data-status="shortlisted">Shortlist</div>
-              <div data-status="interviewed">Interview</div>
-              <div data-status="hired">Hire</div>
-              <div data-status="rejected">Reject</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="app-date">
-        Applied on: ${new Date(app.applied_at).toLocaleString()}
-      </div>
-    `;
-
-    row.querySelector(".msg-btn").addEventListener("click", (e) => {
-      e.stopPropagation();
-      openChat(app.jobseeker_id);
+    const res = await fetch(`${API_BASE}/api/application/${jobId}`, {
+        credentials: "include"
     });
 
-    row.querySelectorAll(".status-menu div").forEach(btn => {
-      btn.addEventListener("click", async (e) => {
-        e.stopPropagation();
+    const data = await res.json();
+    if (!res.ok) return;
 
-        const status = btn.dataset.status;
+    allApplications = data;
 
-        await setStatus(app.application_id, status);
-
-        row.querySelector(".status-btn").textContent =
-          status.charAt(0).toUpperCase() + status.slice(1);
-      });
-    });
-
-    row.addEventListener("click", (e) => {
-      if (e.target.closest(".msg-btn") || e.target.closest(".status-dropdown")) return;
-
-      window.location.href = `/view_jobseeker.html?id=${app.jobseeker_id}`;
-    });
-
-    container.appendChild(row);
-  });
+    renderApplications(allApplications);
 }
 
-// Filter applications
+function renderApplications(applications) {
+    const container = document.getElementById("applicationsContainer");
+    container.innerHTML = "";
 
+    applications.forEach(app => {
+
+        const row = document.createElement("div");
+        row.className = "app-row";
+        row.dataset.id = app.application_id;
+
+        row.innerHTML = `
+            <div class="app-top">
+
+                <div class="app-name">
+                    ${app.first_name} ${app.last_name}
+                </div>
+
+                <div class="app-actions">
+
+                    <button class="msg-btn">Message</button>
+
+                    <div class="status-dropdown">
+
+                        <button class="status-btn">
+                            ${app.status
+                                ? app.status.charAt(0).toUpperCase() + app.status.slice(1)
+                                : "Status ▾"}
+                        </button>
+
+                        <div class="status-menu">
+                            <div data-status="viewed">Viewed</div>
+                            <div data-status="shortlisted">Shortlist</div>
+                            <div data-status="interviewed">Interview</div>
+                            <div data-status="hired">Hire</div>
+                            <div data-status="rejected">Reject</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="app-date">
+                Applied on: ${new Date(app.applied_at).toLocaleString()}
+            </div>
+        `;
+
+        // Message button
+        row.querySelector(".msg-btn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            openChat(app.jobseeker_id);
+        });
+
+        // Status change
+        row.querySelectorAll(".status-menu div").forEach(btn => {
+
+            btn.addEventListener("click", async (e) => {
+
+                e.stopPropagation();
+
+                const status = btn.dataset.status;
+
+                await setStatus(app.application_id, status);
+
+                // Update local data
+                app.status = status;
+
+                // Update button
+                row.querySelector(".status-btn").textContent =
+                    status.charAt(0).toUpperCase() + status.slice(1);
+
+                // Refresh current filter
+                filterApplications(currentFilter);
+
+            });
+
+        });
+
+        // Open profile
+        row.addEventListener("click", (e) => {
+
+            if (
+                e.target.closest(".msg-btn") ||
+                e.target.closest(".status-dropdown")
+            ) return;
+
+            window.location.href =
+                `/view_jobseeker.html?id=${app.jobseeker_id}`;
+
+        });
+
+        container.appendChild(row);
+
+    });
+}
+
+
+// =====================
+// FILTER
+// =====================
+
+const filterBtn = document.getElementById("filterBtn");
+const filterDropdown = document.getElementById("filterDropdown");
+
+let currentFilter = "all";
+
+function filterApplications(status) {
+
+    currentFilter = status;
+
+    if (status === "all") {
+        renderApplications(allApplications);
+        return;
+    }
+
+    const filtered = allApplications.filter(app => app.status === status);
+
+    renderApplications(filtered);
+
+}
+
+// Open dropdown
 filterBtn.addEventListener("click", (e) => {
+
     e.stopPropagation();
     filterDropdown.classList.toggle("show");
+
 });
 
-// Close dropdown when clicking outside
+// Close dropdown
 document.addEventListener("click", () => {
+
     filterDropdown.classList.remove("show");
+
 });
 
-// Handle selection
+// Select filter
 document.querySelectorAll(".filter-item").forEach(item => {
+
     item.addEventListener("click", () => {
+
         const value = item.dataset.value;
 
-        // Change button text
         filterBtn.textContent = item.textContent + " ▼";
 
-        console.log("Selected:", value);
-
-        // Hide dropdown
         filterDropdown.classList.remove("show");
 
-        // Call your filtering function here
-        // filterApplicants(value);
+        filterApplications(value);
+
     });
+
 });
 
 // =====================
