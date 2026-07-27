@@ -282,6 +282,38 @@ document.getElementById("jobToggleBtn")?.addEventListener("click", async () => {
   updateJobButtonUI(btn);
 });
 
+// Filter applications
+const filterBtn = document.getElementById("filterBtn");
+const filterDropdown = document.getElementById("filterDropdown");
+
+filterBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    filterDropdown.classList.toggle("show");
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", () => {
+    filterDropdown.classList.remove("show");
+});
+
+// Handle selection
+document.querySelectorAll(".filter-item").forEach(item => {
+    item.addEventListener("click", () => {
+        const value = item.dataset.value;
+
+        // Change button text
+        filterBtn.textContent = item.textContent + " ▼";
+
+        console.log("Selected:", value);
+
+        // Hide dropdown
+        filterDropdown.classList.remove("show");
+
+        // Call your filtering function here
+        // filterApplicants(value);
+    });
+});
+
 // =====================
 // INIT
 // =====================
