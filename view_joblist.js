@@ -198,11 +198,17 @@ function renderApplications(applications) {
 
     </div>
 
-    ${
-        app.status === "shortlisted"
-            ? `<button class="schedule-btn">Schedule Interview</button>`
-            : ""
-    }
+   ${
+    app.status === "shortlisted"
+        ? `<button
+                class="schedule-btn"
+                data-name="${app.first_name} ${app.last_name}"
+                data-application="${app.application_id}"
+                data-jobseeker="${app.jobseeker_id}">
+                Schedule Interview
+           </button>`
+        : ""
+}
 
 </div>
 
@@ -218,6 +224,33 @@ function renderApplications(applications) {
             e.stopPropagation();
             openChat(app.jobseeker_id);
         });
+
+      // Schedule Interview button
+const scheduleBtn = row.querySelector(".schedule-btn");
+
+if (scheduleBtn) {
+
+    scheduleBtn.addEventListener("click", (e) => {
+
+        e.stopPropagation();
+
+        // Fill applicant name
+        document.getElementById("selectedApplicant").value =
+            scheduleBtn.dataset.name;
+
+        // Save IDs for later
+        document.getElementById("interviewModal").dataset.application =
+            scheduleBtn.dataset.application;
+
+        document.getElementById("interviewModal").dataset.jobseeker =
+            scheduleBtn.dataset.jobseeker;
+
+        // Show modal
+        document.getElementById("interviewModal").parentElement.style.display = "flex";
+
+    });
+
+}
 
         // Status change
         row.querySelectorAll(".status-menu div").forEach(btn => {
@@ -382,6 +415,38 @@ document.getElementById("jobToggleBtn")?.addEventListener("click", async () => {
 
   const btn = document.getElementById("jobToggleBtn");
   updateJobButtonUI(btn);
+});
+
+const interviewOverlay =
+    document.getElementById("interviewModal").parentElement;
+
+const interviewModal =
+    document.getElementById("interviewModal");
+
+const closeInterviewBtn =
+    document.getElementById("closeInterviewModal");
+
+const cancelInterviewBtn =
+    document.getElementById("cancelInterview");
+
+function closeInterviewModal() {
+
+    interviewOverlay.style.display = "none";
+
+}
+
+closeInterviewBtn.addEventListener("click", closeInterviewModal);
+
+cancelInterviewBtn.addEventListener("click", closeInterviewModal);
+
+interviewOverlay.addEventListener("click", (e) => {
+
+    if (e.target === interviewOverlay) {
+
+        closeInterviewModal();
+
+    }
+
 });
 
 // =====================
