@@ -237,3 +237,76 @@ body {
 .toggle-job-btn.closed:hover {
   background-color: #c0392b;
 }
+
+.interview-schedule {
+    background: linear-gradient(135deg, #1800ee 0%, #6dacfa 100%);
+    box-shadow: 0 5px 15px rgba(168, 85, 247, 0.3);
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+    margin-top: 30px;
+}
+
+.interview-schedule:hover {
+    transform: translateY(-2px);
+   
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
+}
+
+.filter-container {
+    position: relative;
+    display: inline-block;
+}
+
+.filter-btn {
+    padding: 10px 18px;
+    background: #0077ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+
+.filter-btn:hover {
+    background: #005fd1;
+}
+
+.filter-dropdown {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    min-width: 180px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.15);
+    display: none;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.filter-dropdown.show {
+    display: block;
+}
+
+.filter-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background .2s;
+    font-size: 14px;
+}
+
+.filter-item:hover {
+    background: #f2f2f2;
+}
+
+.filter-item:not(:last-child) {
+    border-bottom: 1px solid #eee;
+}
