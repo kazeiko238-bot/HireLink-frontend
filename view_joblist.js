@@ -264,6 +264,7 @@ if (scheduleBtn) {
 
     scheduleBtn.addEventListener("click", (e) => {
 
+        console.log("Schedule button clicked");
         e.stopPropagation();
 
         // Fill applicant name
