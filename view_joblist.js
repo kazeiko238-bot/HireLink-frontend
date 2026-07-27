@@ -25,6 +25,23 @@ const interviewType = document.getElementById("interviewType");
 const meetingLinkGroup = document.getElementById("meetingLinkGroup");
 const locationGroup = document.getElementById("locationGroup");
 
+
+    const modal = document.getElementById("interviewModal");
+ 
+    const application_id = modal.dataset.application;
+    const jobseeker_id = modal.dataset.jobseeker;
+ 
+    const interview_date = document.getElementById("interviewDate").value;
+    const start_time = document.getElementById("startTime").value;
+    const end_time = document.getElementById("endTime").value;
+ 
+    const interview_type = document.getElementById("interviewType").value;
+ 
+    const meeting_link = document.getElementById("meetingLink").value;
+    const location = document.getElementById("interviewLocation").value;
+ 
+    const notes = document.getElementById("interviewNotes").value;
+
 // -------- Back button --------
 document.querySelector('.back-btn')?.addEventListener('click', () => {
   if (document.referrer) window.history.back();
@@ -467,22 +484,6 @@ updateInterviewFields();
 // SEND INTERVIEW
 // =====================
 document.getElementById("sendInterview").addEventListener("click", async () => {
- 
-    const modal = document.getElementById("interviewModal");
- 
-    const application_id = modal.dataset.application;
-    const jobseeker_id = modal.dataset.jobseeker;
- 
-    const interview_date = document.getElementById("interviewDate").value;
-    const start_time = document.getElementById("startTime").value;
-    const end_time = document.getElementById("endTime").value;
- 
-    const interview_type = document.getElementById("interviewType").value;
- 
-    const meeting_link = document.getElementById("meetingLink").value;
-    const location = document.getElementById("interviewLocation").value;
- 
-    const notes = document.getElementById("interviewNotes").value;
  
     // Validation
     if (
