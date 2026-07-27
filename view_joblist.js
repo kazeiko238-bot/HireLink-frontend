@@ -217,6 +217,36 @@ async function loadApplications(jobId) {
   });
 }
 
+// Filter applications
+
+filterBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    filterDropdown.classList.toggle("show");
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", () => {
+    filterDropdown.classList.remove("show");
+});
+
+// Handle selection
+document.querySelectorAll(".filter-item").forEach(item => {
+    item.addEventListener("click", () => {
+        const value = item.dataset.value;
+
+        // Change button text
+        filterBtn.textContent = item.textContent + " ▼";
+
+        console.log("Selected:", value);
+
+        // Hide dropdown
+        filterDropdown.classList.remove("show");
+
+        // Call your filtering function here
+        // filterApplicants(value);
+    });
+});
+
 // =====================
 // STATUS UPDATE
 // =====================
@@ -283,36 +313,6 @@ document.getElementById("jobToggleBtn")?.addEventListener("click", async () => {
 
   const btn = document.getElementById("jobToggleBtn");
   updateJobButtonUI(btn);
-});
-
-// Filter applications
-
-filterBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    filterDropdown.classList.toggle("show");
-});
-
-// Close dropdown when clicking outside
-document.addEventListener("click", () => {
-    filterDropdown.classList.remove("show");
-});
-
-// Handle selection
-document.querySelectorAll(".filter-item").forEach(item => {
-    item.addEventListener("click", () => {
-        const value = item.dataset.value;
-
-        // Change button text
-        filterBtn.textContent = item.textContent + " ▼";
-
-        console.log("Selected:", value);
-
-        // Hide dropdown
-        filterDropdown.classList.remove("show");
-
-        // Call your filtering function here
-        // filterApplicants(value);
-    });
 });
 
 // =====================
