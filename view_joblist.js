@@ -463,6 +463,102 @@ interviewType.addEventListener("change", updateInterviewFields);
 
 updateInterviewFields();
 
+// =====================
+// SEND INTERVIEW
+// =====================
+
+
+    const modal = document.getElementById("interviewModal");
+
+    const application_id = modal.dataset.application;
+    const jobseeker_id = modal.dataset.jobseeker;
+
+    const interview_date = document.getElementById("interviewDate").value;
+    const start_time = document.getElementById("startTime").value;
+    const end_time = document.getElementById("endTime").value;
+
+    const interview_type = document.getElementById("interviewType").value;
+
+    const meeting_link = document.getElementById("meetingLink").value;
+    const location = document.getElementById("interviewLocation").value;
+
+    const notes = document.getElementById("interviewNotes").value;
+
+    // Validation
+    if (
+        !interview_date ||
+        !start_time ||
+        !end_time
+    ) {
+        alert("Please complete all required fields.");
+        return;
+    }
+
+    if (
+        interview_type === "online" &&
+        !meeting_link.trim()
+    ) {
+        alert("Please enter a meeting link.");
+        return;
+    }
+
+    if (
+        interview_type === "onsite" &&
+        !location.trim()
+    ) {
+        alert("Please enter the interview location.");
+        return;
+    }
+
+    try {
+
+        const res = await fetch(`${API_BASE}/api/interview`, {
+
+            method: "POST",
+
+            credentials: "include",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                application_id,
+                jobseeker_id,
+                interview_date,
+                start_time,
+                end_time,
+                interview_type,
+                meeting_link,
+                location,
+                notes
+
+            })
+
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+
+            throw new Error(data.error);
+
+        }
+
+        alert("Interview scheduled successfully!");
+
+        closeInterviewModal();
+
+    } catch (err) {
+
+        console.error(err);
+
+        alert(err.message);
+
+    }
+
+});
 
 // =====================
 // INIT
