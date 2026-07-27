@@ -127,6 +127,108 @@
 </div>
 
 </div>
+
+<!-- Schedule Interview Modal -->
+<div id="interviewModal" class="interview-modal-overlay">
+
+    <div class="interview-modal">
+
+        <div class="interview-header">
+            <h2>Schedule Interview</h2>
+            <button id="closeInterviewModal" class="close-interview-modal">&times;</button>
+        </div>
+
+        <div class="interview-body">
+
+            <div class="form-group">
+                <label>Applicant</label>
+                <input type="text" id="selectedApplicant" readonly>
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="interviewDate">
+                </div>
+
+                <div class="form-group">
+                    <label>Start Time</label>
+                    <input type="time" id="startTime">
+                </div>
+
+                <div class="form-group">
+                    <label>End Time</label>
+                    <input type="time" id="endTime">
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Interview Type</label>
+
+                <select id="interviewType">
+                    <option value="online">Online</option>
+                    <option value="onsite">On-site</option>
+                </select>
+
+            </div>
+
+            <div class="form-group" id="meetingLinkGroup">
+
+                <label>Meeting Link</label>
+
+                <input
+                    type="text"
+                    id="meetingLink"
+                    placeholder="https://meet.google.com/...">
+
+            </div>
+
+            <div
+                class="form-group"
+                id="locationGroup"
+                style="display:none;">
+
+                <label>Location</label>
+
+                <input
+                    type="text"
+                    id="location"
+                    placeholder="Company address">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Notes / Reminder</label>
+
+                <textarea
+                    id="interviewNotes"
+                    rows="5"
+                    placeholder="Additional instructions..."></textarea>
+
+            </div>
+
+        </div>
+
+        <div class="interview-footer">
+
+            <button id="cancelInterview" class="cancel-btn">
+                Cancel
+            </button>
+
+            <button id="sendInterview" class="send-btn">
+                Send Invitation
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+        
 <script src="view_joblist.js"></script>
 <script src="overlay.js"></script>
         <script src="footer.js"></script>
