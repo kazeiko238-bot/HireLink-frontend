@@ -6,8 +6,7 @@ const jobId = params.get("id");
 const filterBtn = document.getElementById("filterBtn");
 const filterDropdown = document.getElementById("filterDropdown");
 
-const interviewOverlay =
-    document.getElementById("interviewModal").parentElement;
+const interviewOverlay = document.getElementById("interviewModal");
 
 const interviewModal =
     document.getElementById("interviewModal");
