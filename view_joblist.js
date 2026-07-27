@@ -262,26 +262,32 @@ const scheduleBtn = row.querySelector(".schedule-btn");
 
 if (scheduleBtn) {
 
-    scheduleBtn.addEventListener("click", (e) => {
+   scheduleBtn.addEventListener("click", (e) => {
 
-        console.log("Schedule button clicked");
-        e.stopPropagation();
+    console.log("1. Clicked");
 
-        // Fill applicant name
-        document.getElementById("selectedApplicant").value =
-            scheduleBtn.dataset.name;
+    e.stopPropagation();
 
-        // Save IDs for later
-        document.getElementById("interviewModal").dataset.application =
-            scheduleBtn.dataset.application;
+    console.log("2. Filling applicant");
 
-        document.getElementById("interviewModal").dataset.jobseeker =
-            scheduleBtn.dataset.jobseeker;
+    document.getElementById("selectedApplicant").value =
+        scheduleBtn.dataset.name;
 
-        // Show modal
-        document.getElementById("interviewModal").parentElement.style.display = "flex";
+    console.log("3. Saving IDs");
 
-    });
+    document.getElementById("interviewModal").dataset.application =
+        scheduleBtn.dataset.application;
+
+    document.getElementById("interviewModal").dataset.jobseeker =
+        scheduleBtn.dataset.jobseeker;
+
+    console.log("4. Showing modal");
+
+    interviewOverlay.style.display = "flex";
+
+    console.log("5. Done");
+
+});
 
 }
 
