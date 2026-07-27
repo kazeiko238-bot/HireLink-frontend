@@ -283,7 +283,7 @@ body {
     top: 110%;
     right: 0;
     min-width: 180px;
-    background: #fff;
+    background: linear-gradient(135deg, #1800ee 0%, #6dacfa 100%);
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0,0,0,.15);
