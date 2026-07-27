@@ -7,35 +7,23 @@ const filterBtn = document.getElementById("filterBtn");
 const filterDropdown = document.getElementById("filterDropdown");
 
 const interviewOverlay = document.getElementById("interviewModal");
-
-const interviewModal =
-    document.getElementById("interviewModal");
-
-const closeInterviewBtn =
-    document.getElementById("closeInterviewModal");
-
-const cancelInterviewBtn =
-    document.getElementById("cancelInterview");
-
+const interviewModal = document.getElementById("interviewModal");
+const closeInterviewBtn = document.getElementById("closeInterviewModal");
+const cancelInterviewBtn = document.getElementById("cancelInterview");
 function closeInterviewModal() {
-
     interviewOverlay.style.display = "none";
-
 }
-
 closeInterviewBtn.addEventListener("click", closeInterviewModal);
-
 cancelInterviewBtn.addEventListener("click", closeInterviewModal);
-
 interviewOverlay.addEventListener("click", (e) => {
-
     if (e.target === interviewOverlay) {
-
         closeInterviewModal();
-
     }
-
 });
+
+const interviewType = document.getElementById("interviewType");
+const meetingLinkGroup = document.getElementById("meetingLinkGroup");
+const locationGroup = document.getElementById("locationGroup");
 
 // -------- Back button --------
 document.querySelector('.back-btn')?.addEventListener('click', () => {
@@ -454,6 +442,26 @@ document.getElementById("jobToggleBtn")?.addEventListener("click", async () => {
   const btn = document.getElementById("jobToggleBtn");
   updateJobButtonUI(btn);
 });
+
+function updateInterviewFields() {
+
+    if (interviewType.value === "online") {
+
+        meetingLinkGroup.style.display = "block";
+        locationGroup.style.display = "none";
+
+    } else {
+
+        meetingLinkGroup.style.display = "none";
+        locationGroup.style.display = "block";
+
+    }
+
+}
+
+interviewType.addEventListener("change", updateInterviewFields);
+
+updateInterviewFields();
 
 
 // =====================
