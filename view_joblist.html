@@ -106,7 +106,19 @@
           <!-- ✅ Add data-job-id so the apply button knows which job -->
 <button class="review-btn" id="applyBtn" data-job-id="">Apply</button>
 
-<button class="filter-btn" id="filterBtn">Filter</button>
+<div class="filter-container">
+    <button class="filter-btn" id="filterBtn">
+        Filter ▼
+    </button>
+
+    <div class="filter-dropdown" id="filterDropdown">
+        <div class="filter-item" data-value="viewed">Viewed</div>
+        <div class="filter-item" data-value="shortlisted">Shortlisted</div>
+        <div class="filter-item" data-value="interviewed">Interviewed</div>
+        <div class="filter-item" data-value="hired">Hired</div>
+        <div class="filter-item" data-value="rejected">Rejected</div>
+    </div>
+</div>
 
 <button class="interview-schedule" id="scheduleBtn">Schedule an Interview</button>
 
