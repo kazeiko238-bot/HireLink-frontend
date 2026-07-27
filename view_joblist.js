@@ -3,6 +3,9 @@ const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 const params = new URLSearchParams(window.location.search);
 const jobId = params.get("id");
 
+const filterBtn = document.getElementById("filterBtn");
+const filterDropdown = document.getElementById("filterDropdown");
+
 // -------- Back button --------
 document.querySelector('.back-btn')?.addEventListener('click', () => {
   if (document.referrer) window.history.back();
@@ -283,8 +286,6 @@ document.getElementById("jobToggleBtn")?.addEventListener("click", async () => {
 });
 
 // Filter applications
-const filterBtn = document.getElementById("filterBtn");
-const filterDropdown = document.getElementById("filterDropdown");
 
 filterBtn.addEventListener("click", (e) => {
     e.stopPropagation();
