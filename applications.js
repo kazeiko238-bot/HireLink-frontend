@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const container = document.getElementById("applicationContainer");
 
+    
+    const overlay = document.getElementById("viewInterviewOverlay");
+
     // ===============================
     // Load My Applications
     // ===============================
@@ -236,9 +239,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===============================
     // Interview Modal
     // ===============================
-
-    const overlay =
-        document.getElementById("viewInterviewOverlay");
 
     document.getElementById("closeViewInterview")
         .addEventListener("click", () => {
