@@ -4,10 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const container = document.getElementById("applicationContainer");
 
-    
     const overlay = document.getElementById("viewInterviewOverlay");
-    
-    const viewBtn = row.querySelector(".view-interview-btn");
 
     // ===============================
     // Load My Applications
@@ -106,6 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 // View Interview
                 // ==========================
 
+                const viewBtn = row.querySelector(".view-interview-btn");
+
                 if (viewBtn) {
 
                     viewBtn.addEventListener("click", (e) => {
@@ -136,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         document.getElementById("inviteNotes").textContent =
                             app.notes || "-";
 
-                        document.getElementById("viewInterviewOverlay").style.display = "flex";
+                        overlay.style.display = "flex";
 
                     });
 
