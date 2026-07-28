@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const overlay = document.getElementById("viewInterviewOverlay");
 
+    const overlay = document.getElementById("viewInterviewOverlay");
+
     // ===============================
     // Load My Applications
     // ===============================
@@ -262,6 +264,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     });
+
+document.addEventListener("click", (e) => {
+
+    if (e.target.classList.contains("view-interview-btn")) {
+        overlay.style.display = "flex";
+    }
+
+});
+
+document.getElementById("closeViewInterview").onclick = () => {
+    overlay.style.display = "none";
+};
+
+document.getElementById("closeInvitationBtn").onclick = () => {
+    overlay.style.display = "none";
+};
+
+overlay.onclick = (e) => {
+    if (e.target === overlay) {
+        overlay.style.display = "none";
+    }
+};
 
     // ===============================
     // Init
