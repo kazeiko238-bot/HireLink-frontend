@@ -119,15 +119,32 @@ document.addEventListener("DOMContentLoaded", () => {
                         document.getElementById("inviteJob").textContent =
                             app.job_title;
 
-                        document.getElementById("inviteDate").textContent =
-                            app.interview_date;
+                      const formattedDate = new Date(app.interview_date).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+});
 
-                        document.getElementById("inviteTime").textContent =
-                            `${app.start_time} - ${app.end_time}`;
+function formatTime(time) {
+    const [hour, minute] = time.split(":");
 
-                        document.getElementById("inviteType").textContent =
-                            app.interview_type;
+    return new Date(0, 0, 0, hour, minute).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    });
+}
 
+document.getElementById("inviteDate").textContent = formattedDate;
+
+document.getElementById("inviteTime").textContent =
+    `${formatTime(app.start_time)} - ${formatTime(app.end_time)}`;
+
+document.getElementById("inviteType").textContent =
+    app.interview_type === "onsite"
+        ? "On-site"
+        : "Online";
                         document.getElementById("inviteMeeting").textContent =
                             app.meeting_link || "-";
 
