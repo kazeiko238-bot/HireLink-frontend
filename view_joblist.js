@@ -49,6 +49,9 @@ fetch(`${API_BASE}/api/me`, { credentials: "include" })
      if (user.role === "jobseeker") {
       const closeBtn = document.getElementById("jobToggleBtn");
       if (closeBtn) closeBtn.style.display = "none";
+
+    const filterBtn = document.getElementById("filterBtn");
+      if (filterBtn) filterBtn.style.display = "none";
     }
   });
 
