@@ -6,7 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const overlay = document.getElementById("viewInterviewOverlay");
 
-    const overlay = document.getElementById("viewInterviewOverlay");
+    function formatTime(time) {
+    const [hour, minute] = time.split(":");
+
+    return new Date(0, 0, 0, hour, minute).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    });
+}
 
     // ===============================
     // Load My Applications
@@ -125,16 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
     month: "long",
     day: "numeric"
 });
-
-function formatTime(time) {
-    const [hour, minute] = time.split(":");
-
-    return new Date(0, 0, 0, hour, minute).toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true
-    });
-}
 
 document.getElementById("inviteDate").textContent = formattedDate;
 
@@ -281,28 +279,6 @@ document.getElementById("inviteType").textContent =
         }
 
     });
-
-document.addEventListener("click", (e) => {
-
-    if (e.target.classList.contains("view-interview-btn")) {
-        overlay.style.display = "flex";
-    }
-
-});
-
-document.getElementById("closeViewInterview").onclick = () => {
-    overlay.style.display = "none";
-};
-
-document.getElementById("closeInvitationBtn").onclick = () => {
-    overlay.style.display = "none";
-};
-
-overlay.onclick = (e) => {
-    if (e.target === overlay) {
-        overlay.style.display = "none";
-    }
-};
 
     // ===============================
     // Init
