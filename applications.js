@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     
     const overlay = document.getElementById("viewInterviewOverlay");
+    
+    const viewBtn = row.querySelector(".view-interview-btn");
 
     // ===============================
     // Load My Applications
@@ -103,8 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 // ==========================
                 // View Interview
                 // ==========================
-
-                const viewBtn = row.querySelector(".view-interview-btn");
 
                 if (viewBtn) {
 
