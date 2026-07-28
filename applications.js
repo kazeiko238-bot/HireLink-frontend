@@ -1,99 +1,273 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-const API_BASE = "https://hirelink-backend-qnww.onrender.com";
-  
-  const container = document.getElementById("applicationContainer");
+    const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
-  async function loadMyApplications() {
-    try {
-      const res = await fetch(`${API_BASE}/api/application/my`, {
-        credentials: "include"
-      });
+    const container = document.getElementById("applicationContainer");
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+    // ===============================
+    // Load My Applications
+    // ===============================
+    async function loadMyApplications() {
 
-      container.innerHTML = "";
+        try {
 
-      data.forEach(app => {
-        const row = document.createElement("div");
-        row.className = "application-card";
+            const res = await fetch(`${API_BASE}/api/application/my`, {
+                credentials: "include"
+            });
 
-        row.innerHTML = `
-          <div class="top-row">
-            <h3>${app.job_title}</h3>
+            const data = await res.json();
 
-            <div class="actions">
-              <span class="status ${app.status}">
-                ${app.status.toUpperCase()}
-              </span>
+            if (!res.ok) throw new Error(data.error);
 
-              <button class="msg-btn">Message</button>
-            </div>
-          </div>
+            container.innerHTML = "";
 
-          <p class="company">${app.company_name}</p>
+            data.forEach(app => {
 
-          <small class="date">
-            Applied: ${new Date(app.applied_at).toLocaleString()}
-          </small>
-        `;
+                const row = document.createElement("div");
+                row.className = "application-card";
 
-        // message button
-       row.querySelector(".msg-btn").addEventListener("click", (e) => {
-  e.stopPropagation();
-  console.log("app data:", app);           // see the full app object
-  console.log("employer_user_id:", app.employer_user_id);  // is it undefined?
-  openChat(app.employer_user_id);
-});
+                row.innerHTML = `
+                    <div class="top-row">
 
-        // optional click to view job
-        row.addEventListener("click", () => {
-          window.location.href = `/view_joblist.html?id=${app.job_id}`;
+                        <h3>${app.job_title}</h3>
+
+                        <div class="actions">
+
+                            <span class="status ${app.status}">
+                                ${app.status.toUpperCase()}
+                            </span>
+
+                            <button class="msg-btn">
+                                Message
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <p class="company">
+                        ${app.company_name}
+                    </p>
+
+                    <small class="date">
+                        Applied:
+                        ${new Date(app.applied_at).toLocaleString()}
+                    </small>
+
+                    ${
+                        app.interview_id
+                        ? `
+                        <div class="interview-notice">
+
+                            <div class="interview-icon">
+                                📅
+                            </div>
+
+                            <div class="interview-info">
+
+                                <div class="interview-title">
+                                    Interview Invitation
+                                </div>
+
+                                <div class="interview-subtitle">
+                                    ${app.company_name} scheduled an interview for you.
+                                </div>
+
+                            </div>
+
+                            <button class="view-interview-btn">
+                                View
+                            </button>
+
+                        </div>
+                        `
+                        : ""
+                    }
+                `;
+
+                // ==========================
+                // Message Employer
+                // ==========================
+
+                row.querySelector(".msg-btn").addEventListener("click", (e) => {
+
+                    e.stopPropagation();
+
+                    openChat(app.employer_user_id);
+
+                });
+
+                // ==========================
+                // View Interview
+                // ==========================
+
+                const viewBtn = row.querySelector(".view-interview-btn");
+
+                if (viewBtn) {
+
+                    viewBtn.addEventListener("click", (e) => {
+
+                        e.stopPropagation();
+
+                        document.getElementById("inviteCompany").textContent =
+                            app.company_name;
+
+                        document.getElementById("inviteJob").textContent =
+                            app.job_title;
+
+                        document.getElementById("inviteDate").textContent =
+                            app.interview_date;
+
+                        document.getElementById("inviteTime").textContent =
+                            `${app.start_time} - ${app.end_time}`;
+
+                        document.getElementById("inviteType").textContent =
+                            app.interview_type;
+
+                        document.getElementById("inviteMeeting").textContent =
+                            app.meeting_link || "-";
+
+                        document.getElementById("inviteLocation").textContent =
+                            app.location || "-";
+
+                        document.getElementById("inviteNotes").textContent =
+                            app.notes || "-";
+
+                        document.getElementById("viewInterviewOverlay").style.display = "flex";
+
+                    });
+
+                }
+
+                // ==========================
+                // Open Job
+                // ==========================
+
+                row.addEventListener("click", () => {
+
+                    window.location.href =
+                        `/view_joblist.html?id=${app.job_id}`;
+
+                });
+
+                container.appendChild(row);
+
+            });
+
+        }
+
+        catch (err) {
+
+            console.error(err);
+
+            container.innerHTML =
+                "<p>Error loading applications.</p>";
+
+        }
+
+    }
+
+    // ===============================
+    // Chat
+    // ===============================
+
+    async function openChat(otherUserId) {
+
+        try {
+
+            const res = await fetch(`${API_BASE}/api/chat/conversation/start`, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                credentials: "include",
+
+                body: JSON.stringify({
+                    otherUserId
+                })
+
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data.conversationId) {
+
+                throw new Error(data.error || "Failed");
+
+            }
+
+            await fetch(`${API_BASE}/api/chat/context/set`, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                credentials: "include",
+
+                body: JSON.stringify({
+
+                    otherUserId,
+
+                    jobId: null
+
+                })
+
+            });
+
+            window.location.href = "/conversation.html";
+
+        }
+
+        catch (err) {
+
+            console.error("openChat error:", err);
+
+            alert("Failed to open chat.");
+
+        }
+
+    }
+
+    // ===============================
+    // Interview Modal
+    // ===============================
+
+    const overlay =
+        document.getElementById("viewInterviewOverlay");
+
+    document.getElementById("closeViewInterview")
+        .addEventListener("click", () => {
+
+            overlay.style.display = "none";
+
         });
 
-        container.appendChild(row);
-      });
+    document.getElementById("closeInvitationBtn")
+        .addEventListener("click", () => {
 
-    } catch (err) {
-      console.error(err);
-      container.innerHTML = "<p>Error loading applications</p>";
-    }
-  }
+            overlay.style.display = "none";
 
-  async function openChat(otherUserId) {
-  try {
-    const res = await fetch(`${API_BASE}/api/chat/conversation/start`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ otherUserId })
+        });
+
+    overlay.addEventListener("click", (e) => {
+
+        if (e.target === overlay) {
+
+            overlay.style.display = "none";
+
+        }
+
     });
 
-    const data = await res.json();
+    // ===============================
+    // Init
+    // ===============================
 
-    if (!res.ok || !data.conversationId) {
-      throw new Error(data.error || "Failed");
-    }
+    loadMyApplications();
 
-    await fetch(`${API_BASE}/api/chat/context/set`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({
-        otherUserId,
-        jobId: null
-      })
-    });
-
-    window.location.href = "/conversation.html";
-
-  } catch (err) {
-    console.error("openChat error:", err);
-    alert("Failed to open chat");
-  }
-}
-
-
-  loadMyApplications();
 });
