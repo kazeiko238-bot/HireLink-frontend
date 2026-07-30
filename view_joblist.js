@@ -470,26 +470,28 @@ updateInterviewFields();
 // =====================
 // SEND INTERVIEW
 // =====================
+
 document.getElementById("sendInterview").addEventListener("click", async () => {
 
-    
     const modal = document.getElementById("interviewModal");
- 
+
     const application_id = modal.dataset.application;
     const jobseeker_id = modal.dataset.jobseeker;
- 
+
     const interview_date = document.getElementById("interviewDate").value;
     const start_time = document.getElementById("startTime").value;
     const end_time = document.getElementById("endTime").value;
- 
+
     const interview_type = document.getElementById("interviewType").value;
- 
+
     const meeting_link = document.getElementById("meetingLink").value;
     const location = document.getElementById("interviewLocation").value;
- 
+
     const notes = document.getElementById("interviewNotes").value;
- 
+
+    // =====================
     // Validation
+    // =====================
     if (
         !interview_date ||
         !start_time ||
@@ -498,7 +500,7 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
         alert("Please complete all required fields.");
         return;
     }
- 
+
     if (
         interview_type === "online" &&
         !meeting_link.trim()
@@ -506,7 +508,7 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
         alert("Please enter a meeting link.");
         return;
     }
- 
+
     if (
         interview_type === "onsite" &&
         !location.trim()
@@ -514,21 +516,21 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
         alert("Please enter the interview location.");
         return;
     }
- 
+
     try {
- 
+
         const res = await fetch(`${API_BASE}/api/interview`, {
- 
+
             method: "POST",
- 
+
             credentials: "include",
- 
+
             headers: {
                 "Content-Type": "application/json"
             },
- 
+
             body: JSON.stringify({
- 
+
                 application_id,
                 jobseeker_id,
                 interview_date,
@@ -538,33 +540,54 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
                 meeting_link,
                 location,
                 notes
- 
-            })
- 
-        });
- 
-        const data = await res.json();
- 
-        if (!res.ok) {
- 
-            throw new Error(data.error);
- 
-        }
- 
-        alert("Interview scheduled successfully!");
- 
-        closeInterviewModal();
- 
-    } catch (err) {
- 
-        console.error(err);
- 
-        alert(err.message);
- 
-    }
- 
-});
 
+            })
+
+        });
+
+        const data = await res.json();
+
+        // Close modal after request
+        closeInterviewModal();
+
+        // Reload applicants list
+        loadApplications();
+
+        if (!res.ok) {
+
+            alert(data.error || "Failed to schedule interview.");
+            return;
+
+        }
+
+        // Email failed but interview saved
+        if (data.emailWarning) {
+
+            alert(
+                "Interview scheduled successfully!\n\n" +
+                "However, the invitation email could not be sent."
+            );
+
+        } else {
+
+            alert("Interview scheduled successfully!");
+
+        }
+
+    } catch (err) {
+
+        console.error(err);
+
+        closeInterviewModal();
+
+        alert(
+            "Unable to contact the server.\n" +
+            "Please refresh the page and check if the interview was created."
+        );
+
+    }
+
+});
 // =====================
 // INIT
 // =====================
