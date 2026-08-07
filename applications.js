@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const API_BASE = "";
+    const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
     const container = document.getElementById("applicationContainer");
 
