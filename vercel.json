@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/api/:path*", "destination": "https://hirelink-backend-qnww.onrender.com/api/:path*" },
     { "source": "/(.*)", "destination": "/$1" }
   ],
   "headers": [
