@@ -11,6 +11,51 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // =====================
+  // INJECT BOOKMARK BUTTON STYLES (no separate CSS file needed)
+  // =====================
+  (function injectBookmarkStyles() {
+    if (document.getElementById("bookmark-btn-styles")) return;
+
+    const style = document.createElement("style");
+    style.id = "bookmark-btn-styles";
+    style.textContent = `
+      .jobs-card {
+        position: relative;
+      }
+      .bookmark-btn {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 16px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+      }
+      .bookmark-btn:hover {
+        transform: scale(1.08);
+      }
+      .bookmark-btn.active {
+        background: #f5b400;
+        color: #1a1a2e;
+      }
+      .bookmark-btn:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+    `;
+    document.head.appendChild(style);
+  })();
+
   const dashboard = document.querySelector(".dashboard-content");
   const postJobBtn = document.querySelector("#postJob");
   const cancelBtn = document.querySelector("#cancel");
@@ -152,11 +197,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.bookmarked) {
         bookmarkedIds.add(jobId);
         btn.textContent = "★";
-        btn.classList.add("bookmarked");
+        btn.classList.add("active");
       } else {
         bookmarkedIds.delete(jobId);
         btn.textContent = "☆";
-        btn.classList.remove("bookmarked");
+        btn.classList.remove("active");
       }
 
     } catch (err) {
@@ -207,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const isBookmarked = bookmarkedIds.has(job.id);
 
         card.innerHTML = `
-          <button class="bookmark-btn ${isBookmarked ? "bookmarked" : ""}" data-id="${job.id}">
+          <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${job.id}" aria-label="Bookmark job">
             ${isBookmarked ? "★" : "☆"}
           </button>
           <h3>${job.title || "No title"}</h3>
