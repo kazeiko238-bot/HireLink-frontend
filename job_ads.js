@@ -33,13 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
         border: none;
         background: rgba(255, 255, 255, 0.15);
         color: rgba(255, 255, 255, 0.85);
-        font-size: 16px;
-        line-height: 1;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+      }
+      .bookmark-btn svg {
+        width: 16px;
+        height: 16px;
+        display: block;
       }
       .bookmark-btn:hover {
         transform: scale(1.08);
@@ -55,6 +58,23 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
     document.head.appendChild(style);
   })();
+
+  // =====================
+  // STAR ICON (outline when not bookmarked, filled when bookmarked)
+  // =====================
+  const STAR_PATH = "M12 2 L14.9 8.6 L22 9.3 L16.5 14.1 L18.2 21 L12 17.3 L5.8 21 L7.5 14.1 L2 9.3 L9.1 8.6 Z";
+
+  function starSVG(filled) {
+    return `
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="${STAR_PATH}"
+          fill="${filled ? "currentColor" : "none"}"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linejoin="round" />
+      </svg>
+    `;
+  }
 
   const dashboard = document.querySelector(".dashboard-content");
   const postJobBtn = document.querySelector("#postJob");
@@ -196,11 +216,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.bookmarked) {
         bookmarkedIds.add(jobId);
-        btn.textContent = "★";
+        btn.innerHTML = starSVG(true);
         btn.classList.add("active");
       } else {
         bookmarkedIds.delete(jobId);
-        btn.textContent = "☆";
+        btn.innerHTML = starSVG(false);
         btn.classList.remove("active");
       }
 
@@ -253,7 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         card.innerHTML = `
           <button class="bookmark-btn ${isBookmarked ? "active" : ""}" data-id="${job.id}" aria-label="Bookmark job">
-            ${isBookmarked ? "★" : "☆"}
+            ${starSVG(isBookmarked)}
           </button>
           <h3>${job.title || "No title"}</h3>
           <p class="job-type">${job.job_type || "N/A"}</p>
