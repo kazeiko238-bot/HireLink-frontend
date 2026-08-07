@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const dashboardInputs = dashboard.querySelectorAll("input, textarea");
 
+  // Set of job ids the current user has bookmarked
+  let bookmarkedIds = new Set();
+
   // =====================
   // FIELD VALIDATION
   // =====================
@@ -109,10 +112,68 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
+  // LOAD BOOKMARKED IDS
+  // =====================
+  async function loadBookmarkedIds() {
+    try {
+      const res = await fetch(`${API_BASE}/api/bookmarks/my`, {
+        method: "GET",
+        credentials: "include"
+      });
+
+      const jobIds = await res.json();
+
+      bookmarkedIds = new Set(Array.isArray(jobIds) ? jobIds : []);
+
+    } catch (err) {
+      console.error("LOAD BOOKMARKS ERROR:", err);
+      bookmarkedIds = new Set();
+    }
+  }
+
+  // =====================
+  // TOGGLE BOOKMARK
+  // =====================
+  async function toggleBookmark(jobId, btn) {
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/bookmarks/toggle`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ job_id: jobId })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Failed to update bookmark");
+
+      if (data.bookmarked) {
+        bookmarkedIds.add(jobId);
+        btn.textContent = "★";
+        btn.classList.add("bookmarked");
+      } else {
+        bookmarkedIds.delete(jobId);
+        btn.textContent = "☆";
+        btn.classList.remove("bookmarked");
+      }
+
+    } catch (err) {
+      console.error("TOGGLE BOOKMARK ERROR:", err);
+      alert(err.message);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  // =====================
   // LOAD JOBS
   // =====================
   async function loadJobs() {
     try {
+      await loadBookmarkedIds();
+
       const res = await fetch(`${API_BASE}/api/jobpost`, {
         method: "GET",
         credentials: "include"
@@ -143,11 +204,23 @@ document.addEventListener("DOMContentLoaded", () => {
           ? `₱${Number(job.salary_max).toLocaleString()}`
           : "N/A";
 
+        const isBookmarked = bookmarkedIds.has(job.id);
+
         card.innerHTML = `
+          <button class="bookmark-btn ${isBookmarked ? "bookmarked" : ""}" data-id="${job.id}">
+            ${isBookmarked ? "★" : "☆"}
+          </button>
           <h3>${job.title || "No title"}</h3>
           <p class="job-type">${job.job_type || "N/A"}</p>
           <p class="salary">${minSalary} - ${maxSalary}</p>
         `;
+
+        // Bookmark button click — must not trigger card navigation
+        const bookmarkBtn = card.querySelector(".bookmark-btn");
+        bookmarkBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggleBookmark(job.id, bookmarkBtn);
+        });
 
         card.addEventListener("click", () => {
           window.location.href = `view_joblist.html?id=${job.id}`;
