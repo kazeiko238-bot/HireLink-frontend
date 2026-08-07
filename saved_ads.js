@@ -54,8 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
         transform: scale(1.08);
       }
       .bookmark-btn.active {
-        background: #f5b400;
-        color: #1a1a2e;
+        color: #f5b400;
       }
       .bookmark-btn:disabled {
         opacity: 0.6;
