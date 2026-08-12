@@ -397,8 +397,9 @@ async function setStatus(application_id, status) {
 let currentJobStatus = 1;
 
 async function loadJobStatus(jobId) {
-  const res = await fetch(`/api/jobpost/${jobId}`, {
-    credentials: "include"
+const res = await fetch(`${API_BASE}/api/jobpost/${jobId}`,
+                        { credentials: "include" });
+
   });
 
   const data = await res.json();
