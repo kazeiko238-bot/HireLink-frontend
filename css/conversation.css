@@ -228,3 +228,36 @@ body {
 .chat-input button:hover {
     opacity: 0.9;
 }
+
+/* SUGGESTED QUESTIONS */
+.suggested-questions {
+    display: flex;
+    gap: 10px;
+    padding: 15px 25px;
+    flex-wrap: wrap;
+    background: var(--white);
+    border-top: 1px solid var(--border-color);
+}
+
+.question-box {
+    background: var(--active-item);
+    border: 1px solid #cddcfa;
+    color: var(--primary-blue);
+    padding: 10px 16px;
+    border-radius: 18px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+    white-space: nowrap;
+    font-family: inherit;
+}
+
+.question-box:hover {
+    background: #dbe8ff;
+    transform: translateY(-1px);
+}
+
+.question-box:active {
+    transform: translateY(0);
+}
