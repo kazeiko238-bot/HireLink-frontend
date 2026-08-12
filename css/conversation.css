@@ -261,3 +261,8 @@ body {
 .question-box:active {
     transform: translateY(0);
 }
+
+/* HIDE suggested questions until a conversation is selected */
+.suggested-questions.hidden {
+    display: none;
+}
