@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const messageInput = document.getElementById("messageInput");
   const sendBtn = document.getElementById("sendBtn");
   const chatHeader = document.getElementById("chatHeader");
+  const suggestedQuestions = document.getElementById("suggestedQuestions");
 
   let currentConversationId = null;
   let currentUserId = null;
@@ -81,6 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
     currentConversationId = conversationId;
 
     chatHeader.textContent = "Chat with " + (name || "Unknown");
+
+    // SHOW suggested questions once a conversation is selected
+    suggestedQuestions?.classList.remove("hidden");
 
     await loadMessages();
 
@@ -250,6 +254,3 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 
 });
-.suggested-questions.hidden {
-    display: none;
-}
