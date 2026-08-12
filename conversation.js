@@ -226,6 +226,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =====================
+  // SUGGESTED QUESTIONS (CLICK TO FILL)
+  // =====================
+  const questionBoxes = document.querySelectorAll(".question-box");
+
+  questionBoxes.forEach(box => {
+    box.addEventListener("click", () => {
+      const question = box.getAttribute("data-question");
+      messageInput.value = question;
+      messageInput.focus();
+    });
+  });
+
+  // =====================
   // INIT ORDER (IMPORTANT FIX)
   // =====================
   (async () => {
