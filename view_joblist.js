@@ -400,7 +400,7 @@ async function loadJobStatus(jobId) {
 const res = await fetch(`${API_BASE}/api/jobpost/${jobId}`,
                         { credentials: "include" });
 
-  });
+  
 
   const data = await res.json();
 
