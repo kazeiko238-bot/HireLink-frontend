@@ -250,3 +250,6 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 
 });
+.suggested-questions.hidden {
+    display: none;
+}
