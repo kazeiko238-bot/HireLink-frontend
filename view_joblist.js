@@ -22,9 +22,12 @@ interviewOverlay.addEventListener("click", (e) => {
 });
 
 const interviewType = document.getElementById("interviewType");
-const meetingLinkGroup = document.getElementById("meetingLinkGroup");
+const meetingSection = document.getElementById("meetingSection");
 const locationGroup = document.getElementById("locationGroup");
 
+const createMeetingBtn = document.getElementById("createMeetingBtn");
+const meetingCreated = document.getElementById("meetingCreated");
+const meetingRoomCode = document.getElementById("meetingRoomCode");
 
 // -------- Back button --------
 document.querySelector('.back-btn')?.addEventListener('click', () => {
@@ -451,12 +454,12 @@ function updateInterviewFields() {
 
     if (interviewType.value === "online") {
 
-        meetingLinkGroup.style.display = "none";
+        meetingSection.style.display = "block";
         locationGroup.style.display = "none";
 
     } else {
 
-        meetingLinkGroup.style.display = "none";
+        meetingSection.style.display = "none";
         locationGroup.style.display = "block";
 
     }
@@ -466,7 +469,6 @@ function updateInterviewFields() {
 interviewType.addEventListener("change", updateInterviewFields);
 
 updateInterviewFields();
-
 // =====================
 // SEND INTERVIEW
 // =====================
