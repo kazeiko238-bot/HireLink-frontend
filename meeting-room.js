@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const API_BASE =
-        "https://hirelink-backend-qnww.onrender.com";
+        "https://hirelink-backend-1.onrender.com";
 
     const socket = io(API_BASE, {
         withCredentials: true
@@ -134,24 +134,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // SOCKET.IO CONNECTION
     // ============================================================
 
-    socket.on("connect", () => {
+  socket.on("connect", () => {
 
-        console.log(
-            "Socket.IO connected:",
-            socket.id
-        );
+    console.log(
+        "Socket.IO connected:",
+        socket.id
+    );
 
-        setStatus(
-            "Connected to meeting server",
-            "connecting"
-        );
+    setStatus(
+        "Connected to meeting server",
+        "connecting"
+    );
 
-        socket.emit(
-            "join-room",
-            normalizedRoom
-        );
-
-    });
+});
 
 
     socket.on("connect_error", error => {
