@@ -224,15 +224,21 @@ function renderApplications(applications) {
 
     </div>
 
-   ${
+${
     app.status === "shortlisted"
-        ? `<button
-                class="schedule-btn"
-                data-name="${app.first_name} ${app.last_name}"
-                data-application="${app.application_id}"
-                data-jobseeker="${app.jobseeker_id}">
-                Schedule Interview
-           </button>`
+        ? app.has_interview
+            ? `<button
+                    class="schedule-btn scheduled"
+                    disabled>
+                    Scheduled ✓
+               </button>`
+            : `<button
+                    class="schedule-btn"
+                    data-name="${app.first_name} ${app.last_name}"
+                    data-application="${app.application_id}"
+                    data-jobseeker="${app.jobseeker_id}">
+                    Schedule Interview
+               </button>`
         : ""
 }
 
