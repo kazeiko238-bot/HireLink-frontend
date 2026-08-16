@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
         withCredentials: true
     });
 
-
     // ============================================================
     // ELEMENTS
     // ============================================================
@@ -69,8 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let isSharingScreen = false;
 
     let isRoomJoined = false;
-
-    let isInitiator = false;
 
 
     // ============================================================
@@ -134,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ============================================================
-    // SOCKET CONNECTION
+    // SOCKET.IO CONNECTION
     // ============================================================
 
     socket.on("connect", () => {
@@ -144,11 +141,10 @@ document.addEventListener("DOMContentLoaded", () => {
             socket.id
         );
 
-
-        if (isRoomJoined) {
-            return;
-        }
-
+        setStatus(
+            "Connected to meeting server",
+            "connecting"
+        );
 
         socket.emit(
             "join-room",
@@ -165,7 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
             error
         );
 
-
         showError(
             "Unable to connect to the meeting server."
         );
@@ -173,208 +168,173 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
+    socket.on("disconnect", () => {
+
+        console.log(
+            "Socket.IO disconnected."
+        );
+
+    });
+
+
     // ============================================================
-    // USER JOINED
+    // PARTICIPANT JOINED
     // ============================================================
 
-    socket.on(
-        "user-joined",
-        async () => {
+    socket.on("user-joined", async data => {
 
-            console.log(
-                "Another participant joined."
-            );
+        console.log(
+            "Another participant joined:",
+            data
+        );
 
-
-            isInitiator = true;
-
-
-            setStatus(
-                "Participant joined. Connecting...",
-                "connecting"
-            );
+        setStatus(
+            "Participant joined. Connecting...",
+            "connecting"
+        );
 
 
-            try {
+        try {
 
-                await createOffer();
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    "Offer creation error:",
-                    error
-                );
-
-                showError(
-                    "Unable to start the video connection."
-                );
-
-            }
+            await createOffer();
 
         }
-    );
+
+        catch (error) {
+
+            console.error(
+                "Offer creation error:",
+                error
+            );
+
+            showError(
+                "Unable to establish the video connection."
+            );
+
+        }
+
+    });
 
 
     // ============================================================
     // RECEIVE OFFER
     // ============================================================
 
-    socket.on(
-        "offer",
-        async data => {
+    socket.on("offer", async data => {
 
-            try {
-
-                console.log(
-                    "WebRTC offer received."
-                );
+        console.log(
+            "Offer received."
+        );
 
 
-                if (
-                    !data ||
-                    !data.offer
-                ) {
+        try {
 
-                    return;
+            if (!peerConnection) {
 
-                }
-
-
-                if (!peerConnection) {
-
-                    initializePeerConnection();
-
-                }
-
-
-                await peerConnection.setRemoteDescription(
-                    new RTCSessionDescription(
-                        data.offer
-                    )
-                );
-
-
-                const answer =
-                    await peerConnection.createAnswer();
-
-
-                await peerConnection.setLocalDescription(
-                    answer
-                );
-
-
-                socket.emit(
-                    "answer",
-                    {
-                        roomCode:
-                            normalizedRoom,
-
-                        answer:
-                            peerConnection.localDescription
-                    }
-                );
-
-
-                setStatus(
-                    "Connecting...",
-                    "connecting"
-                );
+                initializePeerConnection();
 
             }
 
-            catch (error) {
 
-                console.error(
-                    "Offer handling error:",
-                    error
-                );
+            await peerConnection.setRemoteDescription(
+                new RTCSessionDescription(data.offer)
+            );
 
-                showError(
-                    "Unable to connect to the participant."
-                );
 
-            }
+            const answer =
+                await peerConnection.createAnswer();
+
+
+            await peerConnection.setLocalDescription(
+                answer
+            );
+
+
+            socket.emit(
+                "answer",
+                {
+                    roomCode: normalizedRoom,
+                    answer: answer
+                }
+            );
+
+
+            console.log(
+                "Answer sent."
+            );
 
         }
-    );
+
+        catch (error) {
+
+            console.error(
+                "Offer handling error:",
+                error
+            );
+
+        }
+
+    });
 
 
     // ============================================================
     // RECEIVE ANSWER
     // ============================================================
 
-    socket.on(
-        "answer",
-        async data => {
+    socket.on("answer", async data => {
 
-            try {
-
-                console.log(
-                    "WebRTC answer received."
-                );
+        console.log(
+            "Answer received."
+        );
 
 
-                if (
-                    !data ||
-                    !data.answer ||
-                    !peerConnection
-                ) {
+        try {
 
-                    return;
-
-                }
-
-
-                await peerConnection.setRemoteDescription(
-                    new RTCSessionDescription(
-                        data.answer
-                    )
-                );
-
-
-                setStatus(
-                    "Connecting...",
-                    "connecting"
-                );
-
+            if (!peerConnection) {
+                return;
             }
 
-            catch (error) {
 
-                console.error(
-                    "Answer handling error:",
-                    error
-                );
+            await peerConnection.setRemoteDescription(
+                new RTCSessionDescription(data.answer)
+            );
 
-            }
+
+            console.log(
+                "Remote description set."
+            );
 
         }
-    );
+
+        catch (error) {
+
+            console.error(
+                "Answer handling error:",
+                error
+            );
+
+        }
+
+    });
 
 
     // ============================================================
     // RECEIVE ICE CANDIDATE
     // ============================================================
 
-    socket.on(
-        "ice-candidate",
-        async data => {
+    socket.on("ice-candidate", async data => {
 
-            try {
+        console.log(
+            "ICE candidate received."
+        );
 
-                if (
-                    !data ||
-                    !data.candidate ||
-                    !peerConnection
-                ) {
 
-                    return;
+        try {
 
-                }
-
+            if (
+                peerConnection &&
+                data.candidate
+            ) {
 
                 await peerConnection.addIceCandidate(
                     new RTCIceCandidate(
@@ -382,105 +342,61 @@ document.addEventListener("DOMContentLoaded", () => {
                     )
                 );
 
-
-                console.log(
-                    "ICE candidate added."
-                );
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    "ICE candidate error:",
-                    error
-                );
-
             }
 
         }
-    );
+
+        catch (error) {
+
+            console.error(
+                "ICE candidate error:",
+                error
+            );
+
+        }
+
+    });
 
 
     // ============================================================
     // PARTICIPANT LEFT
     // ============================================================
 
-    socket.on(
-        "user-left",
-        () => {
+    socket.on("user-left", () => {
 
-            console.log(
-                "Participant left the meeting."
-            );
+        console.log(
+            "Participant left."
+        );
 
+
+        if (remoteVideo) {
 
             remoteVideo.srcObject =
                 null;
 
-
-            remoteVideo.style.display =
-                "none";
+        }
 
 
-            remotePlaceholder.classList.remove(
-                "hidden"
-            );
+        remotePlaceholder.classList.remove(
+            "hidden"
+        );
 
 
-            setStatus(
-                "Waiting for participant...",
-                "waiting"
-            );
+        setStatus(
+            "Waiting for participant...",
+            "waiting"
+        );
 
 
-            if (peerConnection) {
+        if (peerConnection) {
 
-                peerConnection.close();
+            peerConnection.close();
 
-                peerConnection = null;
-
-            }
-
-
-            isInitiator = false;
+            peerConnection = null;
 
         }
-    );
 
-
-    // ============================================================
-    // JOIN ROOM
-    // ============================================================
-
-    socket.on(
-        "room-joined",
-        data => {
-
-            console.log(
-                "Joined meeting room:",
-                data
-            );
-
-
-            isRoomJoined = true;
-
-
-            const participantCount =
-                data?.participantCount || 1;
-
-
-            if (participantCount <= 1) {
-
-                setStatus(
-                    "Waiting for participant...",
-                    "waiting"
-                );
-
-            }
-
-        }
-    );
+    });
 
 
     // ============================================================
@@ -553,6 +469,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     "join-room",
                     normalizedRoom
                 );
+
+                isRoomJoined = true;
 
             }
 
@@ -681,7 +599,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (peerConnection) {
 
-            return;
+            peerConnection.close();
 
         }
 
@@ -692,9 +610,9 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        // --------------------------------------------------------
+        // ========================================================
         // ADD LOCAL TRACKS
-        // --------------------------------------------------------
+        // ========================================================
 
         if (localStream) {
 
@@ -712,9 +630,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        // --------------------------------------------------------
+        // ========================================================
         // RECEIVE REMOTE TRACKS
-        // --------------------------------------------------------
+        // ========================================================
 
         peerConnection.ontrack =
             event => {
@@ -752,21 +670,14 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
 
-        // --------------------------------------------------------
-        // ICE CANDIDATES
-        // --------------------------------------------------------
+        // ========================================================
+        // SEND ICE CANDIDATES
+        // ========================================================
 
         peerConnection.onicecandidate =
             event => {
 
-                if (
-                    event.candidate
-                ) {
-
-                    console.log(
-                        "Sending ICE candidate."
-                    );
-
+                if (event.candidate) {
 
                     socket.emit(
                         "ice-candidate",
@@ -784,17 +695,12 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
 
-        // --------------------------------------------------------
+        // ========================================================
         // CONNECTION STATE
-        // --------------------------------------------------------
+        // ========================================================
 
         peerConnection.onconnectionstatechange =
             () => {
-
-                if (!peerConnection) {
-                    return;
-                }
-
 
                 console.log(
                     "WebRTC connection state:",
@@ -875,11 +781,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        console.log(
-            "Creating WebRTC offer..."
-        );
-
-
         const offer =
             await peerConnection.createOffer();
 
@@ -896,13 +797,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     normalizedRoom,
 
                 offer:
-                    peerConnection.localDescription
+                    offer
             }
         );
 
 
         console.log(
-            "WebRTC offer sent."
+            "Offer sent."
         );
 
     }
@@ -1073,11 +974,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        if (!peerConnection) {
-            return;
-        }
-
-
         try {
 
             if (!isSharingScreen) {
@@ -1094,7 +990,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const sender =
                     peerConnection
-                        .getSenders()
+                        ?.getSenders()
                         .find(
                             s =>
                                 s.track &&
@@ -1164,4 +1060,261 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const cameraTrack =
-           
+            localStream
+                ?.getVideoTracks()[0];
+
+
+        const sender =
+            peerConnection
+                ?.getSenders()
+                .find(
+                    s =>
+                        s.track &&
+                        s.track.kind === "video"
+                );
+
+
+        if (
+            sender &&
+            cameraTrack
+        ) {
+
+            await sender.replaceTrack(
+                cameraTrack
+            );
+
+        }
+
+
+        screenStream
+            .getTracks()
+            .forEach(
+                track => track.stop()
+            );
+
+
+        screenStream = null;
+
+
+        localVideo.srcObject =
+            localStream;
+
+
+        isSharingScreen = false;
+
+
+        screenBtn.textContent =
+            "🖥️";
+
+
+        screenBtn.classList.remove(
+            "off"
+        );
+
+    }
+
+
+    // ============================================================
+    // LEAVE MEETING
+    // ============================================================
+
+    leaveBtn.addEventListener(
+        "click",
+        () => {
+
+            leaveMeeting();
+
+        }
+    );
+
+
+    function leaveMeeting() {
+
+        console.log(
+            "Leaving meeting..."
+        );
+
+
+        if (isRoomJoined) {
+
+            socket.emit(
+                "leave-room",
+                normalizedRoom
+            );
+
+        }
+
+
+        if (screenStream) {
+
+            screenStream
+                .getTracks()
+                .forEach(
+                    track => track.stop()
+                );
+
+        }
+
+
+        if (localStream) {
+
+            localStream
+                .getTracks()
+                .forEach(
+                    track => track.stop()
+                );
+
+        }
+
+
+        if (peerConnection) {
+
+            peerConnection.close();
+
+            peerConnection = null;
+
+        }
+
+
+        socket.disconnect();
+
+
+        window.location.href =
+            "/meeting.html";
+
+    }
+
+
+    // ============================================================
+    // STATUS
+    // ============================================================
+
+    function setStatus(
+        message,
+        state
+    ) {
+
+        roomStatus.textContent =
+            message;
+
+
+        roomStatus.classList.remove(
+            "connected",
+            "error"
+        );
+
+
+        if (state === "connected") {
+
+            roomStatus.classList.add(
+                "connected"
+            );
+
+        }
+
+
+        if (state === "error") {
+
+            roomStatus.classList.add(
+                "error"
+            );
+
+        }
+
+    }
+
+
+    // ============================================================
+    // ERROR
+    // ============================================================
+
+    function showError(message) {
+
+        setStatus(
+            "Error",
+            "error"
+        );
+
+
+        errorMessage.textContent =
+            message;
+
+
+        meetingError.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    // ============================================================
+    // BACK BUTTON
+    // ============================================================
+
+    backBtn.addEventListener(
+        "click",
+        () => {
+
+            leaveMeeting();
+
+        }
+    );
+
+
+    // ============================================================
+    // CLEANUP
+    // ============================================================
+
+    window.addEventListener(
+        "beforeunload",
+        () => {
+
+            if (isRoomJoined) {
+
+                socket.emit(
+                    "leave-room",
+                    normalizedRoom
+                );
+
+            }
+
+
+            if (localStream) {
+
+                localStream
+                    .getTracks()
+                    .forEach(
+                        track => track.stop()
+                    );
+
+            }
+
+
+            if (screenStream) {
+
+                screenStream
+                    .getTracks()
+                    .forEach(
+                        track => track.stop()
+                    );
+
+            }
+
+
+            if (peerConnection) {
+
+                peerConnection.close();
+
+            }
+
+        }
+    );
+
+
+    // ============================================================
+    // START
+    // ============================================================
+
+    loadMeeting();
+
+});
