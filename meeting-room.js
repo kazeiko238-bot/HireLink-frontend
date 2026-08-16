@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const socket = io(API_BASE, {
         withCredentials: true
     });
+
+
     // ============================================================
     // ELEMENTS
     // ============================================================
@@ -66,6 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let isSharingScreen = false;
 
+    let isRoomJoined = false;
+
+    let isInitiator = false;
+
 
     // ============================================================
     // GET ROOM CODE
@@ -108,14 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // WEBRTC CONFIGURATION
     // ============================================================
 
-    /*
-     * STUN servers allow WebRTC to discover the public
-     * network address of the participants.
-     *
-     * Later, we can add your own TURN server for users
-     * behind restrictive networks.
-     */
-
     const rtcConfiguration = {
 
         iceServers: [
@@ -133,6 +131,356 @@ document.addEventListener("DOMContentLoaded", () => {
         ]
 
     };
+
+
+    // ============================================================
+    // SOCKET CONNECTION
+    // ============================================================
+
+    socket.on("connect", () => {
+
+        console.log(
+            "Socket.IO connected:",
+            socket.id
+        );
+
+
+        if (isRoomJoined) {
+            return;
+        }
+
+
+        socket.emit(
+            "join-room",
+            normalizedRoom
+        );
+
+    });
+
+
+    socket.on("connect_error", error => {
+
+        console.error(
+            "Socket.IO connection error:",
+            error
+        );
+
+
+        showError(
+            "Unable to connect to the meeting server."
+        );
+
+    });
+
+
+    // ============================================================
+    // USER JOINED
+    // ============================================================
+
+    socket.on(
+        "user-joined",
+        async () => {
+
+            console.log(
+                "Another participant joined."
+            );
+
+
+            isInitiator = true;
+
+
+            setStatus(
+                "Participant joined. Connecting...",
+                "connecting"
+            );
+
+
+            try {
+
+                await createOffer();
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Offer creation error:",
+                    error
+                );
+
+                showError(
+                    "Unable to start the video connection."
+                );
+
+            }
+
+        }
+    );
+
+
+    // ============================================================
+    // RECEIVE OFFER
+    // ============================================================
+
+    socket.on(
+        "offer",
+        async data => {
+
+            try {
+
+                console.log(
+                    "WebRTC offer received."
+                );
+
+
+                if (
+                    !data ||
+                    !data.offer
+                ) {
+
+                    return;
+
+                }
+
+
+                if (!peerConnection) {
+
+                    initializePeerConnection();
+
+                }
+
+
+                await peerConnection.setRemoteDescription(
+                    new RTCSessionDescription(
+                        data.offer
+                    )
+                );
+
+
+                const answer =
+                    await peerConnection.createAnswer();
+
+
+                await peerConnection.setLocalDescription(
+                    answer
+                );
+
+
+                socket.emit(
+                    "answer",
+                    {
+                        roomCode:
+                            normalizedRoom,
+
+                        answer:
+                            peerConnection.localDescription
+                    }
+                );
+
+
+                setStatus(
+                    "Connecting...",
+                    "connecting"
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Offer handling error:",
+                    error
+                );
+
+                showError(
+                    "Unable to connect to the participant."
+                );
+
+            }
+
+        }
+    );
+
+
+    // ============================================================
+    // RECEIVE ANSWER
+    // ============================================================
+
+    socket.on(
+        "answer",
+        async data => {
+
+            try {
+
+                console.log(
+                    "WebRTC answer received."
+                );
+
+
+                if (
+                    !data ||
+                    !data.answer ||
+                    !peerConnection
+                ) {
+
+                    return;
+
+                }
+
+
+                await peerConnection.setRemoteDescription(
+                    new RTCSessionDescription(
+                        data.answer
+                    )
+                );
+
+
+                setStatus(
+                    "Connecting...",
+                    "connecting"
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Answer handling error:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+
+    // ============================================================
+    // RECEIVE ICE CANDIDATE
+    // ============================================================
+
+    socket.on(
+        "ice-candidate",
+        async data => {
+
+            try {
+
+                if (
+                    !data ||
+                    !data.candidate ||
+                    !peerConnection
+                ) {
+
+                    return;
+
+                }
+
+
+                await peerConnection.addIceCandidate(
+                    new RTCIceCandidate(
+                        data.candidate
+                    )
+                );
+
+
+                console.log(
+                    "ICE candidate added."
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "ICE candidate error:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+
+    // ============================================================
+    // PARTICIPANT LEFT
+    // ============================================================
+
+    socket.on(
+        "user-left",
+        () => {
+
+            console.log(
+                "Participant left the meeting."
+            );
+
+
+            remoteVideo.srcObject =
+                null;
+
+
+            remoteVideo.style.display =
+                "none";
+
+
+            remotePlaceholder.classList.remove(
+                "hidden"
+            );
+
+
+            setStatus(
+                "Waiting for participant...",
+                "waiting"
+            );
+
+
+            if (peerConnection) {
+
+                peerConnection.close();
+
+                peerConnection = null;
+
+            }
+
+
+            isInitiator = false;
+
+        }
+    );
+
+
+    // ============================================================
+    // JOIN ROOM
+    // ============================================================
+
+    socket.on(
+        "room-joined",
+        data => {
+
+            console.log(
+                "Joined meeting room:",
+                data
+            );
+
+
+            isRoomJoined = true;
+
+
+            const participantCount =
+                data?.participantCount || 1;
+
+
+            if (participantCount <= 1) {
+
+                setStatus(
+                    "Waiting for participant...",
+                    "waiting"
+                );
+
+            }
+
+        }
+    );
 
 
     // ============================================================
@@ -165,7 +513,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 data =
                     await response.json();
 
-            } catch {
+            }
+
+            catch {
 
                 throw new Error(
                     "Server returned an invalid response."
@@ -197,11 +547,20 @@ document.addEventListener("DOMContentLoaded", () => {
             initializePeerConnection();
 
 
+            if (socket.connected) {
+
+                socket.emit(
+                    "join-room",
+                    normalizedRoom
+                );
+
+            }
+
+
             setStatus(
                 "Waiting for participant...",
                 "waiting"
             );
-
 
         }
 
@@ -320,16 +679,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function initializePeerConnection() {
 
+        if (peerConnection) {
+
+            return;
+
+        }
+
+
         peerConnection =
             new RTCPeerConnection(
                 rtcConfiguration
             );
 
 
-        /*
-         * Add our camera and microphone tracks
-         * to the WebRTC connection.
-         */
+        // --------------------------------------------------------
+        // ADD LOCAL TRACKS
+        // --------------------------------------------------------
 
         if (localStream) {
 
@@ -347,9 +712,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        /*
-         * Receive the other participant's tracks.
-         */
+        // --------------------------------------------------------
+        // RECEIVE REMOTE TRACKS
+        // --------------------------------------------------------
 
         peerConnection.ontrack =
             event => {
@@ -366,6 +731,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     remoteVideo.srcObject =
                         event.streams[0];
+
 
                     remoteVideo.style.display =
                         "block";
@@ -386,35 +752,49 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
 
-        /*
-         * ICE candidates will eventually be
-         * sent through our signaling server.
-         */
+        // --------------------------------------------------------
+        // ICE CANDIDATES
+        // --------------------------------------------------------
 
         peerConnection.onicecandidate =
             event => {
 
-                if (event.candidate) {
+                if (
+                    event.candidate
+                ) {
 
                     console.log(
-                        "ICE candidate:",
-                        event.candidate
+                        "Sending ICE candidate."
                     );
 
-                    /*
-                     * NEXT STEP:
-                     *
-                     * Send this candidate through
-                     * Socket.IO/WebSocket.
-                     */
+
+                    socket.emit(
+                        "ice-candidate",
+                        {
+                            roomCode:
+                                normalizedRoom,
+
+                            candidate:
+                                event.candidate
+                        }
+                    );
 
                 }
 
             };
 
 
+        // --------------------------------------------------------
+        // CONNECTION STATE
+        // --------------------------------------------------------
+
         peerConnection.onconnectionstatechange =
             () => {
+
+                if (!peerConnection) {
+                    return;
+                }
+
 
                 console.log(
                     "WebRTC connection state:",
@@ -483,6 +863,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ============================================================
+    // CREATE OFFER
+    // ============================================================
+
+    async function createOffer() {
+
+        if (!peerConnection) {
+
+            initializePeerConnection();
+
+        }
+
+
+        console.log(
+            "Creating WebRTC offer..."
+        );
+
+
+        const offer =
+            await peerConnection.createOffer();
+
+
+        await peerConnection.setLocalDescription(
+            offer
+        );
+
+
+        socket.emit(
+            "offer",
+            {
+                roomCode:
+                    normalizedRoom,
+
+                offer:
+                    peerConnection.localDescription
+            }
+        );
+
+
+        console.log(
+            "WebRTC offer sent."
+        );
+
+    }
+
+
+    // ============================================================
     // MICROPHONE
     // ============================================================
 
@@ -520,7 +946,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (microphoneEnabled) {
 
-                micBtn.textContent = "🎤";
+                micBtn.textContent =
+                    "🎤";
 
                 micBtn.classList.remove(
                     "off"
@@ -529,9 +956,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 micBtn.title =
                     "Mute microphone";
 
-            } else {
+            }
 
-                micBtn.textContent = "🔇";
+            else {
+
+                micBtn.textContent =
+                    "🔇";
 
                 micBtn.classList.add(
                     "off"
@@ -598,7 +1028,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     "visible"
                 );
 
-            } else {
+            }
+
+            else {
 
                 cameraBtn.textContent =
                     "📵";
@@ -641,6 +1073,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
+        if (!peerConnection) {
+            return;
+        }
+
+
         try {
 
             if (!isSharingScreen) {
@@ -657,7 +1094,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const sender =
                     peerConnection
-                        ?.getSenders()
+                        .getSenders()
                         .find(
                             s =>
                                 s.track &&
@@ -697,7 +1134,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     };
 
-            } else {
+            }
+
+            else {
 
                 await stopScreenShare();
 
@@ -725,237 +1164,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const cameraTrack =
-            localStream
-                ?.getVideoTracks()[0];
-
-
-        const sender =
-            peerConnection
-                ?.getSenders()
-                .find(
-                    s =>
-                        s.track &&
-                        s.track.kind === "video"
-                );
-
-
-        if (
-            sender &&
-            cameraTrack
-        ) {
-
-            await sender.replaceTrack(
-                cameraTrack
-            );
-
-        }
-
-
-        screenStream
-            .getTracks()
-            .forEach(
-                track => track.stop()
-            );
-
-
-        screenStream = null;
-
-
-        localVideo.srcObject =
-            localStream;
-
-
-        isSharingScreen = false;
-
-
-        screenBtn.textContent =
-            "🖥️";
-
-
-        screenBtn.classList.remove(
-            "off"
-        );
-
-    }
-
-
-    // ============================================================
-    // LEAVE MEETING
-    // ============================================================
-
-    leaveBtn.addEventListener(
-        "click",
-        () => {
-
-            leaveMeeting();
-
-        }
-    );
-
-
-    function leaveMeeting() {
-
-        console.log(
-            "Leaving meeting..."
-        );
-
-
-        if (screenStream) {
-
-            screenStream
-                .getTracks()
-                .forEach(
-                    track => track.stop()
-                );
-
-        }
-
-
-        if (localStream) {
-
-            localStream
-                .getTracks()
-                .forEach(
-                    track => track.stop()
-                );
-
-        }
-
-
-        if (peerConnection) {
-
-            peerConnection.close();
-
-        }
-
-
-        window.location.href =
-            "/meeting.html";
-
-    }
-
-
-    // ============================================================
-    // STATUS
-    // ============================================================
-
-    function setStatus(
-        message,
-        state
-    ) {
-
-        roomStatus.textContent =
-            message;
-
-
-        roomStatus.classList.remove(
-            "connected",
-            "error"
-        );
-
-
-        if (state === "connected") {
-
-            roomStatus.classList.add(
-                "connected"
-            );
-
-        }
-
-
-        if (state === "error") {
-
-            roomStatus.classList.add(
-                "error"
-            );
-
-        }
-
-    }
-
-
-    // ============================================================
-    // ERROR
-    // ============================================================
-
-    function showError(message) {
-
-        setStatus(
-            "Error",
-            "error"
-        );
-
-
-        errorMessage.textContent =
-            message;
-
-
-        meetingError.classList.remove(
-            "hidden"
-        );
-
-    }
-
-
-    // ============================================================
-    // BACK BUTTON
-    // ============================================================
-
-    backBtn.addEventListener(
-        "click",
-        () => {
-
-            window.location.href =
-                "/meeting.html";
-
-        }
-    );
-
-
-    // ============================================================
-    // CLEANUP
-    // ============================================================
-
-    window.addEventListener(
-        "beforeunload",
-        () => {
-
-            if (localStream) {
-
-                localStream
-                    .getTracks()
-                    .forEach(
-                        track => track.stop()
-                    );
-
-            }
-
-
-            if (screenStream) {
-
-                screenStream
-                    .getTracks()
-                    .forEach(
-                        track => track.stop()
-                    );
-
-            }
-
-
-            if (peerConnection) {
-
-                peerConnection.close();
-
-            }
-
-        }
-    );
-
-
-    // ============================================================
-    // START
-    // ============================================================
-
-    loadMeeting();
-
-});
+           
