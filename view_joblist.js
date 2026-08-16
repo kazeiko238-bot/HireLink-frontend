@@ -574,14 +574,12 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
         );
 
         if (application) {
+    application.has_interview = true;
 
-            application.has_interview = true;
-
-            // Optional:
-            // automatically change status to interviewed
-            application.status = "interviewed";
-
-        }
+    // IMPORTANT:
+    // Do NOT change application.status.
+    // It should remain "shortlisted".
+    }
 
 
         // =====================
