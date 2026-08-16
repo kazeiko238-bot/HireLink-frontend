@@ -934,102 +934,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // =========================================================
-    // START MEETING - EMPLOYER
-    // =========================================================
+  // =====================================================
+// Company: Start Meeting
+// =====================================================
 
-    async function startMeeting(interview) {
+function startMeeting(meeting) {
 
-        const roomCode =
-            interview.room_code ||
-            interview.roomCode;
+    const roomCode =
+        meeting.room_code ||
+        meeting.roomCode ||
+        meeting.room_id ||
+        meeting.room;
 
-
-        if (!roomCode) {
-
-            alert(
-                "This interview does not have a meeting room."
-            );
-
-            return;
-
-        }
-
-
-        /*
-         * The meeting was already created when
-         * the interview was scheduled.
-         *
-         * Therefore we don't create another meeting.
-         *
-         * We simply enter the existing room.
-         */
-
-        console.log(
-            "Starting meeting:",
-            roomCode
-        );
-
-
-        /*
-         * Your current meetingController has:
-         *
-         * GET /api/meetings/:roomCode
-         *
-         * but it does NOT currently have:
-         *
-         * POST /api/meetings/:roomCode/start
-         *
-         * so don't call the nonexistent endpoint.
-         */
-
-
-        window.location.href =
-            `/meeting.html?room=${encodeURIComponent(
-                roomCode
-            )}`;
-
+    if (!roomCode) {
+        alert("Meeting room is not available.");
+        console.error("No room code:", meeting);
+        return;
     }
 
-
-    // =========================================================
-    // ENTER MEETING - JOBSEEKER
-    // =========================================================
-
-    async function enterMeeting(interview) {
-
-        const roomCode =
-            interview.room_code ||
-            interview.roomCode;
+    window.location.href =
+        `/meeting-room.html?room=${encodeURIComponent(roomCode)}`;
+}
 
 
-        if (!roomCode) {
+// =====================================================
+// Jobseeker: Enter Meeting
+// =====================================================
 
-            alert(
-                "This interview does not have a meeting room."
-            );
+function enterMeeting(meeting) {
 
-            return;
+    const roomCode =
+        meeting.room_code ||
+        meeting.roomCode ||
+        meeting.room_id ||
+        meeting.room;
 
-        }
-
-
-        /*
-         * Your interview controller already
-         * generated the room.
-         *
-         * The actual meeting page can use:
-         *
-         * /meeting.html?room=ROOMCODE
-         */
-
-        window.location.href =
-            `/meeting.html?room=${encodeURIComponent(
-                roomCode
-            )}`;
-
+    if (!roomCode) {
+        alert("Meeting room is not available.");
+        console.error("No room code:", meeting);
+        return;
     }
 
+    window.location.href =
+        `/meeting-room.html?room=${encodeURIComponent(roomCode)}`;
+}
 
     // =========================================================
     // INITIALIZE
