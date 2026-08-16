@@ -1,1 +1,810 @@
+/* ============================================================
+   1. GLOBAL RESET & BACKGROUND
+============================================================ */
 
+:root {
+    --primary: #2d6cdf;
+    --primary-hover: #1f56c2;
+
+    --bg-overlay: rgba(245, 247, 251, 0.85);
+    --glass-bg: rgba(255, 255, 255, 0.82);
+    --glass-border: rgba(255, 255, 255, 0.45);
+
+    --text-main: #1a1f36;
+    --text-muted: #64748b;
+
+    --success: #10b981;
+    --success-bg: #dcfce7;
+
+    --warning: #f59e0b;
+    --warning-bg: #fef3c7;
+
+    --danger: #ef4444;
+    --danger-bg: #fee2e2;
+
+    --info: #2563eb;
+    --info-bg: #eef5ff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-main);
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            var(--bg-overlay),
+            var(--bg-overlay)
+        ),
+        url("../images/bg5.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+
+/* ============================================================
+   2. HEADER & NAVIGATION
+============================================================ */
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 40px;
+
+    background: var(--glass-bg);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid var(--glass-border);
+
+    box-shadow:
+        0 4px 30px rgba(0, 0, 0, 0.03);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.brand h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+
+    margin: 0;
+
+    color: var(--primary);
+}
+
+.back-btn {
+    background: rgb(254, 254, 254);
+
+    border: 1px solid #000;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.2s;
+}
+
+.back-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+
+    transform: translateX(-2px);
+}
+
+.signin-btn {
+    background: var(--primary);
+
+    color: white;
+
+    border: none;
+
+    padding: 8px 24px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.signin-btn:hover {
+    background: var(--primary-hover);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(45, 108, 223, 0.25);
+}
+
+
+/* ============================================================
+   3. MEETING PAGE
+============================================================ */
+
+.meeting-page {
+    width: 100%;
+
+    padding-top: 70px;
+
+    min-height: calc(100vh - 70px);
+}
+
+.meeting-container {
+    max-width: 950px;
+
+    margin: 0 auto;
+
+    padding: 45px 20px 70px;
+}
+
+
+/* ============================================================
+   4. PAGE HEADING
+============================================================ */
+
+.page-heading {
+    margin-bottom: 30px;
+}
+
+.page-heading h1 {
+    margin: 0 0 8px;
+
+    font-size: 2rem;
+
+    font-weight: 800;
+
+    letter-spacing: -0.7px;
+
+    color: #111827;
+}
+
+.page-heading p {
+    margin: 0;
+
+    color: var(--text-muted);
+
+    font-size: 0.95rem;
+}
+
+
+/* ============================================================
+   5. MEETING LIST
+============================================================ */
+
+.meeting-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+/* ============================================================
+   6. MEETING CARD
+============================================================ */
+
+.meeting-card {
+    position: relative;
+
+    background: var(--glass-bg);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid var(--glass-border);
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.05);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+
+    border-left: 6px solid var(--primary);
+}
+
+.meeting-card:hover {
+    transform: translateY(-3px);
+
+    background: rgba(255, 255, 255, 0.95);
+
+    box-shadow:
+        0 20px 30px rgba(0, 0, 0, 0.10);
+}
+
+
+/* ============================================================
+   7. MEETING CARD HEADER
+============================================================ */
+
+.meeting-card-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+.meeting-label {
+    display: inline-block;
+
+    margin-bottom: 7px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+
+    color: var(--primary);
+}
+
+.meeting-title {
+    margin: 0;
+
+    font-size: 1.25rem;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    line-height: 1.3;
+}
+
+
+/* ============================================================
+   8. MEETING STATUS
+============================================================ */
+
+.meeting-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 100px;
+
+    padding: 7px 13px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.04em;
+
+    white-space: nowrap;
+}
+
+
+/* Scheduled */
+
+.meeting-status.scheduled {
+    background: var(--warning-bg);
+
+    color: #92400e;
+}
+
+
+/* Waiting */
+
+.meeting-status.waiting,
+.meeting-status.waiting-for-host {
+    background: #e0f2fe;
+
+    color: #075985;
+}
+
+
+/* In Progress */
+
+.meeting-status.in-progress,
+.meeting-status.active {
+    background: var(--success-bg);
+
+    color: #166534;
+}
+
+
+/* Completed */
+
+.meeting-status.completed {
+    background: #f1f5f9;
+
+    color: #475569;
+}
+
+
+/* Cancelled */
+
+.meeting-status.cancelled {
+    background: var(--danger-bg);
+
+    color: #991b1b;
+}
+
+
+/* ============================================================
+   9. MEETING DETAILS
+============================================================ */
+
+.meeting-details {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 1px;
+
+    background: #e2e8f0;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    margin-bottom: 22px;
+}
+
+.meeting-detail {
+    background: rgba(255, 255, 255, 0.75);
+
+    padding: 15px 17px;
+
+    min-width: 0;
+}
+
+.detail-label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.05em;
+}
+
+.meeting-detail strong {
+    display: block;
+
+    color: #1e293b;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+.meeting-detail small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+/* ============================================================
+   10. MEETING CARD FOOTER
+============================================================ */
+
+.meeting-card-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.meeting-info {
+    color: var(--text-muted);
+
+    font-size: 12px;
+
+    font-weight: 500;
+}
+
+
+/* ============================================================
+   11. START / ENTER MEETING BUTTON
+============================================================ */
+
+.meeting-btn {
+    min-width: 150px;
+
+    padding: 11px 20px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--primary);
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.meeting-btn:hover {
+    background: var(--primary-hover);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 15px rgba(45, 108, 223, 0.25);
+}
+
+.meeting-btn:active {
+    transform: translateY(0);
+}
+
+.meeting-btn:disabled {
+    background: #cbd5e1;
+
+    color: #64748b;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+
+    transform: none;
+}
+
+
+/* ============================================================
+   12. COMPANY / JOBSEEKER ACCENTS
+============================================================ */
+
+/* Company */
+
+.meeting-card.company-meeting {
+    border-left-color: #7c3aed;
+}
+
+
+/* Jobseeker */
+
+.meeting-card.jobseeker-meeting {
+    border-left-color: var(--primary);
+}
+
+
+/* ============================================================
+   13. EMPTY STATE
+============================================================ */
+
+.no-meetings {
+    text-align: center;
+
+    background: var(--glass-bg);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid var(--glass-border);
+
+    border-radius: 20px;
+
+    padding: 65px 30px;
+
+    color: var(--text-muted);
+
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.04);
+}
+
+.no-meetings h2 {
+    margin: 0 0 10px;
+
+    color: #334155;
+
+    font-size: 1.35rem;
+
+    font-weight: 700;
+}
+
+.no-meetings p {
+    margin: 0;
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   14. HIDDEN
+============================================================ */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* ============================================================
+   15. ERROR STATE
+============================================================ */
+
+.meeting-error {
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 16px;
+
+    padding: 50px 25px;
+
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.meeting-error h3 {
+    margin: 0 0 10px;
+
+    color: #1e293b;
+
+    font-size: 1.2rem;
+}
+
+.meeting-error p {
+    margin: 0 0 20px;
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+}
+
+.meeting-error button {
+    border: none;
+
+    background: var(--primary);
+
+    color: white;
+
+    padding: 10px 20px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.meeting-error button:hover {
+    background: var(--primary-hover);
+}
+
+
+/* ============================================================
+   16. FOOTER
+============================================================ */
+
+.site-footer {
+    background: #111827;
+
+    color: #d1d5db;
+
+    text-align: center;
+
+    padding: 24px;
+
+    margin-top: 30px;
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   17. RESPONSIVE DESIGN
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .header {
+        padding: 0 20px;
+    }
+
+    .meeting-container {
+        padding:
+            35px 15px 50px;
+    }
+
+    .page-heading h1 {
+        font-size: 1.7rem;
+    }
+
+    .meeting-card {
+        padding: 20px;
+    }
+
+    .meeting-card-header {
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+    .meeting-status {
+        align-self: flex-start;
+    }
+
+    .meeting-details {
+        grid-template-columns: 1fr;
+    }
+
+    .meeting-card-footer {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .meeting-info {
+        text-align: center;
+    }
+
+    .meeting-btn {
+        width: 100%;
+    }
+}
+
+
+/* ============================================================
+   18. SMALL MOBILE DEVICES
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .header {
+        height: 64px;
+    }
+
+    .brand {
+        gap: 10px;
+    }
+
+    .brand h2 {
+        font-size: 1.2rem;
+    }
+
+    .back-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    .signin-btn {
+        padding: 7px 16px;
+
+        font-size: 12px;
+    }
+
+    .meeting-page {
+        padding-top: 64px;
+    }
+
+    .meeting-container {
+        padding:
+            30px 12px 45px;
+    }
+
+    .page-heading {
+        margin-bottom: 22px;
+    }
+
+    .page-heading h1 {
+        font-size: 1.5rem;
+    }
+
+    .page-heading p {
+        font-size: 13px;
+    }
+
+    .meeting-card {
+        padding: 17px;
+
+        border-radius: 15px;
+    }
+
+    .meeting-title {
+        font-size: 1.1rem;
+    }
+
+    .meeting-detail {
+        padding: 13px 14px;
+    }
+
+    .meeting-detail strong {
+        font-size: 13px;
+    }
+
+    .meeting-label {
+        font-size: 9px;
+    }
+
+    .meeting-status {
+        font-size: 10px;
+
+        min-width: auto;
+    }
+
+}
