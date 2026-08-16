@@ -22,12 +22,7 @@ interviewOverlay.addEventListener("click", (e) => {
 });
 
 const interviewType = document.getElementById("interviewType");
-const meetingSection = document.getElementById("meetingSection");
 const locationGroup = document.getElementById("locationGroup");
-
-const createMeetingBtn = document.getElementById("createMeetingBtn");
-const meetingCreated = document.getElementById("meetingCreated");
-const meetingRoomCode = document.getElementById("meetingRoomCode");
 
 // -------- Back button --------
 document.querySelector('.back-btn')?.addEventListener('click', () => {
@@ -459,13 +454,10 @@ document.getElementById("jobToggleBtn")?.addEventListener("click", async () => {
 function updateInterviewFields() {
 
     if (interviewType.value === "online") {
-
-        meetingSection.style.display = "block";
         locationGroup.style.display = "none";
 
     } else {
 
-        meetingSection.style.display = "none";
         locationGroup.style.display = "block";
 
     }
@@ -486,24 +478,30 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
     const application_id = modal.dataset.application;
     const jobseeker_id = modal.dataset.jobseeker;
 
-    const interview_date = document.getElementById("interviewDate").value;
-    const start_time = document.getElementById("startTime").value;
-    const end_time = document.getElementById("endTime").value;
+    const interview_date =
+        document.getElementById("interviewDate").value;
 
-    const interview_type = document.getElementById("interviewType").value;
+    const start_time =
+        document.getElementById("startTime").value;
 
-    const location = document.getElementById("interviewLocation").value;
+    const end_time =
+        document.getElementById("endTime").value;
 
-    const notes = document.getElementById("interviewNotes").value;
+    const interview_type =
+        document.getElementById("interviewType").value;
+
+    const location =
+        document.getElementById("interviewLocation").value;
+
+    const notes =
+        document.getElementById("interviewNotes").value;
+
 
     // =====================
-    // Validation
+    // VALIDATION
     // =====================
-    if (
-        !interview_date ||
-        !start_time ||
-        !end_time
-    ) {
+
+    if (!interview_date || !start_time || !end_time) {
         alert("Please complete all required fields.");
         return;
     }
@@ -515,6 +513,17 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
         alert("Please enter the interview location.");
         return;
     }
+
+
+    // =====================
+    // DISABLE BUTTON
+    // =====================
+
+    const sendBtn = document.getElementById("sendInterview");
+
+    sendBtn.disabled = true;
+    sendBtn.textContent = "Scheduling...";
+
 
     try {
 
@@ -543,22 +552,70 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
 
         });
 
+
         const data = await res.json();
 
-        // Close modal after request
-        closeInterviewModal();
-
-        // Reload applicants list
-        loadApplications();
 
         if (!res.ok) {
 
-            alert(data.error || "Failed to schedule interview.");
-            return;
+            throw new Error(
+                data.error || "Failed to schedule interview."
+            );
 
         }
 
-        // Email failed but interview saved
+
+        // =====================
+        // MARK APPLICATION
+        // =====================
+
+        const application = allApplications.find(
+            app => String(app.application_id) === String(application_id)
+        );
+
+        if (application) {
+
+            application.has_interview = true;
+
+            // Optional:
+            // automatically change status to interviewed
+            application.status = "interviewed";
+
+        }
+
+
+        // =====================
+        // CLOSE MODAL
+        // =====================
+
+        closeInterviewModal();
+
+
+        // =====================
+        // RESET BUTTON
+        // =====================
+
+        sendBtn.disabled = false;
+        sendBtn.textContent = "Send Invitation";
+
+
+        // =====================
+        // REFRESH APPLICATIONS
+        // =====================
+
+        renderApplications(
+            currentFilter === "all"
+                ? allApplications
+                : allApplications.filter(
+                    app => app.status === currentFilter
+                )
+        );
+
+
+        // =====================
+        // SUCCESS MESSAGE
+        // =====================
+
         if (data.emailWarning) {
 
             alert(
@@ -572,16 +629,15 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
 
         }
 
+
     } catch (err) {
 
-        console.error(err);
+        console.error("Schedule interview error:", err);
 
-        closeInterviewModal();
+        sendBtn.disabled = false;
+        sendBtn.textContent = "Send Invitation";
 
-        alert(
-            "Unable to contact the server.\n" +
-            "Please refresh the page and check if the interview was created."
-        );
+        alert(err.message || "Unable to schedule interview.");
 
     }
 
