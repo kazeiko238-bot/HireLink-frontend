@@ -451,7 +451,7 @@ function updateInterviewFields() {
 
     if (interviewType.value === "online") {
 
-        meetingLinkGroup.style.display = "block";
+        meetingLinkGroup.style.display = "none";
         locationGroup.style.display = "none";
 
     } else {
@@ -484,7 +484,6 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
 
     const interview_type = document.getElementById("interviewType").value;
 
-    const meeting_link = document.getElementById("meetingLink").value;
     const location = document.getElementById("interviewLocation").value;
 
     const notes = document.getElementById("interviewNotes").value;
@@ -498,14 +497,6 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
         !end_time
     ) {
         alert("Please complete all required fields.");
-        return;
-    }
-
-    if (
-        interview_type === "online" &&
-        !meeting_link.trim()
-    ) {
-        alert("Please enter a meeting link.");
         return;
     }
 
@@ -537,7 +528,6 @@ document.getElementById("sendInterview").addEventListener("click", async () => {
                 start_time,
                 end_time,
                 interview_type,
-                meeting_link,
                 location,
                 notes
 
