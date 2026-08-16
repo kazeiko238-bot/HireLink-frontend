@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>HireLink Meeting</title>
+
+    <link rel="stylesheet" href="css/meeting-room.css">
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="images/logo.png"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <header class="meeting-header">
+
+        <div class="meeting-brand">
+
+            <h2>HireLink</h2>
+
+            <span class="meeting-title">
+                Video Meeting
+            </span>
+
+        </div>
+
+        <div class="meeting-info">
+
+            <span id="roomStatus">
+                Connecting...
+            </span>
+
+            <span id="roomCode">
+                Room: -
+            </span>
+
+        </div>
+
+    </header>
+
+
+    <main class="meeting-container">
+
+        <!-- Remote participant -->
+        <div class="remote-video-container">
+
+            <video
+                id="remoteVideo"
+                autoplay
+                playsinline
+            ></video>
+
+            <div
+                id="remotePlaceholder"
+                class="video-placeholder"
+            >
+                <div class="placeholder-icon">
+                    👤
+                </div>
+
+                <span>
+                    Waiting for participant...
+                </span>
+            </div>
+
+            <div class="participant-name" id="remoteName">
+                Participant
+            </div>
+
+        </div>
+
+
+        <!-- Local participant -->
+        <div class="local-video-container">
+
+            <video
+                id="localVideo"
+                autoplay
+                muted
+                playsinline
+            ></video>
+
+            <div
+                id="localPlaceholder"
+                class="local-placeholder"
+            >
+                Camera Off
+            </div>
+
+        </div>
+
+
+        <!-- Controls -->
+        <div class="meeting-controls">
+
+            <button
+                id="micBtn"
+                class="control-btn"
+                title="Mute microphone"
+            >
+                🎤
+            </button>
+
+            <button
+                id="cameraBtn"
+                class="control-btn"
+                title="Turn camera off"
+            >
+                📹
+            </button>
+
+            <button
+                id="screenBtn"
+                class="control-btn"
+                title="Share screen"
+            >
+                🖥️
+            </button>
+
+            <button
+                id="leaveBtn"
+                class="control-btn leave-btn"
+                title="Leave meeting"
+            >
+                📞
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- Connection error -->
+    <div
+        id="meetingError"
+        class="meeting-error hidden"
+    >
+
+        <div class="error-box">
+
+            <h2>Unable to join meeting</h2>
+
+            <p id="errorMessage">
+                Something went wrong.
+            </p>
+
+            <button
+                id="backBtn"
+                class="back-btn"
+            >
+                Back to Meetings
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="meeting-room.js"></script>
+
+</body>
+
+</html>
