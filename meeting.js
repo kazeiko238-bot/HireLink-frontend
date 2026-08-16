@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
         "https://hirelink-backend-qnww.onrender.com";
 
 
-    // =====================================================
-    // DOM
-    // =====================================================
+    // =========================================================
+    // ELEMENTS
+    // =========================================================
 
     const container =
         document.getElementById("meetingList");
@@ -15,20 +15,16 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("noMeetings");
 
 
-    // =====================================================
-    // USER INFORMATION
-    // =====================================================
+    // =========================================================
+    // STATE
+    // =========================================================
 
-    const userName =
-        localStorage.getItem("userName");
-
-    const userRole =
-        localStorage.getItem("userRole");
+    let currentUser = null;
 
 
-    // =====================================================
-    // ESCAPE HTML
-    // =====================================================
+    // =========================================================
+    // HELPERS
+    // =========================================================
 
     function escapeHTML(value) {
 
@@ -36,45 +32,21 @@ document.addEventListener("DOMContentLoaded", () => {
             value === null ||
             value === undefined
         ) {
-
             return "";
-
         }
 
-
         return String(value)
-
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-
-            .replace(
-                /</g,
-                "&lt;"
-            )
-
-            .replace(
-                />/g,
-                "&gt;"
-            )
-
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
 
-    // =====================================================
+    // =========================================================
     // FORMAT DATE
-    // =====================================================
+    // =========================================================
 
     function formatDate(date) {
 
@@ -82,23 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
             return "-";
         }
 
-
-        const parsed =
+        const parsedDate =
             new Date(date);
 
 
-        if (
-            isNaN(
-                parsed.getTime()
-            )
-        ) {
-
-            return date;
-
+        if (isNaN(parsedDate.getTime())) {
+            return "-";
         }
 
 
-        return parsed.toLocaleDateString(
+        return parsedDate.toLocaleDateString(
             "en-US",
             {
                 weekday: "long",
@@ -111,9 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // =====================================================
+    // =========================================================
     // FORMAT TIME
-    // =====================================================
+    // =========================================================
 
     function formatTime(time) {
 
@@ -127,33 +92,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const hour =
-            parseInt(
-                parts[0],
-                10
-            );
+            parseInt(parts[0], 10);
 
 
         const minute =
-            parseInt(
-                parts[1],
-                10
-            );
+            parseInt(parts[1], 10);
 
 
         if (
             isNaN(hour) ||
             isNaN(minute)
         ) {
-
-            return time;
-
+            return "-";
         }
 
 
         return new Date(
+            2000,
             0,
-            0,
-            0,
+            1,
             hour,
             minute
         ).toLocaleTimeString(
@@ -168,154 +125,56 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // =====================================================
+    // =========================================================
     // FORMAT STATUS
-    // =====================================================
+    // =========================================================
 
     function formatStatus(status) {
 
         if (!status) {
-            return "Waiting";
+            return "Scheduled";
         }
 
 
         return String(status)
-
-            .replace(
-                /_/g,
-                " "
-            )
-
-            .replace(
-                /\b\w/g,
-                char =>
-                    char.toUpperCase()
+            .replace(/_/g, " ")
+            .replace(/\b\w/g, char =>
+                char.toUpperCase()
             );
 
     }
 
 
-    // =====================================================
-    // CHECK LOGIN
-    // =====================================================
+    // =========================================================
+    // GET CURRENT USER
+    // =========================================================
 
-    function isLoggedIn() {
-
-        return (
-
-            userName &&
-
-            (
-                userRole === "jobseeker" ||
-                userRole === "employer"
-            )
-
-        );
-
-    }
-
-
-    // =====================================================
-    // SHOW LOGIN REQUIRED
-    // =====================================================
-
-    function showLoginRequired() {
-
-        container.innerHTML = `
-
-            <div class="meeting-error">
-
-                <h3>
-                    Sign in required
-                </h3>
-
-                <p>
-                    Please sign in to view your meetings.
-                </p>
-
-                <button
-                    type="button"
-                    class="meeting-login-btn"
-                    id="meetingLoginBtn"
-                >
-                    Sign In
-                </button>
-
-            </div>
-
-        `;
-
-
-        const loginButton =
-            document.getElementById(
-                "meetingLoginBtn"
-            );
-
-
-        if (loginButton) {
-
-            loginButton.addEventListener(
-                "click",
-                () => {
-
-                    const overlay =
-                        document.getElementById(
-                            "loginOverlay"
-                        );
-
-
-                    if (overlay) {
-
-                        overlay.classList.remove(
-                            "hidden"
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-
-    }
-
-
-    // =====================================================
-    // LOAD MEETINGS
-    // =====================================================
-
-    async function loadMeetings() {
+    async function getCurrentUser() {
 
         try {
 
-            const endpoint =
+            /*
+             * Your server already has:
+             *
+             * GET /api/me
+             *
+             * so DO NOT use /api/auth/me here.
+             */
 
-                userRole === "employer"
-
-                    ? "/api/interviews/employer"
-
-                    : "/api/interviews/jobseeker";
-
-
-            console.log(
-                "Loading:",
-                endpoint
+            const res = await fetch(
+                `${API_BASE}/api/me`,
+                {
+                    credentials: "include"
+                }
             );
 
 
-            const response =
-                await fetch(
-                    `${API_BASE}${endpoint}`,
-                    {
-                        credentials: "include"
-                    }
-                );
-
+            /*
+             * Make sure the server actually returned JSON.
+             */
 
             const contentType =
-                response.headers.get(
-                    "content-type"
-                ) || "";
+                res.headers.get("content-type") || "";
 
 
             if (
@@ -324,139 +183,287 @@ document.addEventListener("DOMContentLoaded", () => {
                 )
             ) {
 
+                const text =
+                    await res.text();
+
+                console.error(
+                    "Expected JSON but received:",
+                    text.substring(0, 300)
+                );
+
                 throw new Error(
-                    `Server returned ${response.status} instead of JSON.`
+                    "Server did not return JSON."
                 );
 
             }
 
 
             const data =
-                await response.json();
+                await res.json();
 
 
-            if (!response.ok) {
+            if (!res.ok) {
 
                 throw new Error(
                     data.error ||
-                    data.message ||
-                    "Failed to load meetings."
+                    "Unable to get current user."
+                );
+
+            }
+
+
+            /*
+             * Your /api/me returns:
+             *
+             * {
+             *     role: "...",
+             *     userId: "..."
+             * }
+             */
+
+            if (!data.role) {
+
+                throw new Error(
+                    "User is not logged in."
+                );
+
+            }
+
+
+            currentUser = data;
+
+
+            return currentUser;
+
+        }
+
+        catch (err) {
+
+            console.error(
+                "getCurrentUser error:",
+                err
+            );
+
+            return null;
+
+        }
+
+    }
+
+
+    // =========================================================
+    // GET INTERVIEW ENDPOINT
+    // =========================================================
+
+    function getInterviewEndpoint() {
+
+        if (!currentUser) {
+            return null;
+        }
+
+
+        /*
+         * IMPORTANT:
+         *
+         * server.js uses:
+         *
+         * app.use("/api/interview", interviewRoutes);
+         *
+         * Therefore the correct URLs are:
+         *
+         * /api/interview/jobseeker
+         * /api/interview/employer
+         */
+
+        if (
+            currentUser.role === "jobseeker"
+        ) {
+
+            return `${API_BASE}/api/interview/jobseeker`;
+
+        }
+
+
+        if (
+            currentUser.role === "employer" ||
+            currentUser.role === "company"
+        ) {
+
+            return `${API_BASE}/api/interview/employer`;
+
+        }
+
+
+        return null;
+
+    }
+
+
+    // =========================================================
+    // LOAD MEETINGS / INTERVIEWS
+    // =========================================================
+
+    async function loadMeetings() {
+
+        try {
+
+            if (!currentUser) {
+
+                throw new Error(
+                    "You are not logged in."
+                );
+
+            }
+
+
+            const endpoint =
+                getInterviewEndpoint();
+
+
+            if (!endpoint) {
+
+                throw new Error(
+                    "Unable to determine your account role."
                 );
 
             }
 
 
             console.log(
-                "Interview data:",
+                "Loading:",
+                endpoint
+            );
+
+
+            const res =
+                await fetch(
+                    endpoint,
+                    {
+                        credentials: "include"
+                    }
+                );
+
+
+            /*
+             * Check whether response is JSON
+             * before calling response.json().
+             */
+
+            const contentType =
+                res.headers.get("content-type") || "";
+
+
+            if (
+                !contentType.includes(
+                    "application/json"
+                )
+            ) {
+
+                const text =
+                    await res.text();
+
+                console.error(
+                    "Server returned non-JSON:",
+                    text.substring(0, 500)
+                );
+
+                throw new Error(
+                    `Server returned ${res.status} instead of JSON.`
+                );
+
+            }
+
+
+            const data =
+                await res.json();
+
+
+            if (!res.ok) {
+
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    `Server returned ${res.status}.`
+                );
+
+            }
+
+
+            console.log(
+                "Interview response:",
                 data
             );
 
 
-            container.innerHTML = "";
-
-
             /*
-             * Only ONLINE interviews have
-             * a HireLink meeting room.
+             * Your controller returns:
+             *
+             * res.json(result.rows)
+             *
+             * so data should be an array.
              */
 
-            const meetings =
+            const interviews =
                 Array.isArray(data)
-
-                    ? data.filter(
-                        interview =>
-                            interview.interview_type ===
-                            "online" &&
-                            interview.room_code
-                    )
-
+                    ? data
                     : [];
 
 
-            if (
-                meetings.length === 0
-            ) {
-
-                showNoMeetings();
-
-                return;
-
-            }
-
-
-            if (noMeetings) {
-
-                noMeetings.classList.add(
-                    "hidden"
-                );
-
-            }
-
-
-            meetings.forEach(
-                interview => {
-
-                    const card =
-                        createMeetingCard(
-                            interview
-                        );
-
-
-                    container.appendChild(
-                        card
-                    );
-
-                }
-            );
+            renderMeetings(interviews);
 
         }
 
-        catch (error) {
+        catch (err) {
 
             console.error(
                 "loadMeetings error:",
-                error
+                err
             );
 
 
-            container.innerHTML = `
+            if (container) {
 
-                <div class="meeting-error">
+                container.innerHTML = `
 
-                    <h3>
-                        Unable to load meetings
-                    </h3>
+                    <div class="meeting-error">
 
-                    <p>
-                        ${escapeHTML(
-                            error.message
-                        )}
-                    </p>
+                        <h3>
+                            Unable to load meetings
+                        </h3>
 
-                    <button
-                        type="button"
-                        id="retryMeetingsBtn"
-                    >
-                        Try Again
-                    </button>
+                        <p>
+                            ${escapeHTML(
+                                err.message ||
+                                "Something went wrong."
+                            )}
+                        </p>
 
-                </div>
+                        <button
+                            id="retryMeetingsBtn"
+                            type="button"
+                        >
+                            Try Again
+                        </button>
 
-            `;
+                    </div>
 
-
-            const retryButton =
-                document.getElementById(
-                    "retryMeetingsBtn"
-                );
+                `;
 
 
-            if (retryButton) {
+                const retryBtn =
+                    document.getElementById(
+                        "retryMeetingsBtn"
+                    );
 
-                retryButton.addEventListener(
-                    "click",
-                    loadMeetings
-                );
+
+                if (retryBtn) {
+
+                    retryBtn.addEventListener(
+                        "click",
+                        loadMeetings
+                    );
+
+                }
 
             }
 
@@ -465,9 +472,130 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // =====================================================
-    // CREATE CARD
-    // =====================================================
+    // =========================================================
+    // RENDER MEETINGS
+    // =========================================================
+
+    function renderMeetings(interviews) {
+
+        if (!container) {
+
+            console.error(
+                "meetingList element not found."
+            );
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        /*
+         * Only online interviews have
+         * HireLink meeting rooms.
+         */
+
+        const meetings =
+            interviews.filter(interview => {
+
+                return (
+                    interview.interview_type ===
+                    "online"
+                );
+
+            });
+
+
+        if (meetings.length === 0) {
+
+            if (noMeetings) {
+
+                noMeetings.classList.remove(
+                    "hidden"
+                );
+
+            }
+
+
+            container.innerHTML = `
+
+                <div class="empty-state">
+
+                    <h3>
+                        No Meetings
+                    </h3>
+
+                    <p>
+                        You currently have no
+                        scheduled online meetings.
+                    </p>
+
+                </div>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        if (noMeetings) {
+
+            noMeetings.classList.add(
+                "hidden"
+            );
+
+        }
+
+
+        /*
+         * Sort by date and start time.
+         */
+
+        meetings.sort(
+            (a, b) => {
+
+                const dateA =
+                    new Date(
+                        `${a.interview_date}T${a.start_time}`
+                    );
+
+
+                const dateB =
+                    new Date(
+                        `${b.interview_date}T${b.start_time}`
+                    );
+
+
+                return dateA - dateB;
+
+            }
+        );
+
+
+        meetings.forEach(
+            interview => {
+
+                const card =
+                    createMeetingCard(
+                        interview
+                    );
+
+
+                container.appendChild(card);
+
+            }
+        );
+
+    }
+
+
+    // =========================================================
+    // CREATE MEETING CARD
+    // =========================================================
 
     function createMeetingCard(interview) {
 
@@ -480,25 +608,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const isEmployer =
-            userRole === "employer";
+            currentUser.role === "employer" ||
+            currentUser.role === "company";
 
 
-        // =================================================
-        // DATA
-        // =================================================
-
-        const meetingId =
-            interview.meeting_id ||
-            "-";
-
-
-        const roomCode =
-            interview.room_code ||
-            "-";
-
+        // =====================================================
+        // JOB INFORMATION
+        // =====================================================
 
         const jobId =
             interview.job_id ||
+            interview.jobId ||
+            interview.application_id ||
             "-";
 
 
@@ -507,21 +628,20 @@ document.addEventListener("DOMContentLoaded", () => {
             "Interview";
 
 
-        const companyName =
-            interview.company_name ||
+        // =====================================================
+        // MEETING INFORMATION
+        // =====================================================
+
+        const meetingId =
+            interview.meeting_id ||
+            interview.id ||
             "-";
 
 
-        const applicantName =
-            interview.applicant_name ||
-
-            [
-                interview.first_name,
-                interview.last_name
-            ]
-                .filter(Boolean)
-                .join(" ") ||
-
+        const roomCode =
+            interview.room_code ||
+            interview.roomCode ||
+            interview.meeting_room ||
             "-";
 
 
@@ -530,36 +650,55 @@ document.addEventListener("DOMContentLoaded", () => {
             "waiting";
 
 
-        const statusClass =
-            String(
-                meetingStatus
-            )
-                .toLowerCase()
-                .replace(
-                    /\s+/g,
-                    "-"
-                );
-
-
-        // =================================================
+        // =====================================================
         // PERSON
-        // =================================================
+        // =====================================================
 
-        const personLabel =
-            isEmployer
-                ? "Applicant"
-                : "Company";
+        let personLabel;
+        let personName;
 
 
-        const personName =
-            isEmployer
-                ? applicantName
-                : companyName;
+        if (isEmployer) {
+
+            personLabel =
+                "Applicant";
 
 
-        // =================================================
+            personName =
+                [
+                    interview.applicant_first_name,
+                    interview.applicant_last_name
+                ]
+                    .filter(Boolean)
+                    .join(" ");
+
+
+            if (!personName) {
+
+                personName =
+                    interview.applicant_name ||
+                    "-";
+
+            }
+
+        }
+
+        else {
+
+            personLabel =
+                "Company";
+
+
+            personName =
+                interview.company_name ||
+                "-";
+
+        }
+
+
+        // =====================================================
         // BUTTON
-        // =================================================
+        // =====================================================
 
         const buttonText =
             isEmployer
@@ -567,9 +706,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 : "Enter Meeting";
 
 
-        // =================================================
-        // CARD
-        // =================================================
+        // =====================================================
+        // STATUS
+        // =====================================================
+
+        const statusClass =
+            String(meetingStatus)
+                .toLowerCase()
+                .replace(/\s+/g, "-");
+
+
+        // =====================================================
+        // CARD HTML
+        // =====================================================
 
         card.innerHTML = `
 
@@ -582,9 +731,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </span>
 
                     <h2 class="meeting-title">
-                        ${escapeHTML(
-                            jobTitle
-                        )}
+                        ${escapeHTML(jobTitle)}
                     </h2>
 
                 </div>
@@ -595,13 +742,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         statusClass
                     )}"
                 >
-
                     ${escapeHTML(
                         formatStatus(
                             meetingStatus
                         )
                     )}
-
                 </span>
 
             </div>
@@ -615,7 +760,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="meeting-detail">
 
                     <span class="detail-label">
-                        Meeting ID
+                        Meeting ID / Room
                     </span>
 
                     <strong>
@@ -624,22 +769,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         )}
                     </strong>
 
-                </div>
-
-
-                <!-- ROOM -->
-
-                <div class="meeting-detail">
-
-                    <span class="detail-label">
-                        Meeting Room
-                    </span>
-
-                    <strong>
+                    <small>
+                        Room:
                         ${escapeHTML(
                             roomCode
                         )}
-                    </strong>
+                    </small>
 
                 </div>
 
@@ -739,11 +874,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         ${
                             isEmployer
-
                                 ? "You are the interviewer"
-
                                 : "You are the applicant"
-
                         }
 
                     </span>
@@ -755,9 +887,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     type="button"
                     class="meeting-btn"
                 >
-
                     ${buttonText}
-
                 </button>
 
             </div>
@@ -765,23 +895,35 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
 
-        // =================================================
-        // BUTTON EVENT
-        // =================================================
+        // =====================================================
+        // BUTTON
+        // =====================================================
 
-        const button =
+        const meetingBtn =
             card.querySelector(
                 ".meeting-btn"
             );
 
 
-        button.addEventListener(
+        meetingBtn.addEventListener(
             "click",
             () => {
 
-                openMeeting(
-                    interview
-                );
+                if (isEmployer) {
+
+                    startMeeting(
+                        interview
+                    );
+
+                }
+
+                else {
+
+                    enterMeeting(
+                        interview
+                    );
+
+                }
 
             }
         );
@@ -792,16 +934,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // =====================================================
-    // OPEN MEETING
-    // =====================================================
+    // =========================================================
+    // START MEETING - EMPLOYER
+    // =========================================================
 
-    async function openMeeting(
-        interview
-    ) {
+    async function startMeeting(interview) {
 
         const roomCode =
-            interview.room_code;
+            interview.room_code ||
+            interview.roomCode;
 
 
         if (!roomCode) {
@@ -815,175 +956,95 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        // =================================================
-        // EMPLOYER
-        // =================================================
+        /*
+         * The meeting was already created when
+         * the interview was scheduled.
+         *
+         * Therefore we don't create another meeting.
+         *
+         * We simply enter the existing room.
+         */
 
-        if (
-            userRole === "employer"
-        ) {
+        console.log(
+            "Starting meeting:",
+            roomCode
+        );
 
-            /*
-             * Employer is the host.
-             *
-             * Open the meeting room directly.
-             */
 
-            window.location.href =
-                `/meeting-room.html?room=${encodeURIComponent(
-                    roomCode
-                )}`;
+        /*
+         * Your current meetingController has:
+         *
+         * GET /api/meetings/:roomCode
+         *
+         * but it does NOT currently have:
+         *
+         * POST /api/meetings/:roomCode/start
+         *
+         * so don't call the nonexistent endpoint.
+         */
+
+
+        window.location.href =
+            `/meeting.html?room=${encodeURIComponent(
+                roomCode
+            )}`;
+
+    }
+
+
+    // =========================================================
+    // ENTER MEETING - JOBSEEKER
+    // =========================================================
+
+    async function enterMeeting(interview) {
+
+        const roomCode =
+            interview.room_code ||
+            interview.roomCode;
+
+
+        if (!roomCode) {
+
+            alert(
+                "This interview does not have a meeting room."
+            );
 
             return;
 
         }
 
 
-        // =================================================
-        // JOBSEEKER
-        // =================================================
+        /*
+         * Your interview controller already
+         * generated the room.
+         *
+         * The actual meeting page can use:
+         *
+         * /meeting.html?room=ROOMCODE
+         */
 
-        try {
-
-            const response =
-                await fetch(
-                    `${API_BASE}/api/meetings/${encodeURIComponent(
-                        roomCode
-                    )}/join`,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        credentials: "include",
-
-                        body: JSON.stringify({
-
-                            name:
-                                userName ||
-                                "Jobseeker"
-
-                        })
-
-                    }
-                );
-
-
-            const contentType =
-                response.headers.get(
-                    "content-type"
-                ) || "";
-
-
-            if (
-                !contentType.includes(
-                    "application/json"
-                )
-            ) {
-
-                throw new Error(
-                    `Server returned ${response.status} instead of JSON.`
-                );
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data.message ||
-                    data.error ||
-                    "Unable to enter meeting."
-                );
-
-            }
-
-
-            console.log(
-                "Join response:",
-                data
-            );
-
-
-            /*
-             * The current backend creates the
-             * participant with status "pending".
-             *
-             * Then open the meeting room.
-             */
-
-            window.location.href =
-                `/meeting-room.html?room=${encodeURIComponent(
-                    roomCode
-                )}`;
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "openMeeting error:",
-                error
-            );
-
-
-            alert(
-                error.message ||
-                "Unable to enter the meeting."
-            );
-
-        }
+        window.location.href =
+            `/meeting.html?room=${encodeURIComponent(
+                roomCode
+            )}`;
 
     }
 
 
-    // =====================================================
-    // NO MEETINGS
-    // =====================================================
-
-    function showNoMeetings() {
-
-        if (noMeetings) {
-
-            noMeetings.classList.remove(
-                "hidden"
-            );
-
-        }
-
-
-        container.innerHTML = `
-
-            <div class="empty-state">
-
-                <h3>
-                    No upcoming meetings
-                </h3>
-
-                <p>
-                    You don't have any online
-                    interviews scheduled.
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-
-    // =====================================================
+    // =========================================================
     // INITIALIZE
-    // =====================================================
+    // =========================================================
 
-    function init() {
+    async function init() {
+
+        console.log(
+            "================================="
+        );
+
+        console.log(
+            "HireLink Meeting Page"
+        );
+
 
         if (!container) {
 
@@ -996,51 +1057,52 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        console.log(
-            "================================="
-        );
+        currentUser =
+            await getCurrentUser();
 
 
-        console.log(
-            "HireLink Meeting Page"
-        );
+        if (!currentUser) {
 
+            container.innerHTML = `
 
-        console.log(
-            "User:",
-            userName
-        );
+                <div class="meeting-error">
 
+                    <h3>
+                        Sign in required
+                    </h3>
 
-        console.log(
-            "Role:",
-            userRole
-        );
+                    <p>
+                        Please sign in to view
+                        your meetings.
+                    </p>
 
+                </div>
 
-        console.log(
-            "================================="
-        );
-
-
-        // -----------------------------------------------
-        // Check authentication
-        // -----------------------------------------------
-
-        if (!isLoggedIn()) {
-
-            showLoginRequired();
+            `;
 
             return;
 
         }
 
 
-        // -----------------------------------------------
-        // Load meetings
-        // -----------------------------------------------
+        console.log(
+            "User:",
+            currentUser.userId
+        );
 
-        loadMeetings();
+
+        console.log(
+            "Role:",
+            currentUser.role
+        );
+
+
+        console.log(
+            "================================="
+        );
+
+
+        await loadMeetings();
 
     }
 
