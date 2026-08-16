@@ -1,30 +1,80 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+    const API_BASE =
+        "https://hirelink-backend-qnww.onrender.com";
 
-    const container = document.getElementById("meetingList");
-    const noMeetings = document.getElementById("noMeetings");
-
-    let currentUser = null;
 
     // =====================================================
-    // Helpers
+    // DOM
+    // =====================================================
+
+    const container =
+        document.getElementById("meetingList");
+
+    const noMeetings =
+        document.getElementById("noMeetings");
+
+
+    // =====================================================
+    // USER INFORMATION
+    // =====================================================
+
+    const userName =
+        localStorage.getItem("userName");
+
+    const userRole =
+        localStorage.getItem("userRole");
+
+
+    // =====================================================
+    // ESCAPE HTML
     // =====================================================
 
     function escapeHTML(value) {
 
-        if (value === null || value === undefined) {
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
             return "";
+
         }
 
+
         return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
     }
 
+
+    // =====================================================
+    // FORMAT DATE
+    // =====================================================
 
     function formatDate(date) {
 
@@ -32,15 +82,38 @@ document.addEventListener("DOMContentLoaded", () => {
             return "-";
         }
 
-        return new Date(date).toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        });
+
+        const parsed =
+            new Date(date);
+
+
+        if (
+            isNaN(
+                parsed.getTime()
+            )
+        ) {
+
+            return date;
+
+        }
+
+
+        return parsed.toLocaleDateString(
+            "en-US",
+            {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            }
+        );
 
     }
 
+
+    // =====================================================
+    // FORMAT TIME
+    // =====================================================
 
     function formatTime(time) {
 
@@ -48,74 +121,159 @@ document.addEventListener("DOMContentLoaded", () => {
             return "-";
         }
 
-        // Handles HH:MM or HH:MM:SS
-        const parts = time.split(":");
 
-        const hour = parseInt(parts[0], 10);
-        const minute = parseInt(parts[1], 10);
+        const parts =
+            String(time).split(":");
 
-        return new Date(0, 0, 0, hour, minute)
-            .toLocaleTimeString("en-US", {
+
+        const hour =
+            parseInt(
+                parts[0],
+                10
+            );
+
+
+        const minute =
+            parseInt(
+                parts[1],
+                10
+            );
+
+
+        if (
+            isNaN(hour) ||
+            isNaN(minute)
+        ) {
+
+            return time;
+
+        }
+
+
+        return new Date(
+            0,
+            0,
+            0,
+            hour,
+            minute
+        ).toLocaleTimeString(
+            "en-US",
+            {
                 hour: "numeric",
                 minute: "2-digit",
                 hour12: true
-            });
+            }
+        );
 
     }
 
+
+    // =====================================================
+    // FORMAT STATUS
+    // =====================================================
 
     function formatStatus(status) {
 
         if (!status) {
-            return "Scheduled";
+            return "Waiting";
         }
 
-        return status
-            .replace(/_/g, " ")
-            .replace(/\b\w/g, char => char.toUpperCase());
+
+        return String(status)
+
+            .replace(
+                /_/g,
+                " "
+            )
+
+            .replace(
+                /\b\w/g,
+                char =>
+                    char.toUpperCase()
+            );
 
     }
 
 
     // =====================================================
-    // Get Current User
+    // CHECK LOGIN
     // =====================================================
 
-    async function getCurrentUser() {
+    function isLoggedIn() {
 
-        try {
+        return (
 
-            const res = await fetch(`${API_BASE}/api/auth/me`, {
-                credentials: "include"
-            });
+            userName &&
 
-            const data = await res.json();
+            (
+                userRole === "jobseeker" ||
+                userRole === "employer"
+            )
 
-            if (!res.ok) {
-                throw new Error(data.error || "Unable to get user.");
-            }
+        );
 
-            /*
-             * Depending on your backend, the user may be returned as:
-             *
-             * data
-             *
-             * or:
-             *
-             * data.user
-             */
+    }
 
-            currentUser = data.user || data;
 
-            return currentUser;
+    // =====================================================
+    // SHOW LOGIN REQUIRED
+    // =====================================================
 
-        }
+    function showLoginRequired() {
 
-        catch (err) {
+        container.innerHTML = `
 
-            console.error("getCurrentUser error:", err);
+            <div class="meeting-error">
 
-            return null;
+                <h3>
+                    Sign in required
+                </h3>
+
+                <p>
+                    Please sign in to view your meetings.
+                </p>
+
+                <button
+                    type="button"
+                    class="meeting-login-btn"
+                    id="meetingLoginBtn"
+                >
+                    Sign In
+                </button>
+
+            </div>
+
+        `;
+
+
+        const loginButton =
+            document.getElementById(
+                "meetingLoginBtn"
+            );
+
+
+        if (loginButton) {
+
+            loginButton.addEventListener(
+                "click",
+                () => {
+
+                    const overlay =
+                        document.getElementById(
+                            "loginOverlay"
+                        );
+
+
+                    if (overlay) {
+
+                        overlay.classList.remove(
+                            "hidden"
+                        );
+
+                    }
+
+                }
+            );
 
         }
 
@@ -123,67 +281,182 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
-    // Load My Meetings
+    // LOAD MEETINGS
     // =====================================================
 
-    async function loadMyMeetings() {
+    async function loadMeetings() {
 
         try {
 
-            const res = await fetch(`${API_BASE}/api/meeting/my`, {
-                credentials: "include"
-            });
+            const endpoint =
 
-            const data = await res.json();
+                userRole === "employer"
 
-            if (!res.ok) {
-                throw new Error(data.error || "Failed to load meetings.");
+                    ? "/api/interviews/employer"
+
+                    : "/api/interviews/jobseeker";
+
+
+            console.log(
+                "Loading:",
+                endpoint
+            );
+
+
+            const response =
+                await fetch(
+                    `${API_BASE}${endpoint}`,
+                    {
+                        credentials: "include"
+                    }
+                );
+
+
+            const contentType =
+                response.headers.get(
+                    "content-type"
+                ) || "";
+
+
+            if (
+                !contentType.includes(
+                    "application/json"
+                )
+            ) {
+
+                throw new Error(
+                    `Server returned ${response.status} instead of JSON.`
+                );
+
             }
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "Failed to load meetings."
+                );
+
+            }
+
+
+            console.log(
+                "Interview data:",
+                data
+            );
+
 
             container.innerHTML = "";
 
-            if (!Array.isArray(data) || data.length === 0) {
 
-                noMeetings.classList.remove("hidden");
+            /*
+             * Only ONLINE interviews have
+             * a HireLink meeting room.
+             */
+
+            const meetings =
+                Array.isArray(data)
+
+                    ? data.filter(
+                        interview =>
+                            interview.interview_type ===
+                            "online" &&
+                            interview.room_code
+                    )
+
+                    : [];
+
+
+            if (
+                meetings.length === 0
+            ) {
+
+                showNoMeetings();
 
                 return;
 
             }
 
-            noMeetings.classList.add("hidden");
 
-            data.forEach(meeting => {
+            if (noMeetings) {
 
-                const card = createMeetingCard(meeting);
+                noMeetings.classList.add(
+                    "hidden"
+                );
 
-                container.appendChild(card);
+            }
 
-            });
+
+            meetings.forEach(
+                interview => {
+
+                    const card =
+                        createMeetingCard(
+                            interview
+                        );
+
+
+                    container.appendChild(
+                        card
+                    );
+
+                }
+            );
 
         }
 
-        catch (err) {
+        catch (error) {
 
-            console.error("loadMyMeetings error:", err);
+            console.error(
+                "loadMeetings error:",
+                error
+            );
+
 
             container.innerHTML = `
+
                 <div class="meeting-error">
-                    <h3>Unable to load meetings</h3>
+
+                    <h3>
+                        Unable to load meetings
+                    </h3>
+
                     <p>
-                        Something went wrong while loading your meetings.
+                        ${escapeHTML(
+                            error.message
+                        )}
                     </p>
-                    <button id="retryMeetingsBtn">
+
+                    <button
+                        type="button"
+                        id="retryMeetingsBtn"
+                    >
                         Try Again
                     </button>
+
                 </div>
+
             `;
 
-            const retryBtn =
-                document.getElementById("retryMeetingsBtn");
 
-            if (retryBtn) {
+            const retryButton =
+                document.getElementById(
+                    "retryMeetingsBtn"
+                );
 
-                retryBtn.addEventListener("click", loadMyMeetings);
+
+            if (retryButton) {
+
+                retryButton.addEventListener(
+                    "click",
+                    loadMeetings
+                );
 
             }
 
@@ -193,117 +466,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
-    // Create Meeting Card
+    // CREATE CARD
     // =====================================================
 
-    function createMeetingCard(meeting) {
+    function createMeetingCard(interview) {
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("div");
 
-        card.className = "meeting-card";
 
-        /*
-         * Determine whether the logged-in user is the employer
-         * or the applicant.
-         */
+        card.className =
+            "meeting-card";
 
-        const isCompany =
-            currentUser.role === "company" ||
-            currentUser.role === "employer";
 
-        // -------------------------------------------------
-        // Person shown on the card
-        // -------------------------------------------------
+        const isEmployer =
+            userRole === "employer";
 
-        const personLabel =
-            isCompany
-                ? "Applicant"
-                : "Company";
 
-        const personName =
-            isCompany
-                ? (
-                    meeting.applicant_name ||
-                    meeting.applicant?.name ||
-                    "-"
-                )
-                : (
-                    meeting.company_name ||
-                    meeting.company?.name ||
+        // =================================================
+        // DATA
+        // =================================================
+
+        const meetingId =
+            interview.meeting_id ||
+            "-";
+
+
+        const roomCode =
+            interview.room_code ||
+            "-";
+
+
+        const jobId =
+            interview.job_id ||
+            "-";
+
+
+        const jobTitle =
+            interview.job_title ||
+            "Interview";
+
+
+        const companyName =
+            interview.company_name ||
+            "-";
+
+
+        const applicantName =
+            interview.applicant_name ||
+
+            [
+                interview.first_name,
+                interview.last_name
+            ]
+                .filter(Boolean)
+                .join(" ") ||
+
+            "-";
+
+
+        const meetingStatus =
+            interview.meeting_status ||
+            "waiting";
+
+
+        const statusClass =
+            String(
+                meetingStatus
+            )
+                .toLowerCase()
+                .replace(
+                    /\s+/g,
                     "-"
                 );
 
 
-        // -------------------------------------------------
-        // Meeting information
-        // -------------------------------------------------
+        // =================================================
+        // PERSON
+        // =================================================
 
-        const meetingId =
-            meeting.meeting_id ||
-            meeting.id ||
-            "-";
-
-        const roomId =
-            meeting.room_id ||
-            meeting.room ||
-            meeting.meeting_room ||
-            "-";
-
-        const jobId =
-            meeting.job_id ||
-            "-";
-
-        const jobTitle =
-            meeting.job_title ||
-            meeting.position ||
-            "Interview";
+        const personLabel =
+            isEmployer
+                ? "Applicant"
+                : "Company";
 
 
-        const interviewDate =
-            meeting.interview_date ||
-            meeting.date ||
-            meeting.start_date;
+        const personName =
+            isEmployer
+                ? applicantName
+                : companyName;
 
 
-        const startTime =
-            meeting.start_time ||
-            meeting.startTime;
+        // =================================================
+        // BUTTON
+        // =================================================
+
+        const buttonText =
+            isEmployer
+                ? "Start Meeting"
+                : "Enter Meeting";
 
 
-        const endTime =
-            meeting.end_time ||
-            meeting.endTime;
-
-
-        const status =
-            meeting.status ||
-            "scheduled";
-
-
-        // -------------------------------------------------
-        // Button
-        // -------------------------------------------------
-
-        let buttonText = "Enter Meeting";
-
-        if (isCompany) {
-            buttonText = "Start Meeting";
-        }
-
-
-        // -------------------------------------------------
-        // Status class
-        // -------------------------------------------------
-
-        const statusClass =
-            status
-                .toLowerCase()
-                .replace(/\s+/g, "-");
-
-
-        // -------------------------------------------------
-        // Build card
-        // -------------------------------------------------
+        // =================================================
+        // CARD
+        // =================================================
 
         card.innerHTML = `
 
@@ -316,13 +582,26 @@ document.addEventListener("DOMContentLoaded", () => {
                     </span>
 
                     <h2 class="meeting-title">
-                        ${escapeHTML(jobTitle)}
+                        ${escapeHTML(
+                            jobTitle
+                        )}
                     </h2>
 
                 </div>
 
-                <span class="meeting-status ${statusClass}">
-                    ${escapeHTML(formatStatus(status))}
+
+                <span
+                    class="meeting-status ${escapeHTML(
+                        statusClass
+                    )}"
+                >
+
+                    ${escapeHTML(
+                        formatStatus(
+                            meetingStatus
+                        )
+                    )}
+
                 </span>
 
             </div>
@@ -330,22 +609,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
             <div class="meeting-details">
 
+
+                <!-- MEETING ID -->
+
                 <div class="meeting-detail">
 
                     <span class="detail-label">
-                        Meeting ID / Room
+                        Meeting ID
                     </span>
 
                     <strong>
-                        ${escapeHTML(meetingId)}
+                        ${escapeHTML(
+                            meetingId
+                        )}
                     </strong>
-
-                    <small>
-                        ${escapeHTML(roomId)}
-                    </small>
 
                 </div>
 
+
+                <!-- ROOM -->
+
+                <div class="meeting-detail">
+
+                    <span class="detail-label">
+                        Meeting Room
+                    </span>
+
+                    <strong>
+                        ${escapeHTML(
+                            roomCode
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <!-- JOB ID -->
 
                 <div class="meeting-detail">
 
@@ -354,11 +653,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     </span>
 
                     <strong>
-                        ${escapeHTML(jobId)}
+                        ${escapeHTML(
+                            jobId
+                        )}
                     </strong>
 
                 </div>
 
+
+                <!-- DATE -->
 
                 <div class="meeting-detail">
 
@@ -367,11 +670,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     </span>
 
                     <strong>
-                        ${escapeHTML(formatDate(interviewDate))}
+                        ${escapeHTML(
+                            formatDate(
+                                interview.interview_date
+                            )
+                        )}
                     </strong>
 
                 </div>
 
+
+                <!-- TIME -->
 
                 <div class="meeting-detail">
 
@@ -380,25 +689,44 @@ document.addEventListener("DOMContentLoaded", () => {
                     </span>
 
                     <strong>
-                        ${escapeHTML(formatTime(startTime))}
+
+                        ${escapeHTML(
+                            formatTime(
+                                interview.start_time
+                            )
+                        )}
+
                         -
-                        ${escapeHTML(formatTime(endTime))}
+
+                        ${escapeHTML(
+                            formatTime(
+                                interview.end_time
+                            )
+                        )}
+
                     </strong>
 
                 </div>
 
+
+                <!-- COMPANY / APPLICANT -->
 
                 <div class="meeting-detail">
 
                     <span class="detail-label">
-                        ${personLabel}
+                        ${escapeHTML(
+                            personLabel
+                        )}
                     </span>
 
                     <strong>
-                        ${escapeHTML(personName)}
+                        ${escapeHTML(
+                            personName
+                        )}
                     </strong>
 
                 </div>
+
 
             </div>
 
@@ -408,18 +736,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="meeting-info">
 
                     <span>
-                        ${isCompany
-                            ? "You are the interviewer"
-                            : "You are the applicant"
+
+                        ${
+                            isEmployer
+
+                                ? "You are the interviewer"
+
+                                : "You are the applicant"
+
                         }
+
                     </span>
 
                 </div>
 
 
                 <button
+                    type="button"
                     class="meeting-btn"
-                    data-meeting-id="${escapeHTML(meetingId)}"
                 >
 
                     ${buttonText}
@@ -432,28 +766,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         // =================================================
-        // Meeting Button
+        // BUTTON EVENT
         // =================================================
 
-        const meetingBtn =
-            card.querySelector(".meeting-btn");
+        const button =
+            card.querySelector(
+                ".meeting-btn"
+            );
 
 
-        meetingBtn.addEventListener("click", (e) => {
+        button.addEventListener(
+            "click",
+            () => {
 
-            e.stopPropagation();
-
-            if (isCompany) {
-
-                startMeeting(meeting);
-
-            } else {
-
-                enterMeeting(meeting);
+                openMeeting(
+                    interview
+                );
 
             }
-
-        });
+        );
 
 
         return card;
@@ -462,147 +793,112 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
-    // Company: Start Meeting
+    // OPEN MEETING
     // =====================================================
 
-    async function startMeeting(meeting) {
+    async function openMeeting(
+        interview
+    ) {
 
-        const meetingId =
-            meeting.meeting_id ||
-            meeting.id;
+        const roomCode =
+            interview.room_code;
 
 
-        if (!meetingId) {
+        if (!roomCode) {
 
-            alert("Invalid meeting.");
+            alert(
+                "This interview does not have a meeting room."
+            );
 
             return;
 
         }
 
 
-        try {
+        // =================================================
+        // EMPLOYER
+        // =================================================
+
+        if (
+            userRole === "employer"
+        ) {
 
             /*
-             * Tell the backend that the employer has started
-             * the meeting.
+             * Employer is the host.
+             *
+             * Open the meeting room directly.
              */
 
-            const res = await fetch(
-                `${API_BASE}/api/meeting/${meetingId}/start`,
-                {
-                    method: "POST",
+            window.location.href =
+                `/meeting-room.html?room=${encodeURIComponent(
+                    roomCode
+                )}`;
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+            return;
 
-                    credentials: "include"
-                }
-            );
+        }
 
 
-            const data = await res.json();
+        // =================================================
+        // JOBSEEKER
+        // =================================================
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_BASE}/api/meetings/${encodeURIComponent(
+                        roomCode
+                    )}/join`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        credentials: "include",
+
+                        body: JSON.stringify({
+
+                            name:
+                                userName ||
+                                "Jobseeker"
+
+                        })
+
+                    }
+                );
 
 
-            if (!res.ok) {
+            const contentType =
+                response.headers.get(
+                    "content-type"
+                ) || "";
+
+
+            if (
+                !contentType.includes(
+                    "application/json"
+                )
+            ) {
 
                 throw new Error(
-                    data.error ||
-                    "Unable to start meeting."
+                    `Server returned ${response.status} instead of JSON.`
                 );
 
             }
 
 
-            /*
-             * Backend can return a meeting URL.
-             *
-             * Example:
-             *
-             * {
-             *     "meetingUrl": "/meeting-room.html?id=123"
-             * }
-             */
-
-            if (data.meetingUrl) {
-
-                window.location.href = data.meetingUrl;
-
-                return;
-
-            }
+            const data =
+                await response.json();
 
 
-            // Fallback
-            window.location.href =
-                `/meeting-room.html?id=${encodeURIComponent(meetingId)}`;
-
-        }
-
-        catch (err) {
-
-            console.error("startMeeting error:", err);
-
-            alert(
-                err.message ||
-                "Unable to start the meeting."
-            );
-
-        }
-
-    }
-
-
-    // =====================================================
-    // Jobseeker: Enter Meeting
-    // =====================================================
-
-    async function enterMeeting(meeting) {
-
-        const meetingId =
-            meeting.meeting_id ||
-            meeting.id;
-
-
-        if (!meetingId) {
-
-            alert("Invalid meeting.");
-
-            return;
-
-        }
-
-
-        try {
-
-            /*
-             * Optional backend check.
-             *
-             * This allows the backend to determine whether
-             * the employer has already started the meeting.
-             */
-
-            const res = await fetch(
-                `${API_BASE}/api/meeting/${meetingId}/join`,
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    credentials: "include"
-                }
-            );
-
-
-            const data = await res.json();
-
-
-            if (!res.ok) {
+            if (!response.ok) {
 
                 throw new Error(
+                    data.message ||
                     data.error ||
                     "Unable to enter meeting."
                 );
@@ -610,28 +906,37 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            if (data.meetingUrl) {
+            console.log(
+                "Join response:",
+                data
+            );
 
-                window.location.href =
-                    data.meetingUrl;
 
-                return;
-
-            }
-
+            /*
+             * The current backend creates the
+             * participant with status "pending".
+             *
+             * Then open the meeting room.
+             */
 
             window.location.href =
-                `/meeting-room.html?id=${encodeURIComponent(meetingId)}`;
+                `/meeting-room.html?room=${encodeURIComponent(
+                    roomCode
+                )}`;
 
         }
 
-        catch (err) {
+        catch (error) {
 
-            console.error("enterMeeting error:", err);
+            console.error(
+                "openMeeting error:",
+                error
+            );
+
 
             alert(
-                err.message ||
-                "The meeting is not available yet."
+                error.message ||
+                "Unable to enter the meeting."
             );
 
         }
@@ -640,35 +945,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // =====================================================
-    // Optional: Sort Meetings
+    // NO MEETINGS
     // =====================================================
 
-    function sortMeetings(meetings) {
+    function showNoMeetings() {
 
-        return meetings.sort((a, b) => {
+        if (noMeetings) {
 
-            const dateA =
-                new Date(
-                    `${a.interview_date}T${a.start_time}`
-                );
+            noMeetings.classList.remove(
+                "hidden"
+            );
 
-            const dateB =
-                new Date(
-                    `${b.interview_date}T${b.start_time}`
-                );
+        }
 
-            return dateA - dateB;
 
-        });
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <h3>
+                    No upcoming meetings
+                </h3>
+
+                <p>
+                    You don't have any online
+                    interviews scheduled.
+                </p>
+
+            </div>
+
+        `;
 
     }
 
 
     // =====================================================
-    // Init
+    // INITIALIZE
     // =====================================================
 
-    async function init() {
+    function init() {
 
         if (!container) {
 
@@ -681,51 +996,51 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        if (!noMeetings) {
-
-            console.warn(
-                "noMeetings element was not found."
-            );
-
-        }
+        console.log(
+            "================================="
+        );
 
 
-        currentUser =
-            await getCurrentUser();
+        console.log(
+            "HireLink Meeting Page"
+        );
 
 
-        if (!currentUser) {
+        console.log(
+            "User:",
+            userName
+        );
 
-            container.innerHTML = `
-                <div class="meeting-error">
 
-                    <h3>Sign in required</h3>
+        console.log(
+            "Role:",
+            userRole
+        );
 
-                    <p>
-                        Please sign in to view your meetings.
-                    </p>
 
-                </div>
-            `;
+        console.log(
+            "================================="
+        );
+
+
+        // -----------------------------------------------
+        // Check authentication
+        // -----------------------------------------------
+
+        if (!isLoggedIn()) {
+
+            showLoginRequired();
 
             return;
 
         }
 
 
-        console.log(
-            "Logged in user:",
-            currentUser
-        );
+        // -----------------------------------------------
+        // Load meetings
+        // -----------------------------------------------
 
-
-        console.log(
-            "User role:",
-            currentUser.role
-        );
-
-
-        await loadMyMeetings();
+        loadMeetings();
 
     }
 
