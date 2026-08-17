@@ -63,6 +63,13 @@ async function loadProfile() {
 }
 
 resumeBtn?.addEventListener("click", () => {
+  if (resumeBtn.textContent === "Close") {
+    resumeViewer.classList.add("hidden");
+    resumeFrame.src = "";
+    resumeBtn.textContent = "View Resume";
+    return;
+  }
+
   if (!resumePath) {
     alert("No resume uploaded");
     return;
@@ -75,15 +82,6 @@ resumeBtn?.addEventListener("click", () => {
 
 resumeViewer?.addEventListener("click", (e) => {
   if (e.target === resumeViewer) {
-    resumeViewer.classList.add("hidden");
-    resumeFrame.src = "";
-    resumeBtn.textContent = "View Resume";
-  }
-});
-
-resumeBtn?.addEventListener("click", (e) => {
-  if (resumeBtn.textContent === "Close") {
-    e.stopImmediatePropagation();
     resumeViewer.classList.add("hidden");
     resumeFrame.src = "";
     resumeBtn.textContent = "View Resume";
