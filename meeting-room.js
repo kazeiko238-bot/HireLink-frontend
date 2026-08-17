@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const API_BASE =
-        "https://hirelink-backend-1.onrender.com";
+        "https://hirelink-backend-qnww.onrender.com";
 
     const socket = io(API_BASE, {
         withCredentials: true
