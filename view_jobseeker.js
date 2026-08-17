@@ -1,41 +1,30 @@
-// -------- Back button --------
 document.querySelector('.back-btn')?.addEventListener('click', () => {
   if (document.referrer) window.history.back();
   else window.location.href = '/';
 });
 
-// Get jobseeker id from URL
 const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
 const params = new URLSearchParams(window.location.search);
 const jobseekerId = params.get("id");
 
 const resumeBtn = document.getElementById("viewResumeBtn");
-const hireBtn = document.getElementById("hireBtn"); // 🔥 ADD THIS
+const hireBtn = document.getElementById("hireBtn");
 const resumeViewer = document.getElementById("resumeViewer");
 const resumeFrame = document.getElementById("resumeFrame");
 
 let resumePath = null;
 
-// =====================
-// CHECK USER ROLE (FIXED)
-// =====================
 fetch(`${API_BASE}/api/me`, { credentials: "include" })
   .then(res => res.json())
   .then(user => {
     if (user?.role === "jobseeker") {
-      // 🔥 hide BOTH buttons
       if (resumeBtn) resumeBtn.style.display = "none";
       if (hireBtn) hireBtn.style.display = "none";
     }
   })
-  .catch(() => {
-    // fail safe (don’t break UI)
-  });
+  .catch(() => {});
 
-// =====================
-// LOAD PROFILE
-// =====================
 async function loadProfile() {
   try {
     const res = await fetch(`${API_BASE}/api/jobseekers`, {
@@ -66,7 +55,6 @@ async function loadProfile() {
 
     document.getElementById("description").textContent = data.description || "";
 
-    // store resume path
     resumePath = data.resume || null;
 
   } catch (err) {
@@ -74,9 +62,6 @@ async function loadProfile() {
   }
 }
 
-// =====================
-// VIEW RESUME BUTTON
-// =====================
 resumeBtn?.addEventListener("click", () => {
   if (!resumePath) {
     alert("No resume uploaded");
@@ -85,7 +70,24 @@ resumeBtn?.addEventListener("click", () => {
 
   resumeViewer.classList.remove("hidden");
   resumeFrame.src = resumePath + "#toolbar=0";
+  resumeBtn.textContent = "Close";
 });
 
-// INIT
+resumeViewer?.addEventListener("click", (e) => {
+  if (e.target === resumeViewer) {
+    resumeViewer.classList.add("hidden");
+    resumeFrame.src = "";
+    resumeBtn.textContent = "View Resume";
+  }
+});
+
+resumeBtn?.addEventListener("click", (e) => {
+  if (resumeBtn.textContent === "Close") {
+    e.stopImmediatePropagation();
+    resumeViewer.classList.add("hidden");
+    resumeFrame.src = "";
+    resumeBtn.textContent = "View Resume";
+  }
+});
+
 loadProfile();
