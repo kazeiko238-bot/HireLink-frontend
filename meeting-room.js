@@ -134,19 +134,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // SOCKET.IO CONNECTION
     // ============================================================
 
-  socket.on("connect", () => {
+    socket.on("connect", () => {
 
-    console.log(
-        "Socket.IO connected:",
-        socket.id
-    );
+        console.log(
+            "Socket.IO connected:",
+            socket.id
+        );
 
-    setStatus(
-        "Connected to meeting server",
-        "connecting"
-    );
+        setStatus(
+            "Connected to meeting server",
+            "connecting"
+        );
 
-});
+    });
 
 
     socket.on("connect_error", error => {
@@ -1174,8 +1174,9 @@ document.addEventListener("DOMContentLoaded", () => {
         socket.disconnect();
 
 
-        window.location.href =
-            "/meeting.html";
+        window.location.replace(
+            "/meeting.html"
+        );
 
     }
 
