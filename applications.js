@@ -143,11 +143,27 @@ document.getElementById("inviteType").textContent =
     app.interview_type === "onsite"
         ? "On-site"
         : "Online";
-                        document.getElementById("inviteMeeting").textContent =
-                            app.meeting_link || "-";
 
-                        document.getElementById("inviteLocation").textContent =
-                            app.location || "-";
+                        const meetingRow = document.getElementById("inviteMeeting").closest(".invite-row");
+                        const locationRow = document.getElementById("inviteLocation").closest(".invite-row");
+
+                        if (app.interview_type === "onsite") {
+
+                            locationRow.style.display = "flex";
+                            meetingRow.style.display = "none";
+
+                            document.getElementById("inviteLocation").textContent =
+                                app.location || "-";
+
+                        } else {
+
+                            meetingRow.style.display = "flex";
+                            locationRow.style.display = "none";
+
+                            document.getElementById("inviteMeeting").textContent =
+                                app.meeting_link || "-";
+
+                        }
 
                         document.getElementById("inviteNotes").textContent =
                             app.notes || "-";
