@@ -366,15 +366,16 @@ button.cancel:hover {
     border-color: #94a3b8 !important;
 }
 
+```css
 /* ============================================================
-   9. JOBS SECTION
+   9. JOBS SECTION — REDUCED SIDE MARGINS
 ============================================================ */
 
 .jobs-section {
     width: 100%;
-    max-width: 1250px;
-    margin: 0 auto;
-    padding: 40px 20px;
+    max-width: none;
+    margin: 0;
+    padding: 25px 12px;
 }
 
 .jobs-header {
@@ -383,7 +384,7 @@ button.cancel:hover {
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
-    margin-bottom: 22px;
+    margin-bottom: 18px;
 }
 
 .jobs-header h2 {
@@ -417,7 +418,7 @@ button.cancel:hover {
 }
 
 /* ============================================================
-   10. VERTICAL JOB LIST
+   10. TWO-COLUMN JOB CARDS
 ============================================================ */
 
 .carousel-wrapper {
@@ -426,22 +427,28 @@ button.cancel:hover {
     min-width: 0;
 }
 
-.jobs-container {
-    display: flex;
-    flex-direction: column;
+.jobs-container,
+#jobsContainer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
 
     width: 100%;
-    gap: 16px;
+    min-width: 0;
+    gap: 14px;
 
-    padding: 8px 4px 25px;
+    margin: 0;
+    padding: 6px 2px 20px;
     overflow: visible;
 }
 
-#jobsContainer:empty::before {
+#jobsContainer:empty::before,
+.jobs-container:empty::before {
     content: "Loading jobs or none found...";
     display: block;
-    padding: 35px 20px;
+    grid-column: 1 / -1;
+
+    padding: 30px 15px;
 
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -466,9 +473,10 @@ button.cancel:hover {
 
     width: 100%;
     min-width: 0;
-    min-height: 140px;
+    min-height: 155px;
+    height: 100%;
 
-    padding: 23px 28px;
+    padding: 20px 22px;
     gap: 8px;
 
     background: var(--glass-bg);
@@ -585,68 +593,45 @@ button.cancel:hover {
 ============================================================ */
 
 @media (max-width: 992px) {
-    .dashboard-content {
-        padding: 30px 24px;
-        gap: 25px;
+    .jobs-section {
+        padding: 22px 10px;
     }
 
-    .jobs-section {
-        padding: 30px 18px;
+    .jobs-container,
+    #jobsContainer {
+        gap: 12px;
     }
 
     .jobs-card {
-        min-height: 135px;
-        padding: 22px 24px;
+        min-height: 145px;
+        padding: 18px;
     }
 }
 
 @media (max-width: 768px) {
-    .dashboard-content {
-        flex-direction: column;
-        padding: 25px 18px;
-        gap: 25px;
+    .jobs-section {
+        padding: 20px 8px;
     }
 
-    .main-panel,
-    .side-panel {
-        width: 100%;
-        flex: auto;
-    }
-
-    h1 {
-        font-size: 1.7rem;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .form-grid .full {
-        grid-column: auto;
-    }
-
-    .action-buttons {
-        justify-content: stretch;
-        padding-right: 0;
-    }
-
-    .action-buttons > button {
-        flex: 1;
-    }
-
-    .jobs-header {
-        align-items: flex-start;
+    .jobs-container,
+    #jobsContainer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        padding: 5px 1px 18px;
     }
 
     .jobs-card {
-        min-height: 130px;
-        padding: 20px;
+        min-height: 135px;
+        padding: 16px 14px;
         border-radius: 11px;
     }
 
     .jobs-card h3 {
-        font-size: 17px;
+        font-size: 16px;
+    }
+
+    .jobs-card p {
+        font-size: 12px;
     }
 }
 
@@ -655,51 +640,20 @@ button.cancel:hover {
 ============================================================ */
 
 @media (max-width: 480px) {
-    body {
-        background-attachment: scroll;
-    }
-
-    .dashboard-content {
-        padding: 22px 14px;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    .subtitle {
-        font-size: 13px;
-    }
-
-    .tabs {
-        gap: 8px;
-    }
-
-    .tab {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-
-    .action-buttons {
-        flex-direction: column;
-    }
-
-    .action-buttons > button {
-        width: 100%;
-        flex: auto;
-    }
-
     .jobs-section {
-        padding: 25px 12px;
+        padding: 18px 10px;
     }
 
     .jobs-header h2 {
         font-size: 1.3rem;
     }
 
-    .jobs-container {
-        gap: 13px;
-        padding: 6px 2px 20px;
+    /* Use one column only on narrow mobile screens */
+    .jobs-container,
+    #jobsContainer {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 5px 0 18px;
     }
 
     .jobs-card {
@@ -724,6 +678,7 @@ button.cancel:hover {
         padding: 18px;
     }
 }
+```
 
 /* ============================================================
    16. REDUCED MOTION
