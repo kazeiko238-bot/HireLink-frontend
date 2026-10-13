@@ -6,9 +6,9 @@
 :root {
     --primary: #2d6cdf;
     --primary-hover: #1f56c2;
-    --bg-overlay: rgba(0, 0, 0, 0.5);
-    --glass-bg: rgba(235, 242, 255, 0.88);
-    --glass-border: rgba(255, 255, 255, 0.35);
+    --bg-overlay: rgba(35, 55, 110, 0.20);
+    --glass-bg: rgba(242, 246, 255, 0.90);
+    --glass-border: rgba(255, 255, 255, 0.55);
     --text-main: #1a1f36;
     --text-muted: #64748b;
 }
@@ -18,15 +18,18 @@
 }
 
 body {
-    font-family: "Inter", sans-serif;
+    font-family: 'Inter', sans-serif;
     margin: 0;
     padding-top: 70px;
-    color: #ffffff;
+    color: var(--text-main);
     min-height: 100vh;
 
-    /* Keep the original background */
+    /* Original background image with a light glazed overlay */
     background:
-        linear-gradient(var(--bg-overlay), var(--bg-overlay)),
+        linear-gradient(
+            var(--bg-overlay),
+            var(--bg-overlay)
+        ),
         url('../images/bg5.jpg');
 
     background-size: cover;
@@ -60,17 +63,19 @@ body {
 .jobseekers-header h2 {
     color: #ffffff;
     margin: 0;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 
 /* ============================================================
-   3. HEADER BUTTON
+   3. REVIEW BUTTON
 ============================================================ */
 
 .review-btn {
-    background: #2d6cdf;
+    background: var(--primary);
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 10px 16px;
     border-radius: 8px;
     font-family: inherit;
@@ -80,7 +85,7 @@ body {
 }
 
 .review-btn:hover {
-    background: #1f56c2;
+    background: var(--primary-hover);
     transform: translateY(-2px);
 }
 
@@ -98,12 +103,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 18px;
+    gap: 16px;
 
     width: 100%;
     padding: 12px 6px 24px;
-
-    overflow: visible;
 }
 
 .jobseekers-container::-webkit-scrollbar {
@@ -125,49 +128,53 @@ body {
 
     width: 100%;
     min-width: 0;
-    min-height: 160px;
+    min-height: 165px;
     padding: 24px;
 
-    /* Translucent cool blue instead of solid white */
-    background: rgba(226, 236, 255, 0.90);
+    /* Glazed blue-white card, not solid white */
+    background: var(--glass-bg);
 
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-left: 5px solid #2d6cdf;
+    border: 1px solid var(--glass-border);
+    border-left: 6px solid #cbd5e1;
     border-radius: 16px;
 
     color: var(--text-main);
     text-align: left;
 
     box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.20),
-        0 3px 10px rgba(45, 108, 223, 0.12);
+        0 10px 15px -3px rgba(15, 23, 42, 0.10),
+        0 4px 10px rgba(45, 108, 223, 0.08);
 
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+
+    cursor: pointer;
+    overflow: hidden;
 
     transition:
         transform 0.3s ease,
         background 0.3s ease,
         box-shadow 0.3s ease,
         border-color 0.3s ease;
-
-    overflow: hidden;
 }
 
 .jobseekers-card:hover {
-    transform: translateX(4px);
+    transform: translateX(5px);
 
-    background: rgba(238, 244, 255, 0.96);
-    border-left-color: #1f56c2;
+    background: rgba(248, 250, 255, 0.96);
+    border-color: rgba(255, 255, 255, 0.8);
+    border-left-color: var(--primary);
 
     box-shadow:
-        0 16px 30px rgba(0, 0, 0, 0.25),
-        0 5px 14px rgba(45, 108, 223, 0.18);
+        0 18px 25px -5px rgba(15, 23, 42, 0.16),
+        0 6px 14px rgba(45, 108, 223, 0.12);
+
+    z-index: 2;
 }
 
 
 /* ============================================================
-   6. PROFILE PICTURE
+   6. PROFILE PICTURE AND LOGO
 ============================================================ */
 
 .profile-pic {
@@ -179,16 +186,13 @@ body {
     border-radius: 50%;
     object-fit: cover;
 
-    background: #dbeafe;
+    background: #e6eefb;
     border: 3px solid rgba(255, 255, 255, 0.9);
 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
 
     margin: 0;
 }
-
-
-/* Optional logo image */
 
 .logo {
     flex-shrink: 0;
@@ -206,7 +210,7 @@ body {
 .jobseekers-card h3 {
     margin: 0 0 8px;
 
-    color: #172554;
+    color: #1a1f36;
     font-size: 19px;
     font-weight: 700;
     line-height: 1.4;
@@ -246,10 +250,10 @@ body {
     margin-top: 8px;
     padding: 6px 10px;
 
-    background: rgba(45, 108, 223, 0.12);
-    color: #2457b8;
+    background: #e6eef8;
+    color: #2d4ea2;
 
-    border: 1px solid rgba(45, 108, 223, 0.18);
+    border: 1px solid rgba(45, 78, 162, 0.10);
     border-radius: 8px;
 
     font-size: 13px;
@@ -291,20 +295,38 @@ body {
 
 .jobseekers-card .view-details-btn:hover {
     background: #1f56c2;
-    border-color: #1f56c2;
     color: #ffffff;
+    border-color: #1f56c2;
 
     transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(45, 108, 223, 0.25);
+    box-shadow: 0 6px 14px rgba(45, 108, 223, 0.22);
 }
 
 
 /* ============================================================
-   10. NAVIGATION BUTTONS
+   10. NAVIGATION BUTTON
 ============================================================ */
 
 .nav-btn {
     display: none;
+
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+    border: none;
+
+    background: #ffffff;
+    color: var(--primary);
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 24px;
 }
 
 
@@ -313,16 +335,18 @@ body {
 ============================================================ */
 
 .empty-state {
-    text-align: center;
+    width: 100%;
     padding: 50px 24px;
 
-    background: rgba(226, 236, 255, 0.90);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(242, 246, 255, 0.90);
+    border: 1px solid var(--glass-border);
     border-radius: 16px;
 
-    color: #475569;
+    color: var(--text-muted);
+    text-align: center;
 
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.10);
+
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
