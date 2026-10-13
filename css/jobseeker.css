@@ -1,3 +1,4 @@
+```css
 /* ============================================================
    1. GLOBAL RESET & BACKGROUND
 ============================================================ */
@@ -5,50 +6,31 @@
 :root {
     --primary: #2d6cdf;
     --primary-hover: #1f56c2;
-
     --bg-overlay: rgba(245, 247, 251, 0.85);
     --glass-bg: rgba(255, 255, 255, 0.82);
     --glass-border: rgba(255, 255, 255, 0.45);
-
     --text-main: #1a1f36;
     --text-muted: #64748b;
-
-    --success: #10b981;
-    --success-bg: #dcfce7;
-
-    --warning: #f59e0b;
-    --warning-bg: #fef3c7;
-
-    --danger: #ef4444;
-    --danger-bg: #fee2e2;
-
-    --info: #2563eb;
-    --info-bg: #eef5ff;
 }
 
 * {
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
-
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     margin: 0;
     padding-top: 70px;
     color: var(--text-main);
     min-height: 100vh;
 
-    /* Original background image with a light glazed overlay */
+    /* Original glazed background */
     background:
         linear-gradient(
             var(--bg-overlay),
             var(--bg-overlay)
         ),
-        url('../images/bg5.jpg');
+        url("../images/bg5.jpg");
 
     background-size: cover;
     background-position: center;
@@ -62,10 +44,10 @@ body {
 ============================================================ */
 
 .jobseekers-section {
-    max-width: 1200px;
     width: 100%;
-    margin: auto;
-    padding: 40px 20px;
+    max-width: none;
+    margin: 0;
+    padding: 30px 0 50px;
 }
 
 .jobseekers-header {
@@ -74,15 +56,15 @@ body {
     align-items: center;
     flex-wrap: wrap;
     gap: 16px;
-    margin-bottom: 20px;
+    margin: 0 24px 24px;
 }
 
 .jobseekers-header h1,
 .jobseekers-header h2 {
-    color: #ffffff;
+    color: #1e3a8a;
+    font-size: 28px;
+    font-weight: 800;
     margin: 0;
-    font-weight: 700;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 
@@ -93,10 +75,11 @@ body {
 .review-btn {
     background: var(--primary);
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: none;
     padding: 10px 16px;
     border-radius: 8px;
     font-family: inherit;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.25s ease;
@@ -109,22 +92,29 @@ body {
 
 
 /* ============================================================
-   4. JOBSEEKERS LIST CONTAINER
+   4. JOBSEEKERS CONTAINER
+   TWO CARDS SIDE BY SIDE, NO SIDE MARGINS
 ============================================================ */
 
 .carousel-wrapper {
     position: relative;
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .jobseekers-container {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
 
     width: 100%;
-    padding: 12px 6px 24px;
+    max-width: none;
+
+    margin: 0;
+    padding: 10px 0 30px;
+
+    overflow: visible;
 }
 
 .jobseekers-container::-webkit-scrollbar {
@@ -133,7 +123,7 @@ body {
 
 
 /* ============================================================
-   5. JOBSEEKER RECTANGULAR CARDS
+   5. JOBSEEKER CARDS
 ============================================================ */
 
 .jobseekers-card {
@@ -142,14 +132,15 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 24px;
+    gap: 22px;
 
     width: 100%;
     min-width: 0;
-    min-height: 165px;
-    padding: 24px;
+    min-height: 230px;
 
-    /* Glazed blue-white card, not solid white */
+    margin: 0;
+    padding: 28px;
+
     background: var(--glass-bg);
 
     border: 1px solid var(--glass-border);
@@ -159,63 +150,59 @@ body {
     color: var(--text-main);
     text-align: left;
 
-    box-shadow:
-        0 10px 15px -3px rgba(15, 23, 42, 0.10),
-        0 4px 10px rgba(45, 108, 223, 0.08);
-
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 
-    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+
     overflow: hidden;
 
     transition:
-        transform 0.3s ease,
-        background 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .jobseekers-card:hover {
-    transform: translateX(5px);
+    transform: translateY(-3px);
 
-    background: rgba(248, 250, 255, 0.96);
-    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.93);
     border-left-color: var(--primary);
 
-    box-shadow:
-        0 18px 25px -5px rgba(15, 23, 42, 0.16),
-        0 6px 14px rgba(45, 108, 223, 0.12);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.14);
 
     z-index: 2;
 }
 
 
 /* ============================================================
-   6. PROFILE PICTURE AND LOGO
+   6. PROFILE PICTURE
 ============================================================ */
 
 .profile-pic {
     flex-shrink: 0;
 
-    width: 90px;
-    height: 90px;
+    width: 110px;
+    height: 110px;
 
+    margin: 0;
     border-radius: 50%;
     object-fit: cover;
 
     background: #e6eefb;
     border: 3px solid rgba(255, 255, 255, 0.9);
 
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
-
-    margin: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
 }
+
+
+/* Optional logo */
 
 .logo {
     flex-shrink: 0;
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
     object-fit: contain;
     margin: 0;
 }
@@ -226,33 +213,42 @@ body {
 ============================================================ */
 
 .jobseekers-card h3 {
-    margin: 0 0 8px;
+    margin: 0 0 10px;
 
-    color: #1a1f36;
-    font-size: 19px;
-    font-weight: 700;
-    line-height: 1.4;
+    color: #172554;
+    font-size: 23px;
+    font-weight: 800;
+    line-height: 1.35;
+
+    overflow-wrap: anywhere;
 }
 
 .jobseekers-card p {
-    margin: 5px 0;
+    margin: 7px 0;
 
-    color: #475569;
-    font-size: 14px;
+    color: #334155;
+    font-size: 16px;
     line-height: 1.6;
+
+    overflow-wrap: anywhere;
 }
 
 .headline {
-    color: #475569;
-    font-size: 14px;
+    color: #334155;
+    font-size: 16px;
     font-weight: 500;
     line-height: 1.6;
+
+    overflow-wrap: anywhere;
 }
 
 .location {
-    color: #64748b;
-    font-size: 13px;
-    margin-top: 6px;
+    color: #475569;
+    font-size: 15px;
+    line-height: 1.5;
+    margin-top: 8px;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -265,17 +261,19 @@ body {
     width: fit-content;
     max-width: 100%;
 
-    margin-top: 8px;
-    padding: 6px 10px;
+    margin-top: 10px;
+    padding: 7px 12px;
 
     background: #e6eef8;
-    color: #2d4ea2;
+    color: #244fa5;
 
-    border: 1px solid rgba(45, 78, 162, 0.10);
+    border: 1px solid rgba(45, 108, 223, 0.15);
     border-radius: 8px;
 
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -289,21 +287,20 @@ body {
     justify-content: center;
 
     flex-shrink: 0;
-    width: auto;
-    min-width: 140px;
+    min-width: 145px;
 
     margin: 0 0 0 auto;
-    padding: 11px 20px;
+    padding: 13px 20px;
 
-    background: #2d6cdf;
+    background: var(--primary);
     color: #ffffff;
 
-    border: 1px solid #2d6cdf;
+    border: 1px solid var(--primary);
     border-radius: 10px;
 
     font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 700;
 
     text-decoration: none;
     cursor: pointer;
@@ -312,11 +309,12 @@ body {
 }
 
 .jobseekers-card .view-details-btn:hover {
-    background: #1f56c2;
+    background: var(--primary-hover);
     color: #ffffff;
-    border-color: #1f56c2;
+    border-color: var(--primary-hover);
 
     transform: translateY(-2px);
+
     box-shadow: 0 6px 14px rgba(45, 108, 223, 0.22);
 }
 
@@ -343,6 +341,7 @@ body {
     color: var(--primary);
 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
     cursor: pointer;
     font-size: 24px;
 }
@@ -356,14 +355,14 @@ body {
     width: 100%;
     padding: 50px 24px;
 
-    background: rgba(242, 246, 255, 0.90);
+    background: rgba(255, 255, 255, 0.82);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
 
     color: var(--text-muted);
     text-align: center;
 
-    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.10);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
 
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -371,81 +370,108 @@ body {
 
 
 /* ============================================================
-   12. RESPONSIVE DESIGN — TABLETS
+   12. TABLET LAYOUT
 ============================================================ */
 
-@media (max-width: 768px) {
-    .jobseekers-section {
-        padding: 30px 18px 45px;
-    }
-
-    .jobseekers-card {
-        gap: 18px;
-        padding: 22px;
-        min-height: 150px;
-    }
-
-    .profile-pic {
-        width: 76px;
-        height: 76px;
-    }
-
-    .jobseekers-card h3 {
-        font-size: 17px;
-    }
-
-    .jobseekers-card .view-details-btn {
-        min-width: 120px;
-        padding: 10px 14px;
-    }
-}
-
-
-/* ============================================================
-   13. RESPONSIVE DESIGN — MOBILE
-============================================================ */
-
-@media (max-width: 520px) {
-    body {
-        background-attachment: scroll;
-    }
-
-    .jobseekers-section {
-        padding: 24px 14px 35px;
-    }
-
-    .jobseekers-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-    }
-
-    .review-btn {
-        width: 100%;
+@media (max-width: 900px) {
+    .jobseekers-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
     }
 
     .jobseekers-card {
         flex-direction: column;
         align-items: flex-start;
-        gap: 14px;
-
-        min-height: auto;
-        padding: 22px 20px;
+        min-height: 300px;
+        padding: 22px;
     }
 
     .profile-pic {
-        width: 80px;
-        height: 80px;
+        width: 90px;
+        height: 90px;
     }
 
     .jobseekers-card h3 {
-        font-size: 18px;
+        font-size: 21px;
+    }
+
+    .jobseekers-card p,
+    .headline {
+        font-size: 15px;
     }
 
     .jobseekers-card .view-details-btn {
         width: 100%;
-        min-width: 0;
-        margin: 6px 0 0;
+        margin: auto 0 0;
+    }
+}
+
+
+/* ============================================================
+   13. MOBILE LAYOUT
+============================================================ */
+
+@media (max-width: 600px) {
+    body {
+        background-attachment: scroll;
+    }
+
+    .jobseekers-section {
+        padding: 24px 0 35px;
+    }
+
+    .jobseekers-header {
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 0 16px 20px;
+    }
+
+    .jobseekers-header h1,
+    .jobseekers-header h2 {
+        font-size: 24px;
+    }
+
+    .jobseekers-container {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+        padding: 10px 0 24px;
+    }
+
+    .jobseekers-card {
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+
+        min-height: 190px;
+        padding: 20px 16px;
+
+        border-radius: 12px;
+    }
+
+    .profile-pic {
+        width: 75px;
+        height: 75px;
+    }
+
+    .jobseekers-card h3 {
+        font-size: 19px;
+    }
+
+    .jobseekers-card p,
+    .headline {
+        font-size: 14px;
+    }
+
+    .location {
+        font-size: 13px;
+    }
+
+    .jobseekers-card .view-details-btn {
+        width: auto;
+        min-width: 110px;
+        margin: 10px 0 0;
+        padding: 10px 13px;
+        font-size: 13px;
     }
 }
 ```
