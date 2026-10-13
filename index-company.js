@@ -3,23 +3,27 @@ document.addEventListener("DOMContentLoaded", () => {
 const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
 const registerFields = document.getElementById("employer-fields");
-const terms = document.querySelector(".remember-me");
+const terms = document.querySelector("#register .remember-me");
 const verifySection = document.getElementById("verify-section");
 const loginForm = document.getElementById("login");
 const registerForm = document.getElementById("register");
+const forgotForm = document.getElementById("forgot");
 
 const tabLinks = document.querySelectorAll(".tab-link");
 const createBtn = document.querySelector("[name='create-btn']");
 
-// Tab switching
+// Show one form, hide the others
+function showForm(form) {
+  [loginForm, registerForm, forgotForm].forEach(f => f.classList.remove("active"));
+  form.classList.add("active");
+}
+
+// Tab switching (login <-> register)
 tabLinks.forEach(link => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
     const tab = link.dataset.tab;
-    loginForm.classList.remove("active");
-    registerForm.classList.remove("active");
-    if (tab === "login") loginForm.classList.add("active");
-    else registerForm.classList.add("active");
+    showForm(tab === "login" ? loginForm : registerForm);
   });
 });
 
@@ -40,6 +44,11 @@ createBtn.addEventListener("click", async () => {
 
   if (password !== confirmPassword) {
     alert("Passwords do not match!");
+    return;
+  }
+
+  if (!document.getElementById("terms").checked) {
+    alert("Please agree to the Terms of Service and Privacy Policy");
     return;
   }
 
@@ -188,5 +197,105 @@ if (loginBtn) {
     }
   });
 }
+
+// ===== FORGOT PASSWORD =====
+const forgotLink = document.getElementById("forgotPasswordLink");
+const forgotStep1 = document.getElementById("forgot-step-1");
+const forgotStep2 = document.getElementById("forgot-step-2");
+const forgotSendBtn = document.getElementById("forgot-send-btn");
+const resetBtn = document.getElementById("reset-btn");
+let resetEmail = "";
+
+// Open the reset form from the login page
+forgotLink.addEventListener("click", (e) => {
+  e.preventDefault();
+  document.getElementById("forgot-email").value = document.getElementById("login-email").value.trim();
+  forgotStep1.style.display = "block";
+  forgotStep2.style.display = "none";
+  showForm(forgotForm);
+});
+
+document.getElementById("back-to-login").addEventListener("click", (e) => {
+  e.preventDefault();
+  showForm(loginForm);
+});
+
+// Step 1: request a reset code
+forgotSendBtn.addEventListener("click", async () => {
+  const email = document.getElementById("forgot-email").value.trim();
+  if (!email) return alert("Please enter your email");
+
+  forgotSendBtn.disabled = true;
+  forgotSendBtn.textContent = "Sending...";
+
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/forgot-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      resetEmail = email;
+      forgotStep1.style.display = "none";
+      forgotStep2.style.display = "block";
+      alert("If that email is registered, a code has been sent.");
+    } else {
+      alert(data.error || "Failed to send code");
+    }
+  } catch (err) {
+    console.error("Forgot password error:", err);
+    alert("Server error. Please try again.");
+  } finally {
+    forgotSendBtn.disabled = false;
+    forgotSendBtn.textContent = "Send Code";
+  }
+});
+
+// Step 2: submit code + new password
+resetBtn.addEventListener("click", async () => {
+  const code = document.getElementById("reset-code").value.trim();
+  const newPassword = document.getElementById("reset-password").value;
+  const confirm = document.getElementById("reset-confirm").value;
+
+  if (code.length !== 6) return alert("Enter the 6-digit code");
+  if (newPassword.length < 8) return alert("Password must be at least 8 characters");
+  if (newPassword !== confirm) return alert("Passwords do not match");
+
+  resetBtn.disabled = true;
+  resetBtn.textContent = "Resetting...";
+
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/reset-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email: resetEmail, code, newPassword })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Password reset successfully! You can now log in.");
+      document.getElementById("reset-code").value = "";
+      document.getElementById("reset-password").value = "";
+      document.getElementById("reset-confirm").value = "";
+      document.getElementById("login-email").value = resetEmail;
+      document.getElementById("login-password").value = "";
+      showForm(loginForm);
+    } else {
+      alert(data.error || "Reset failed");
+    }
+  } catch (err) {
+    console.error("Reset password error:", err);
+    alert("Server error. Please try again.");
+  } finally {
+    resetBtn.disabled = false;
+    resetBtn.textContent = "Reset Password";
+  }
+});
 
 });
