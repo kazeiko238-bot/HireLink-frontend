@@ -4,7 +4,7 @@ document.querySelector('.back-btn')?.addEventListener('click', () => {
   else window.location.href = '/';
 });
 
-const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+const API_BASE = "https://hirelink-backend-1.onrender.com";
 
 const input = document.getElementById("reviewInput");
   const starSelect = document.getElementById("starReview");
