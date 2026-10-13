@@ -1,71 +1,15 @@
-```css
 /* ============================================================
    1. GLOBAL RESET & BACKGROUND
-   MATCHED TO meeting.css
 ============================================================ */
-
 :root {
     --primary: #2d6cdf;
     --primary-hover: #1f56c2;
-
     --bg-overlay: rgba(245, 247, 251, 0.85);
-    --glass-bg: rgba(255, 255, 255, 0.82);
-    --glass-border: rgba(255, 255, 255, 0.45);/* ============================================================
-   1. GLOBAL RESET & BACKGROUND
-============================================================ */
-
-:root {
-    --primary: #2d6cdf;
-    --primary-hover: #1f56c2;
-
-    --bg-overlay: rgba(245, 247, 251, 0.85);
-    --glass-bg: rgba(255, 255, 255, 0.82);
-    --glass-border: rgba(255, 255, 255, 0.45);
-
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.4);
     --text-main: #1a1f36;
     --text-muted: #64748b;
-
-    --success: #10b981;
-    --success-bg: #dcfce7;
-
-    --warning: #f59e0b;
-    --warning-bg: #fef3c7;
-
-    --danger: #ef4444;
-    --danger-bg: #fee2e2;
-
-    --info: #2563eb;
-    --info-bg: #eef5ff;
 }
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: "Inter", sans-serif;
-    margin: 0;
-    padding: 0;
-    color: var(--text-main);
-    min-height: 100vh;
-
-    background:
-        linear-gradient(
-            var(--bg-overlay),
-            var(--bg-overlay)
-        ),
-        url("../images/bg5.jpg");
-
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-}
-
 
 /* ============================================================
    2. HEADER & NAVIGATION
