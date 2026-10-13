@@ -1,4 +1,4 @@
-const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+const API_BASE = "https://hirelink-backend-1.onrender.com";
 
 document.getElementById("contactForm").addEventListener("submit", async (e) => {
   e.preventDefault();
