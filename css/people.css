@@ -1,314 +1,465 @@
 ```css
-/* =========================
-   GLOBAL STYLES
-========================= */
+/* ============================================================
+   1. GLOBAL RESET & BACKGROUND
+============================================================ */
+
+:root {
+    --primary: #2d6cdf;
+    --primary-hover: #1f56c2;
+
+    --bg-overlay: rgba(245, 247, 251, 0.85);
+    --glass-bg: rgba(255, 255, 255, 0.82);
+    --glass-border: rgba(255, 255, 255, 0.45);
+
+    --text-main: #1a1f36;
+    --text-muted: #64748b;
+
+    --success: #10b981;
+    --success-bg: #dcfce7;
+
+    --warning: #f59e0b;
+    --warning-bg: #fef3c7;
+
+    --danger: #ef4444;
+    --danger-bg: #fee2e2;
+
+    --info: #2563eb;
+    --info-bg: #eef5ff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     margin: 0;
     padding-top: 70px;
-    color: #ffffff;
+    color: var(--text-main);
+    min-height: 100vh;
 
     background:
         linear-gradient(
-            rgba(0, 0, 0, 0.5),
-            rgba(0, 0, 0, 0.5)
+            var(--bg-overlay),
+            var(--bg-overlay)
         ),
-        url('../images/bg5.jpg');
+        url("../images/bg5.jpg");
 
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    box-sizing: border-box;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
 }
 
 
-/* =========================
-   PEOPLE SECTION
-========================= */
+/* ============================================================
+   2. PEOPLE SECTION
+============================================================ */
 
-.people-container {
-    display: grid;
-
-    /* Two columns on desktop */
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 20px;
+.people-section {
     width: 100%;
     max-width: none;
     margin: 0;
-    padding: 30px 20px 40px;
-
-    align-items: stretch;
+    padding: 30px 0 50px;
 }
 
-
-/* =========================
-   PERSON CARD
-========================= */
-
-.person-card {
-    width: 100%;
-    min-width: 0;
-    min-height: 220px;
-    height: 100%;
-
-    background: linear-gradient(
-        135deg,
-        #061c97 0%,
-        #005bed 50%,
-        #0091ff 100%
-    );
-
-    border: 2px solid rgba(0, 0, 0, 0.7);
-    border-radius: 24px;
-
-    padding: 24px;
-
-    text-align: center;
-
+.people-header {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 
-    color: #ffffff;
+    gap: 16px;
+    margin: 0 24px 24px;
+}
 
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
-
-    cursor: pointer;
-
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+.people-header h1,
+.people-header h2 {
+    color: #1e3a8a;
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
 }
 
 
-/* =========================
-   CARD HOVER EFFECT
-========================= */
+/* ============================================================
+   3. PEOPLE CONTAINER
+   TWO CARDS SIDE BY SIDE, NO SIDE MARGINS
+============================================================ */
+
+.people-wrapper {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.people-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 22px;
+
+    width: 100%;
+    max-width: none;
+
+    margin: 0;
+    padding: 10px 0 30px;
+
+    align-items: stretch;
+    overflow: visible;
+}
+
+.people-container::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* ============================================================
+   4. PERSON CARDS
+============================================================ */
+
+.person-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 22px;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 230px;
+
+    margin: 0;
+    padding: 28px;
+
+    background: var(--glass-bg);
+
+    border: 1px solid var(--glass-border);
+    border-left: 6px solid #cbd5e1;
+    border-radius: 16px;
+
+    color: var(--text-main);
+    text-align: left;
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
+}
 
 .person-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
 
-    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.93);
+    border-left-color: var(--primary);
 
-    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.14);
 
     z-index: 2;
 }
 
 
-/* =========================
-   PROFILE PICTURE
-========================= */
+/* ============================================================
+   5. PROFILE PICTURE
+============================================================ */
 
 .profile-pic {
-    width: 90px;
-    height: 90px;
+    flex-shrink: 0;
 
-    min-width: 90px;
+    width: 110px;
+    height: 110px;
+
+    margin: 0;
 
     border-radius: 50%;
-
     object-fit: cover;
 
-    margin-bottom: 15px;
+    background: #e6eefb;
+    border: 3px solid rgba(255, 255, 255, 0.9);
 
-    border: 3px solid rgba(255, 255, 255, 0.3);
-
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
 }
 
 
-/* =========================
-   PERSON NAME
-========================= */
+/* ============================================================
+   6. PERSON INFORMATION
+============================================================ */
 
 .person-card h3 {
-    font-size: 18px;
-    font-weight: 700;
+    margin: 0 0 10px;
 
-    margin: 5px 0;
-
-    color: #ffffff;
+    color: #172554;
+    font-size: 23px;
+    font-weight: 800;
+    line-height: 1.35;
 
     overflow-wrap: anywhere;
 }
 
+.person-card p {
+    margin: 7px 0;
 
-/* =========================
-   HEADLINE
-========================= */
+    color: #334155;
+    font-size: 16px;
+    line-height: 1.6;
+
+    overflow-wrap: anywhere;
+}
 
 .headline {
-    font-size: 14px;
-
-    margin-bottom: 5px;
-
-    color: rgba(255, 255, 255, 0.9);
+    color: #334155;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
 
     overflow-wrap: anywhere;
 }
-
-
-/* =========================
-   LOCATION
-========================= */
 
 .location {
-    font-size: 13px;
+    color: #475569;
+    font-size: 15px;
+    line-height: 1.5;
 
-    margin-bottom: 5px;
-
-    color: rgba(255, 255, 255, 0.8);
+    margin-top: 8px;
 
     overflow-wrap: anywhere;
 }
 
 
-/* =========================
-   VIEW DETAILS BUTTON
-========================= */
+/* ============================================================
+   7. OPTIONAL PROFILE BADGE
+============================================================ */
 
-.person-card .view-details-btn {
-    display: block;
-
-    width: 100%;
+.person-badge {
+    display: inline-block;
+    width: fit-content;
     max-width: 100%;
 
-    margin-top: 20px;
+    margin-top: 10px;
+    padding: 7px 12px;
 
-    padding: 12px;
+    background: #e6eef8;
+    color: #244fa5;
 
-    background: linear-gradient(
-        90deg,
-        #3b82f6 0%,
-        #72d9f0 100%
-    );
-
-    color: #ffffff;
-
-    border: none;
-    border-radius: 50px;
+    border: 1px solid rgba(45, 108, 223, 0.15);
+    border-radius: 8px;
 
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   8. VIEW DETAILS BUTTON
+============================================================ */
+
+.person-card .view-details-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+    min-width: 145px;
+
+    margin: 0 0 0 auto;
+    padding: 13px 20px;
+
+    background: var(--primary);
+    color: #ffffff;
+
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+
+    text-decoration: none;
+    text-align: center;
 
     cursor: pointer;
 
-    transition:
-        transform 0.3s ease,
-        background 0.3s ease,
-        box-shadow 0.3s ease;
-
-    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+    transition: 0.25s ease;
 }
-
-
-/* BUTTON HOVER */
 
 .person-card .view-details-btn:hover {
+    background: var(--primary-hover);
+    color: #ffffff;
+
+    border-color: var(--primary-hover);
+
     transform: translateY(-2px);
 
-    background: linear-gradient(
-        90deg,
-        #1d4ed8 0%,
-        #6d28d9 100%
-    );
-
-    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5);
+    box-shadow: 0 6px 14px rgba(45, 108, 223, 0.22);
 }
-
-
-/* BUTTON CLICK */
 
 .person-card .view-details-btn:active {
     transform: translateY(0);
 }
 
 
-/* =========================
-   TABLET RESPONSIVENESS
-========================= */
+/* ============================================================
+   9. NAVIGATION BUTTONS
+============================================================ */
 
-@media (max-width: 768px) {
+.nav-btn {
+    display: none;
+
+    position: absolute;
+    right: -10px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+    border: none;
+
+    background: #ffffff;
+    color: var(--primary);
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+    cursor: pointer;
+    font-size: 24px;
+
+    z-index: 3;
+}
+
+
+/* ============================================================
+   10. EMPTY STATE
+============================================================ */
+
+.empty-state {
+    width: 100%;
+    padding: 50px 24px;
+
+    background: rgba(255, 255, 255, 0.82);
+
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+
+    color: var(--text-muted);
+    text-align: center;
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+
+/* ============================================================
+   11. TABLET LAYOUT
+============================================================ */
+
+@media (max-width: 900px) {
     .people-container {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-
-        gap: 14px;
-
-        padding: 25px 14px 30px;
+        gap: 16px;
     }
 
     .person-card {
-        padding: 20px 16px;
+        flex-direction: column;
+        align-items: flex-start;
 
-        border-radius: 20px;
+        min-height: 300px;
+        padding: 22px;
     }
 
     .profile-pic {
-        width: 80px;
-        height: 80px;
-
-        min-width: 80px;
+        width: 90px;
+        height: 90px;
     }
 
     .person-card h3 {
-        font-size: 16px;
+        font-size: 21px;
     }
 
+    .person-card p,
     .headline {
-        font-size: 13px;
+        font-size: 15px;
     }
 
-    .location {
-        font-size: 12px;
+    .person-card .view-details-btn {
+        width: 100%;
+        margin: auto 0 0;
     }
 }
 
 
-/* =========================
-   SMALL PHONE RESPONSIVENESS
-========================= */
+/* ============================================================
+   12. MOBILE LAYOUT
+============================================================ */
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+    body {
+        background-attachment: scroll;
+    }
+
+    .people-section {
+        padding: 24px 0 35px;
+    }
+
+    .people-header {
+        flex-direction: column;
+        align-items: flex-start;
+
+        margin: 0 16px 20px;
+    }
+
+    .people-header h1,
+    .people-header h2 {
+        font-size: 24px;
+    }
+
     .people-container {
-        /* One column on small phones */
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
 
-        gap: 14px;
-
-        padding: 20px 12px 25px;
+        padding: 10px 0 24px;
     }
 
     .person-card {
-        min-height: 200px;
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
 
-        padding: 22px 18px;
+        min-height: 190px;
+        padding: 20px 16px;
 
-        border-radius: 18px;
+        border-radius: 12px;
     }
 
     .profile-pic {
-        width: 85px;
-        height: 85px;
-
-        min-width: 85px;
+        width: 75px;
+        height: 75px;
     }
 
     .person-card h3 {
-        font-size: 17px;
+        font-size: 19px;
     }
 
+    .person-card p,
     .headline {
         font-size: 14px;
     }
@@ -318,47 +469,67 @@ body {
     }
 
     .person-card .view-details-btn {
-        padding: 12px;
-        margin-top: 15px;
-    }
-}
+        width: auto;
+        min-width: 110px;
 
+        margin: 10px 0 0;
+        padding: 10px 13px;
 
-/* =========================
-   EXTRA SMALL PHONES
-========================= */
-
-@media (max-width: 320px) {
-    .people-container {
-        padding: 15px 8px 20px;
-        gap: 12px;
-    }
-
-    .person-card {
-        padding: 18px 14px;
-    }
-
-    .person-card h3 {
-        font-size: 15px;
-    }
-
-    .headline {
-        font-size: 12px;
-    }
-
-    .location {
-        font-size: 11px;
-    }
-
-    .person-card .view-details-btn {
         font-size: 13px;
     }
 }
 
 
-/* =========================
-   REDUCED MOTION ACCESSIBILITY
-========================= */
+/* ============================================================
+   13. EXTRA SMALL PHONES
+============================================================ */
+
+@media (max-width: 380px) {
+    .people-header {
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+
+    .people-container {
+        padding-left: 0;
+        padding-right: 0;
+        gap: 12px;
+    }
+
+    .person-card {
+        gap: 12px;
+        padding: 16px 12px;
+    }
+
+    .profile-pic {
+        width: 62px;
+        height: 62px;
+    }
+
+    .person-card h3 {
+        font-size: 16px;
+    }
+
+    .person-card p,
+    .headline {
+        font-size: 13px;
+    }
+
+    .location {
+        font-size: 12px;
+    }
+
+    .person-card .view-details-btn {
+        min-width: 95px;
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+}
+
+
+/* ============================================================
+   14. REDUCED MOTION ACCESSIBILITY
+============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
     .person-card,
