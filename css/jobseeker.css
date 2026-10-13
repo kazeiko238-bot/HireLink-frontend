@@ -1,4 +1,3 @@
-```css
 /* ============================================================
    1. GLOBAL RESET & BACKGROUND
 ============================================================ */
@@ -27,17 +26,13 @@
     --info-bg: #eef5ff;
 }
 
-/* Prevent default spacing and unexpected overflow */
 * {
     box-sizing: border-box;
 }
 
 html {
     scroll-behavior: smooth;
-    width: 100%;
-    overflow-x: hidden;
 }
-
 body {
     font-family: "Inter", sans-serif;
     margin: 0;
