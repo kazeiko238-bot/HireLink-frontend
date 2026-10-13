@@ -1,7 +1,7 @@
 ```javascript
 document.addEventListener("DOMContentLoaded", () => {
 
-  const API_BASE = "https://hirelink-backend-1.onrender.com";
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
   const container = document.getElementById("jobsContainer");
   const nextBtn = document.getElementById("nextBtn");
