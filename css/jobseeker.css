@@ -1,481 +1,482 @@
+S
 /* ============================================================
    1. GLOBAL RESET & BACKGROUND
 ============================================================ */
-
+ 
 :root {
     --primary: #2d6cdf;
     --primary-hover: #1f56c2;
-
+ 
     --bg-overlay: rgba(245, 247, 251, 0.85);
     --glass-bg: rgba(255, 255, 255, 0.82);
     --glass-border: rgba(255, 255, 255, 0.45);
-
+ 
     --text-main: #1a1f36;
     --text-muted: #64748b;
-
+ 
     --success: #10b981;
     --success-bg: #dcfce7;
-
+ 
     --warning: #f59e0b;
     --warning-bg: #fef3c7;
-
+ 
     --danger: #ef4444;
     --danger-bg: #fee2e2;
-
+ 
     --info: #2563eb;
     --info-bg: #eef5ff;
 }
-
+ 
 * {
     box-sizing: border-box;
 }
-
+ 
 html {
     scroll-behavior: smooth;
 }
-
-
+ 
+ 
 /* ============================================================
    2. BODY & BACKGROUND
 ============================================================ */
-
+ 
 body {
     font-family: "Inter", sans-serif;
     margin: 0;
     padding-top: 70px;
-
+ 
     color: var(--text-main);
     min-height: 100vh;
-
+ 
     background:
         linear-gradient(
             var(--bg-overlay),
             var(--bg-overlay)
         ),
         url("../images/bg5.jpg");
-
+ 
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     background-repeat: no-repeat;
 }
-
-
+ 
+ 
 /* ============================================================
    3. JOBSEEKERS SECTION
 ============================================================ */
-
+ 
 .jobseekers-section {
     width: 100%;
     max-width: 1250px;
-
+ 
     margin: 0 auto;
     padding: 40px 20px;
 }
-
-
+ 
+ 
 /* ============================================================
    4. JOBSEEKERS HEADER
 ============================================================ */
-
+ 
 .jobseekers-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-
+ 
     gap: 15px;
     margin-bottom: 22px;
 }
-
+ 
 .jobseekers-header h1,
 .jobseekers-header h2 {
     margin: 0;
-
+ 
     color: #111827;
     font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: -0.4px;
 }
-
-
+ 
+ 
 /* ============================================================
    5. JOBSEEKERS CONTAINER
    TWO CARDS SIDE BY SIDE
 ============================================================ */
-
+ 
 .carousel-wrapper {
     position: relative;
     width: 100%;
     min-width: 0;
 }
-
+ 
 .jobseekers-container {
     display: grid !important;
-
+ 
     /* Force two columns on desktop and tablet */
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-
+ 
     align-items: stretch;
     gap: 16px;
-
+ 
     width: 100%;
     max-width: none;
-
+ 
     margin: 0;
     padding: 8px 4px 25px;
-
+ 
     overflow: visible;
 }
-
+ 
 .jobseekers-container::-webkit-scrollbar {
     display: none;
 }
-
-
+ 
+ 
 /* ============================================================
    6. JOBSEEKER CARDS
    MATCHES THE SIZE AND STYLE OF PEOPLE CARDS
 ============================================================ */
-
+ 
 .jobseekers-card {
     position: relative;
-
+ 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-
+ 
     width: 100%;
     min-width: 0;
     min-height: 140px;
-
+ 
     margin: 0;
     padding: 23px 28px;
     gap: 8px;
-
+ 
     /* Transparent glass background */
     background: var(--glass-bg) !important;
-
+ 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-
+ 
     /* Visible blue left border */
     border: 1px solid var(--glass-border);
     border-left: 5px solid var(--primary) !important;
-
+ 
     border-radius: 12px;
-
+ 
     color: var(--text-main);
     text-align: left;
-
+ 
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
-
+ 
     overflow-wrap: anywhere;
     overflow: hidden;
-
+ 
     transition:
         transform 0.22s ease,
         box-shadow 0.22s ease,
         background 0.22s ease;
 }
-
+ 
 .jobseekers-card:hover {
     transform: translateY(-3px);
-
+ 
     background: rgba(255, 255, 255, 0.82) !important;
-
+ 
     /* Preserve the blue left border on hover */
     border-left: 5px solid var(--primary) !important;
-
+ 
     box-shadow: 0 12px 25px rgba(30, 64, 175, 0.13);
-
+ 
     z-index: 2;
 }
-
-
+ 
+ 
 /* ============================================================
    7. PROFILE PICTURE
 ============================================================ */
-
+ 
 .profile-pic {
     flex-shrink: 0;
-
+ 
     width: 45px;
     height: 45px;
-
+ 
     margin: 0 0 6px;
-
+ 
     border-radius: 50%;
     object-fit: cover;
-
+ 
     background: #e6eefb;
-
+ 
     border: 2px solid rgba(255, 255, 255, 0.9);
-
+ 
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }
-
-
+ 
+ 
 /* ============================================================
    8. OPTIONAL LOGO
 ============================================================ */
-
+ 
 .logo {
     display: block;
     flex-shrink: 0;
-
+ 
     width: 45px;
     height: 45px;
-
+ 
     object-fit: contain;
     margin: 0 0 6px;
 }
-
-
+ 
+ 
 /* ============================================================
    9. JOBSEEKER NAME
 ============================================================ */
-
+ 
 .jobseekers-card h3 {
     width: 100%;
-
+ 
     margin: 0 0 3px;
-
+ 
     color: #111827;
     font-size: 18px;
     font-weight: 750;
     line-height: 1.45;
-
+ 
     overflow-wrap: anywhere;
 }
-
-
+ 
+ 
 /* ============================================================
    10. JOBSEEKER INFORMATION
    PROFESSION / CURRENT JOB AT COMPANY / LOCATION
 ============================================================ */
-
+ 
 .jobseekers-card p {
     margin: 0;
-
+ 
     color: #475569;
     font-size: 13px;
     line-height: 1.6;
-
+ 
     overflow-wrap: anywhere;
 }
-
+ 
 .headline {
     margin: 0;
-
+ 
     color: #475569;
     font-size: 13px;
     font-weight: 500;
     line-height: 1.6;
-
+ 
     overflow-wrap: anywhere;
 }
-
+ 
 /* Current job and company (jobseeker-specific) */
-
+ 
 .current-job,
 .current-position,
 .job-company {
     margin-top: 2px;
-
+ 
     color: #475569;
     font-size: 13px;
     line-height: 1.6;
-
+ 
     overflow-wrap: anywhere;
 }
-
+ 
 .location {
     margin-top: 2px;
-
+ 
     color: #64748b;
     font-size: 12px;
     line-height: 1.6;
-
+ 
     overflow-wrap: anywhere;
 }
-
-
+ 
+ 
 /* ============================================================
    11. PROFILE BADGE
 ============================================================ */
-
+ 
 .job-badge,
 .jobseekers-card .person-badge {
     display: inline-flex;
     align-items: center;
-
+ 
     width: fit-content;
     max-width: 100%;
-
+ 
     margin-top: 2px;
     padding: 5px 10px;
-
+ 
     background: #eef5ff;
     color: #1e40af;
-
+ 
     border: 1px solid rgba(45, 108, 223, 0.15);
     border-radius: 6px;
-
+ 
     font-size: 11px;
     font-weight: 700;
-
+ 
     overflow-wrap: anywhere;
 }
-
-
+ 
+ 
 /* ============================================================
    12. VIEW DETAILS BUTTON
 ============================================================ */
-
+ 
 .jobseekers-card .view-details-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
+ 
     flex-shrink: 0;
     width: fit-content;
     min-width: 120px;
-
+ 
     margin-top: 8px;
     padding: 10px 16px;
-
+ 
     background: var(--primary);
     color: #ffffff;
-
+ 
     border: 1px solid var(--primary);
     border-radius: 9px;
-
+ 
     font-family: inherit;
     font-size: 13px;
     font-weight: 700;
-
+ 
     text-decoration: none;
     text-align: center;
-
+ 
     cursor: pointer;
-
+ 
     transition: all 0.2s ease;
 }
-
+ 
 .jobseekers-card .view-details-btn:hover {
     background: var(--primary-hover);
     color: #ffffff;
-
+ 
     border-color: var(--primary-hover);
-
+ 
     transform: translateY(-2px);
-
+ 
     box-shadow: 0 6px 14px rgba(45, 108, 223, 0.22);
 }
-
+ 
 .jobseekers-card .view-details-btn:active {
     transform: translateY(0);
 }
-
-
+ 
+ 
 /* ============================================================
    13. REVIEW BUTTON
 ============================================================ */
-
+ 
 .review-btn {
     background: var(--primary);
     color: #ffffff;
-
+ 
     border: 1px solid var(--primary);
     padding: 11px 18px;
     border-radius: 9px;
-
+ 
     font-family: inherit;
     font-size: 13px;
     font-weight: 600;
-
+ 
     cursor: pointer;
     transition: all 0.2s ease;
 }
-
+ 
 .review-btn:hover {
     background: var(--primary-hover);
     color: #ffffff;
-
+ 
     border-color: var(--primary-hover);
-
+ 
     transform: translateY(-1px);
-
+ 
     box-shadow: 0 5px 12px rgba(45, 108, 223, 0.2);
 }
-
-
+ 
+ 
 /* ============================================================
    14. NAVIGATION BUTTONS
 ============================================================ */
-
+ 
 .nav-btn {
     display: none;
 }
-
-
+ 
+ 
 /* ============================================================
    15. EMPTY STATE
 ============================================================ */
-
+ 
 .empty-state {
     grid-column: 1 / -1;
-
+ 
     width: 100%;
     padding: 35px 20px;
-
+ 
     background: rgba(255, 255, 255, 0.68);
-
+ 
     border: 1px solid var(--glass-border);
     border-radius: 14px;
-
+ 
     color: var(--text-muted);
     font-size: 14px;
     text-align: center;
-
+ 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-
+ 
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
 }
-
-
+ 
+ 
 /* ============================================================
    16. TABLET LAYOUT
    KEEP TWO COLUMNS
 ============================================================ */
-
+ 
 @media (max-width: 900px) {
     .jobseekers-section {
         padding: 30px 16px;
     }
-
+ 
     .jobseekers-container {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 14px;
     }
-
+ 
     .jobseekers-card {
         min-height: 135px;
         padding: 20px;
     }
-
+ 
     .profile-pic {
         width: 42px;
         height: 42px;
     }
-
+ 
     .jobseekers-card h3 {
         font-size: 17px;
     }
-
+ 
     .jobseekers-card p,
     .headline,
     .current-job,
@@ -483,63 +484,63 @@ body {
     .job-company {
         font-size: 12px;
     }
-
+ 
     .location {
         font-size: 12px;
     }
 }
-
-
+ 
+ 
 /* ============================================================
    17. MOBILE LAYOUT
    ONE COLUMN ONLY ON SMALL SCREENS
 ============================================================ */
-
+ 
 @media (max-width: 600px) {
     body {
         background-attachment: scroll;
     }
-
+ 
     .jobseekers-section {
         padding: 25px 12px;
     }
-
+ 
     .jobseekers-header {
         align-items: flex-start;
         flex-direction: column;
-
+ 
         gap: 12px;
         margin-bottom: 18px;
     }
-
+ 
     .jobseekers-header h1,
     .jobseekers-header h2 {
         font-size: 1.3rem;
     }
-
+ 
     .jobseekers-container {
         grid-template-columns: minmax(0, 1fr) !important;
         gap: 14px;
-
+ 
         padding: 6px 2px 20px;
     }
-
+ 
     .jobseekers-card {
         min-height: 125px;
         padding: 18px 16px;
-
+ 
         border-left: 5px solid var(--primary) !important;
     }
-
+ 
     .profile-pic {
         width: 42px;
         height: 42px;
     }
-
+ 
     .jobseekers-card h3 {
         font-size: 16px;
     }
-
+ 
     .jobseekers-card p,
     .headline,
     .current-job,
@@ -547,41 +548,41 @@ body {
     .job-company {
         font-size: 12px;
     }
-
+ 
     .location {
         font-size: 12px;
     }
-
+ 
     .jobseekers-card .view-details-btn {
         min-width: 105px;
         padding: 9px 13px;
-
+ 
         font-size: 12px;
     }
 }
-
-
+ 
+ 
 /* ============================================================
    18. EXTRA SMALL PHONES
 ============================================================ */
-
+ 
 @media (max-width: 380px) {
     .jobseekers-section {
         padding: 20px 8px;
     }
-
+ 
     .jobseekers-container {
         gap: 12px;
     }
-
+ 
     .jobseekers-card {
         padding: 16px 13px;
     }
-
+ 
     .jobseekers-card h3 {
         font-size: 15px;
     }
-
+ 
     .jobseekers-card p,
     .headline,
     .current-job,
@@ -590,18 +591,18 @@ body {
     .location {
         font-size: 11px;
     }
-
+ 
     .jobseekers-card .view-details-btn {
         min-width: 95px;
         padding: 8px 10px;
     }
 }
-
-
+ 
+ 
 /* ============================================================
    19. REDUCED MOTION
 ============================================================ */
-
+ 
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
