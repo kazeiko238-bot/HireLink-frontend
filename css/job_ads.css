@@ -1,251 +1,629 @@
-/* Layout */
+```css
+/* ============================================================
+   1. GLOBAL RESET & BACKGROUND
+============================================================ */
+
+:root {
+    --primary: #2d6cdf;
+    --primary-hover: #1f56c2;
+
+    --bg-overlay: rgba(245, 247, 251, 0.85);
+    --glass-bg: rgba(255, 255, 255, 0.82);
+    --glass-border: rgba(255, 255, 255, 0.45);
+
+    --text-main: #1a1f36;
+    --text-muted: #64748b;
+
+    --success: #10b981;
+    --warning: #f59e0b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
- font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     margin: 0;
-    padding-top: 70px; /* Space for your header */
-    color: #ffffff;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                url('../images/bg5.jpg'); 
+    padding-top: 70px;
+    color: var(--text-main);
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            var(--bg-overlay),
+            var(--bg-overlay)
+        ),
+        url("../images/bg5.jpg");
+
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Keeps image still while you scroll */
+    background-attachment: fixed;
     background-repeat: no-repeat;
 }
 
+/* ============================================================
+   2. DASHBOARD LAYOUT
+============================================================ */
+
 .dashboard-content {
-  display: flex;
-  padding: 40px;
-  gap: 40px;
+    display: flex;
+    align-items: flex-start;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 40px;
+    gap: 35px;
 }
 
 .main-panel {
-  flex: 3;
+    flex: 3;
+    min-width: 0;
 }
 
 .side-panel {
-  flex: 1;
+    flex: 1;
+    min-width: 0;
 }
 
-/* Titles */
+/* Optional glass panel styling.
+   Apply these classes to existing HTML panels if desired. */
+
+.main-panel,
+.side-panel {
+    border-radius: 18px;
+}
+
+/* ============================================================
+   3. TITLES & TEXT
+============================================================ */
+
 h1 {
-  font-size: 28px;
-  margin-bottom: 8px;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+    color: #111827;
+    margin: 0 0 8px;
+}
+
+h2,
+h3 {
+    color: #111827;
 }
 
 .subtitle {
-  color: #fff2f2;
-  margin-bottom: 25px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
 }
 
-/* Tabs */
+/* ============================================================
+   4. TABS
+============================================================ */
+
 .tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
 }
 
 .tab {
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1px solid #ddd;
-  background: #f9fafb;
-  cursor: pointer;
+    padding: 9px 18px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.8);
+    color: #475569;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: #f8fbff;
 }
 
 .tab.active {
-  background: #2563eb;
-  color: white;
-  border: none;
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(45, 108, 223, 0.2);
 }
 
+/* ============================================================
+   5. FORM LAYOUT
+============================================================ */
 
-
-/* Form */
 .form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
 }
 
 .form-grid .full {
-  grid-column: span 2;
+    grid-column: 1 / -1;
 }
 
 label {
-  font-size: 13px;
-  color: #ffffff;
-  margin-bottom: 5px;
-  display: block;
+    display: block;
+    margin-bottom: 8px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
 }
 
-input, textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  outline: none;
+input,
+textarea,
+select {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    outline: none;
+
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #94a3b8;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(45, 108, 223, 0.1);
 }
 
 textarea {
-  min-height: 80px;
-  resize: none;
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.6;
 }
 
-/* Updated Action Buttons Container */
+/* ============================================================
+   6. ACTION BUTTONS
+============================================================ */
+
 .action-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 20px;
-    padding-right: 60px; /* Moves the buttons farther from the right edge */
+    flex-wrap: wrap;
+    gap: 12px;
     margin-top: 30px;
+    padding-right: 0;
 }
 
-/* The Enhanced Primary Button */
 .primary-btn {
     position: relative;
-    background: linear-gradient(135deg, #061c97 0%, #0091ff 100%);
-    color: white;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    background: var(--primary);
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+
     border: none;
-    padding: 14px 35px;
-    border-radius: 50px; /* Modern pill shape */
+    padding: 13px 26px;
+    border-radius: 10px;
+
     cursor: pointer;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    
-    /* Breathing Animation */
-    animation: pulseGlow 3s infinite ease-in-out;
+
+    box-shadow: 0 5px 12px rgba(45, 108, 223, 0.18);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-/* Hover States */
 .primary-btn:hover:not(:disabled) {
-    transform: scale(1.05) translateY(-3px);
-    box-shadow: 0 12px 35px rgba(0, 145, 255, 0.6);
-    background: linear-gradient(135deg, #005bed 0%, #00d2ff 100%);
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(45, 108, 223, 0.25);
 }
 
-.primary-btn:active {
-    transform: scale(0.98);
+.primary-btn:active:not(:disabled) {
+    transform: translateY(0);
 }
 
-/* Disabled State Logic */
+.primary-btn:focus-visible,
+.review-btn:focus-visible,
+.nav-btn:focus-visible,
+.tab:focus-visible {
+    outline: 3px solid rgba(45, 108, 223, 0.3);
+    outline-offset: 3px;
+}
+
 .primary-btn:disabled {
-    background: #333;
-    opacity: 0.5;
+    background: #cbd5e1;
+    color: #64748b;
     cursor: not-allowed;
-    animation: none;
     box-shadow: none;
+    transform: none;
 }
 
+/* ============================================================
+   7. JOBS SECTION
+============================================================ */
 
-.jobs-section{
-  max-width:1200px;
-  margin:auto;
-  padding:40px 20px;
+.jobs-section {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 40px 20px;
 }
 
-.jobs-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
+.jobs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-.review-btn{
-  background:#2d4ea2;
-  color:white;
-  border:none;
-  padding:10px 16px;
-  border-radius:8px;
-  cursor:pointer;
+.jobs-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.4px;
 }
 
-.carousel-wrapper{
-  position:relative;
+.review-btn {
+    background: var(--primary);
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    border: none;
+    padding: 11px 18px;
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
 }
 
+.review-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(45, 108, 223, 0.2);
+}
+
+/* ============================================================
+   8. JOB CAROUSEL
+============================================================ */
+
+.carousel-wrapper {
+    position: relative;
+    min-width: 0;
+}
 
 .jobs-container {
-    display: flex;          /* Align cards in a row */
-     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 50px;              /* Space between cards */
-    padding: 30px 20px;     /* Room for the hover scale effect */
-    overflow-x: auto;       /* Enable horizontal scrolling */
+    display: flex;
+    align-items: stretch;
+    gap: 24px;
+
+    padding: 25px 12px 35px;
+
+    overflow-x: auto;
     scroll-behavior: smooth;
-    -ms-overflow-style: none;  /* Hide scrollbar IE/Edge */
-    scrollbar-width: none;     /* Hide scrollbar Firefox */
+    scroll-snap-type: x proximity;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
-/* Hide scrollbar for Chrome/Safari */
 .jobs-container::-webkit-scrollbar {
     display: none;
 }
 
 #jobsContainer:empty::before {
     content: "Loading jobs or none found...";
-    color: white;
+    color: var(--text-muted);
     font-style: italic;
+    padding: 20px;
 }
 
-/* Company Card */
+/* ============================================================
+   9. JOB / COMPANY CARDS
+============================================================ */
 
-.jobs-card{
+.jobs-card {
+    position: relative;
+
+    flex: 0 0 280px;
     min-width: 280px;
-    min-height: 220px;
-    background: linear-gradient (135deg,  #061c97 0%, #005bed 50%, #0091ff 100%);
+    min-height: 230px;
 
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 18px;
-    padding: 24px;
-    text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
-    color: #ffffff;
-   transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    justify-content: space-between;
+    gap: 12px;
+
+    padding: 25px 22px;
+
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+
+    color: var(--text-main);
+    text-align: center;
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+
     cursor: pointer;
-    overflow: hidden; /* Keeps badge contained on zoom */
-  box-shadow: 
-        0 15px 60px -10px rgba(6, 28, 151, 0.7),  /* Base color shadow */
-        0 20px 80px -5px rgba(0, 145, 255, 0.5);  /* Lighter bloom color */
+    scroll-snap-align: start;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
 }
 
-.jobs-card:hover{
-   transform: scale(1.08); 
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    z-index: 10;
+.jobs-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(45, 108, 223, 0.3);
+    box-shadow: 0 18px 30px rgba(30, 64, 175, 0.12);
+    z-index: 2;
 }
 
-.logo{
-  width:60px;
-  height:60px;
-  object-fit:contain;
-  margin-bottom:10px;
+.jobs-card h3 {
+    margin: 8px 0;
+    color: #111827;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
 }
 
-.jobs-card h3{
-  font-size:16px;
-  margin:10px 0;
+.jobs-card p {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
 }
 
-/* Navigation Button */
-
-.nav-btn{
-  position:absolute;
-  right:-10px;
-  top:50%;
-  transform:translateY(-50%);
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  border:none;
-  background:white;
-  box-shadow:0 2px 8px rgba(0,0,0,0.2);
-  cursor:pointer;
-  font-size:24px;
+.logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 8px;
 }
+
+/* ============================================================
+   10. CAROUSEL NAVIGATION BUTTON
+============================================================ */
+
+.nav-btn {
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+    border: 1px solid #e2e8f0;
+
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--primary);
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+    cursor: pointer;
+    font-size: 23px;
+
+    transition: all 0.2s ease;
+    z-index: 5;
+}
+
+.nav-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 6px 15px rgba(45, 108, 223, 0.25);
+}
+
+/* ============================================================
+   11. OPTIONAL GLASS PANEL
+   Apply class="glass-panel" to existing HTML sections
+============================================================ */
+
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================================
+   12. RESPONSIVE DESIGN
+============================================================ */
+
+@media (max-width: 992px) {
+    .dashboard-content {
+        padding: 30px 24px;
+        gap: 25px;
+    }
+
+    .jobs-section {
+        padding: 30px 18px;
+    }
+
+    .jobs-container {
+        gap: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-content {
+        flex-direction: column;
+        padding: 25px 18px;
+        gap: 25px;
+    }
+
+    .main-panel,
+    .side-panel {
+        width: 100%;
+        flex: auto;
+    }
+
+    h1 {
+        font-size: 1.7rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .form-grid .full {
+        grid-column: auto;
+    }
+
+    .action-buttons {
+        justify-content: stretch;
+        padding-right: 0;
+    }
+
+    .primary-btn {
+        flex: 1;
+    }
+
+    .jobs-header {
+        align-items: flex-start;
+    }
+
+    .jobs-card {
+        flex-basis: 260px;
+        min-width: 260px;
+    }
+
+    .nav-btn {
+        right: 0;
+    }
+}
+
+/* ============================================================
+   13. SMALL MOBILE DEVICES
+============================================================ */
+
+@media (max-width: 480px) {
+    body {
+        background-attachment: scroll;
+    }
+
+    .dashboard-content {
+        padding: 22px 14px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        font-size: 13px;
+    }
+
+    .tabs {
+        gap: 8px;
+    }
+
+    .tab {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .primary-btn {
+        width: 100%;
+    }
+
+    .jobs-section {
+        padding: 25px 12px;
+    }
+
+    .jobs-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .jobs-card {
+        flex-basis: 245px;
+        min-width: 245px;
+        min-height: 215px;
+        padding: 20px 17px;
+    }
+
+    .logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .nav-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+    }
+
+    .glass-panel {
+        padding: 18px;
+    }
+}
+
+/* ============================================================
+   14. ACCESSIBILITY
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+```
