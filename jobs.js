@@ -1,4 +1,4 @@
-```javascript
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
@@ -539,4 +539,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
-```
+
