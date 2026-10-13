@@ -1,3 +1,4 @@
+```css
 /* ============================================================
    1. GLOBAL RESET & BACKGROUND
 ============================================================ */
@@ -12,6 +13,12 @@
 
     --text-main: #1a1f36;
     --text-muted: #64748b;
+
+    /* Compatibility with existing variable names */
+    --bg: #0f172a;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --danger-hover: #dc2626;
 
     --success: #10b981;
     --success-bg: #dcfce7;
@@ -32,51 +39,54 @@
 
 html {
     scroll-behavior: smooth;
+    width: 100%;
+    min-height: 100%;
 }
-
-
 
 body {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
-}
+    min-height: 100vh;
 
-body {
     font-family: "Inter", sans-serif;
     background: var(--bg);
     color: var(--text);
+
     overflow: hidden;
 }
 
 
 /* ============================================================
-   HEADER
+   2. HEADER
+   Reduced excess spacing and kept content aligned
 ============================================================ */
 
 .meeting-header {
-    height: 70px;
+    width: 100%;
+    height: 64px;
+    min-height: 64px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    padding: 0 30px;
+    padding: 0 20px;
+    gap: 16px;
 
-    background: rgba(17, 24, 39, 0.96);
-
+    background: rgba(17, 24, 39, 0.97);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
     position: relative;
-
     z-index: 20;
 }
 
 .meeting-brand {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 12px;
+
+    min-width: 0;
 }
 
 .meeting-brand h2 {
@@ -84,28 +94,32 @@ body {
 
     color: var(--primary);
 
-    font-size: 1.35rem;
+    font-size: 1.3rem;
     font-weight: 800;
+    white-space: nowrap;
 }
 
 .meeting-title {
     color: var(--muted);
 
-    font-size: 14px;
-
-    padding-left: 18px;
+    font-size: 13px;
+    padding-left: 12px;
 
     border-left: 1px solid rgba(255, 255, 255, 0.15);
+
+    white-space: nowrap;
 }
 
 .meeting-info {
     display: flex;
     align-items: center;
-    gap: 18px;
+    justify-content: flex-end;
+    gap: 14px;
 
     color: var(--muted);
+    font-size: 12px;
 
-    font-size: 13px;
+    min-width: 0;
 }
 
 #roomStatus {
@@ -114,6 +128,7 @@ body {
     gap: 7px;
 
     color: #fbbf24;
+    white-space: nowrap;
 }
 
 #roomStatus::before {
@@ -121,9 +136,9 @@ body {
 
     width: 8px;
     height: 8px;
+    flex-shrink: 0;
 
     border-radius: 50%;
-
     background: #fbbf24;
 }
 
@@ -145,20 +160,22 @@ body {
 
 
 /* ============================================================
-   MAIN MEETING AREA
+   3. MAIN MEETING AREA
+   Full width, minimal outer spacing
 ============================================================ */
 
 .meeting-container {
     position: relative;
 
     width: 100%;
-    height: calc(100vh - 70px);
+    height: calc(100dvh - 64px);
+    min-height: 0;
 
-    padding: 20px;
+    padding: 10px;
 
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: stretch;
+    justify-content: stretch;
 
     background:
         radial-gradient(
@@ -170,7 +187,8 @@ body {
 
 
 /* ============================================================
-   REMOTE VIDEO
+   4. REMOTE VIDEO
+   Uses nearly the entire available meeting area
 ============================================================ */
 
 .remote-video-container {
@@ -178,19 +196,18 @@ body {
 
     width: 100%;
     height: 100%;
-
-    max-width: 1500px;
+    max-width: none;
+    min-width: 0;
+    min-height: 0;
 
     background: #020617;
 
-    border-radius: 16px;
-
+    border-radius: 12px;
     overflow: hidden;
 
     border: 1px solid rgba(255, 255, 255, 0.08);
 
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
 }
 
 #remoteVideo {
@@ -198,7 +215,6 @@ body {
     height: 100%;
 
     object-fit: cover;
-
     background: #020617;
 
     display: none;
@@ -206,47 +222,71 @@ body {
 
 
 /* ============================================================
-   REMOTE PLACEHOLDER
+   5. REMOTE VIDEO PLACEHOLDER
+   Left-aligned text and description
 ============================================================ */
 
 .video-placeholder {
     position: absolute;
-
     inset: 0;
 
     display: flex;
-
     flex-direction: column;
 
-    align-items: center;
-
+    align-items: flex-start;
     justify-content: center;
 
     gap: 12px;
 
+    padding: 32px 40px;
+
+    text-align: left;
     color: var(--muted);
 
     background:
         radial-gradient(
-            circle,
+            circle at left center,
             #1e293b 0%,
-            #020617 70%
+            #020617 75%
         );
 }
 
 .placeholder-icon {
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
     border-radius: 50%;
-
     background: #334155;
 
-    font-size: 38px;
+    font-size: 34px;
+}
+
+/* Any text or description inside the placeholder */
+.video-placeholder h1,
+.video-placeholder h2,
+.video-placeholder h3,
+.video-placeholder p {
+    max-width: 600px;
+    margin: 0;
+
+    text-align: left;
+    line-height: 1.5;
+}
+
+.video-placeholder h1,
+.video-placeholder h2,
+.video-placeholder h3 {
+    color: #f8fafc;
+}
+
+.video-placeholder p {
+    color: #cbd5e1;
+    font-size: 14px;
 }
 
 .video-placeholder.hidden {
@@ -255,50 +295,48 @@ body {
 
 
 /* ============================================================
-   PARTICIPANT NAME
+   6. PARTICIPANT NAME
 ============================================================ */
 
 .participant-name {
     position: absolute;
 
-    left: 20px;
-    bottom: 20px;
+    left: 14px;
+    bottom: 14px;
 
-    padding: 8px 13px;
+    padding: 8px 12px;
 
     border-radius: 8px;
-
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.6);
 
     color: white;
-
     font-size: 13px;
+
+    z-index: 5;
 }
 
 
 /* ============================================================
-   LOCAL VIDEO
+   7. LOCAL VIDEO
 ============================================================ */
 
 .local-video-container {
     position: absolute;
 
-    right: 40px;
-    bottom: 110px;
+    right: 22px;
+    bottom: 96px;
 
-    width: 240px;
-    height: 150px;
+    width: 220px;
+    height: 140px;
 
     background: #020617;
 
     border-radius: 12px;
-
     overflow: hidden;
 
     border: 2px solid rgba(255, 255, 255, 0.25);
 
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 
     z-index: 10;
 }
@@ -308,24 +346,23 @@ body {
     height: 100%;
 
     object-fit: cover;
-
     background: #020617;
 }
 
 .local-placeholder {
     position: absolute;
-
     inset: 0;
 
     display: none;
-
     align-items: center;
     justify-content: center;
 
+    padding: 10px;
+
+    text-align: left;
     color: var(--muted);
 
     background: #020617;
-
     font-size: 13px;
 }
 
@@ -335,50 +372,50 @@ body {
 
 
 /* ============================================================
-   CONTROL BAR
+   8. CONTROL BAR
 ============================================================ */
 
 .meeting-controls {
     position: absolute;
 
-    bottom: 25px;
+    bottom: 18px;
     left: 50%;
 
     transform: translateX(-50%);
 
     display: flex;
     align-items: center;
+    justify-content: center;
 
-    gap: 12px;
+    gap: 10px;
 
-    padding: 12px 16px;
+    padding: 10px 14px;
 
-    border-radius: 18px;
+    border-radius: 16px;
 
-    background: rgba(15, 23, 42, 0.92);
+    background: rgba(15, 23, 42, 0.94);
 
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 
     border: 1px solid rgba(255, 255, 255, 0.1);
 
-    box-shadow:
-        0 15px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
 
     z-index: 30;
 }
 
 
 /* ============================================================
-   CONTROL BUTTONS
+   9. CONTROL BUTTONS
 ============================================================ */
 
 .control-btn {
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
 
     border: none;
-
     border-radius: 50%;
 
     display: flex;
@@ -386,21 +423,18 @@ body {
     justify-content: center;
 
     background: #334155;
-
     color: white;
 
-    font-size: 19px;
-
+    font-size: 18px;
     cursor: pointer;
 
     transition:
-        background 0.2s,
-        transform 0.2s;
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
 .control-btn:hover {
     background: #475569;
-
     transform: translateY(-2px);
 }
 
@@ -410,8 +444,7 @@ body {
 
 .leave-btn {
     background: var(--danger);
-
-    margin-left: 8px;
+    margin-left: 4px;
 }
 
 .leave-btn:hover {
@@ -420,18 +453,18 @@ body {
 
 
 /* ============================================================
-   ERROR OVERLAY
+   10. ERROR OVERLAY
 ============================================================ */
 
 .meeting-error {
     position: fixed;
-
     inset: 0;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
+
+    padding: 20px;
 
     background: rgba(2, 6, 23, 0.88);
 
@@ -443,56 +476,55 @@ body {
 }
 
 .error-box {
-    width: 90%;
+    width: 100%;
     max-width: 420px;
 
-    padding: 35px;
+    padding: 30px;
 
-    text-align: center;
+    text-align: left;
 
     background: white;
-
     color: #1e293b;
 
-    border-radius: 18px;
+    border-radius: 16px;
 
-    box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
 }
 
 .error-box h2 {
-    margin-top: 0;
-
+    margin: 0 0 10px;
     font-size: 1.4rem;
+    text-align: left;
 }
 
 .error-box p {
-    color: #64748b;
+    margin: 0 0 14px;
 
+    color: #64748b;
     line-height: 1.6;
+    text-align: left;
 }
 
 
 /* ============================================================
-   BACK BUTTON
+   11. BACK BUTTON
 ============================================================ */
 
 .back-btn {
-    margin-top: 15px;
+    margin-top: 8px;
 
-    padding: 11px 20px;
+    padding: 11px 18px;
 
     border: none;
-
     border-radius: 9px;
 
     background: var(--primary);
-
     color: white;
 
     font-weight: 600;
-
     cursor: pointer;
+
+    transition: background 0.2s ease;
 }
 
 .back-btn:hover {
@@ -501,15 +533,24 @@ body {
 
 
 /* ============================================================
-   RESPONSIVE
+   12. RESPONSIVE LAYOUT
 ============================================================ */
 
 @media (max-width: 768px) {
-
     .meeting-header {
         height: 60px;
+        min-height: 60px;
 
-        padding: 0 15px;
+        padding: 0 12px;
+        gap: 8px;
+    }
+
+    .meeting-brand {
+        gap: 8px;
+    }
+
+    .meeting-brand h2 {
+        font-size: 1.1rem;
     }
 
     .meeting-title {
@@ -518,39 +559,154 @@ body {
 
     .meeting-info {
         gap: 8px;
-
         font-size: 11px;
     }
 
     .meeting-container {
-        height: calc(100vh - 60px);
+        height: calc(100dvh - 60px);
+        padding: 6px;
+    }
 
-        padding: 10px;
+    .remote-video-container {
+        border-radius: 9px;
+    }
+
+    .video-placeholder {
+        padding: 22px;
+        gap: 10px;
+    }
+
+    .placeholder-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+    }
+
+    .video-placeholder p {
+        font-size: 13px;
     }
 
     .local-video-container {
         width: 130px;
         height: 90px;
 
-        right: 18px;
-        bottom: 100px;
+        right: 12px;
+        bottom: 88px;
     }
 
     .meeting-controls {
-        bottom: 15px;
-
-        padding: 9px 12px;
+        bottom: 12px;
+        gap: 8px;
+        padding: 8px 10px;
     }
 
     .control-btn {
-        width: 43px;
-        height: 43px;
-
-        font-size: 17px;
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
     }
 
     .participant-name {
-        left: 12px;
-        bottom: 12px;
+        left: 10px;
+        bottom: 10px;
+
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+
+    .error-box {
+        padding: 24px;
     }
 }
+
+
+/* ============================================================
+   13. SMALL MOBILE SCREENS
+============================================================ */
+
+@media (max-width: 420px) {
+    .meeting-header {
+        padding: 0 9px;
+    }
+
+    .meeting-brand h2 {
+        font-size: 1rem;
+    }
+
+    .meeting-info {
+        gap: 6px;
+        font-size: 10px;
+    }
+
+    .meeting-container {
+        padding: 4px;
+    }
+
+    .video-placeholder {
+        padding: 16px;
+    }
+
+    .placeholder-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+    }
+
+    .video-placeholder p {
+        font-size: 12px;
+    }
+
+    .local-video-container {
+        width: 105px;
+        height: 75px;
+
+        right: 8px;
+        bottom: 82px;
+    }
+
+    .meeting-controls {
+        bottom: 9px;
+        gap: 6px;
+        padding: 7px 8px;
+    }
+
+    .control-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+    }
+}
+
+
+/* ============================================================
+   14. SHORT VIEWPORTS
+============================================================ */
+
+@media (max-height: 500px) {
+    .meeting-header {
+        height: 50px;
+        min-height: 50px;
+    }
+
+    .meeting-container {
+        height: calc(100dvh - 50px);
+    }
+
+    .local-video-container {
+        width: 130px;
+        height: 82px;
+        bottom: 72px;
+    }
+
+    .meeting-controls {
+        bottom: 8px;
+        padding: 6px 9px;
+    }
+
+    .control-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+}
+```
