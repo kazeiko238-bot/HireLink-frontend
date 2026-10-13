@@ -1,163 +1,415 @@
+```css
+/* ============================================================
+   1. GLOBAL RESET & BACKGROUND
+============================================================ */
+
+:root {
+    --primary: #2d6cdf;
+    --primary-hover: #1f56c2;
+    --bg-overlay: rgba(245, 247, 251, 0.85);
+    --glass-bg: rgba(255, 255, 255, 0.82);
+    --glass-border: rgba(255, 255, 255, 0.7);
+    --text-main: #1f2937;
+    --text-muted: #64748b;
+    --shadow: 0 10px 30px rgba(31, 86, 194, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+}
 
 body {
-  font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
     margin: 0;
-    padding-top: 70px; /* Space for your header */
-    color: #ffffff;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                url('../images/bg5.jpg'); 
+    padding-top: 70px;
+    color: var(--text-main);
+
+    background:
+        linear-gradient(
+            rgba(245, 247, 251, 0.72),
+            rgba(245, 247, 251, 0.82)
+        ),
+        url('../images/bg5.jpg');
+
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Keeps image still while you scroll */
+    background-attachment: fixed;
     background-repeat: no-repeat;
-}
-.jobseekers-section{
-  max-width:1200px;
-  margin:auto;
-  padding:40px 20px;
-}
-
-.jobseekers-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-
-.review-btn{
-  background:#2d4ea2;
-  color:white;
-  border:none;
-  padding:10px 16px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.carousel-wrapper{
-  position:relative;
-}
-
-/* --- UPDATED JOBSEEKERS GRID LAYOUT --- */
-.jobseekers-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 40px; /* Space between the cards */
-    padding: 60px 40px; /* Vertical room for shadow bloom */
-}
-
-.jobseekers-container::-webkit-scrollbar{
-  display:none;
+    min-height: 100vh;
 }
 
 
-/* Company Card */
+/* ============================================================
+   2. JOBSEEKERS SECTION
+============================================================ */
 
-.jobseekers-card{
-   min-width: 240px;
-    min-height: 220px;
-    background: linear-gradient (135deg,  #061c97 0%, #005bed 50%, #0091ff 100%);
+.jobseekers-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+}
 
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 18px;
-    padding: 24px;
-    text-align: center;
+.jobseekers-header {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    color: #ffffff;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: pointer;
-    overflow: hidden; /* Keeps badge contained on zoom */
-  box-shadow: 
-        0 15px 60px -10px rgba(6, 28, 151, 0.7),  /* Base color shadow */
-        0 20px 80px -5px rgba(0, 145, 255, 0.5);  /* Lighter bloom color */
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
-.jobseekers-card:hover{
-   transform: scale(1.08); 
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    z-index: 10;
-}
-
-.logo{
-  width:60px;
-  height:60px;
-  object-fit:contain;
-  margin-bottom:10px;
-}
-
-.jobseekers-card h3{
-    font-size: 18px;
+.jobseekers-header h1,
+.jobseekers-header h2 {
+    color: #1e3a8a;
+    margin: 0;
     font-weight: 700;
-    margin: 5px 0;
+}
+
+
+/* ============================================================
+   3. HEADER / REVIEW BUTTON
+============================================================ */
+
+.review-btn {
+    background: var(--primary);
     color: #ffffff;
+    border: 1px solid var(--primary);
+    padding: 11px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.25s ease, transform 0.25s ease;
 }
 
-.job-badge{
-  display:inline-block;
-  background:#e6eef8;
-  color:#2d4ea2;
-  padding:6px 10px;
-  border-radius:8px;
-  font-size:13px;
-}
-
-/* Navigation Button */
-
-.nav-btn{
-  position:absolute;
-  right:-10px;
-  top:50%;
-  transform:translateY(-50%);
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  border:none;
-  background:white;
-  box-shadow:0 2px 8px rgba(0,0,0,0.2);
-  cursor:pointer;
-  font-size:24px;
+.review-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
 }
 
 
-.jobseekers-card .view-details-btn {
-  display: block;
-  width: 100%;
-  margin-top: 12px;
-  padding: 10px;
-  background-color: #2563eb;
-  color: #ffffff;
-  border: none;
-  border-radius: 25px;
-  font-weight: 300;
-  cursor: pointer;
-  transition: 0.3s ease;
+/* ============================================================
+   4. JOBSEEKERS LIST CONTAINER
+============================================================ */
+
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
 }
 
-.jobseekers-card .view-details-btn:hover {
-  background-color: #1e40af;
-  transform: translateY(-2px);
+.jobseekers-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+
+    width: 100%;
+    padding: 10px 4px 24px;
+
+    overflow: visible;
 }
+
+.jobseekers-container::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* ============================================================
+   5. JOBSEEKER RECTANGULAR CARDS
+============================================================ */
+
+.jobseekers-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 24px;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 165px;
+    padding: 24px 28px;
+
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-left: 5px solid var(--primary);
+    border-radius: 16px;
+
+    color: var(--text-main);
+    text-align: left;
+
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    cursor: pointer;
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.jobseekers-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(45, 108, 223, 0.45);
+    border-left-color: var(--primary);
+
+    box-shadow: 0 16px 36px rgba(31, 86, 194, 0.18);
+}
+
+
+/* ============================================================
+   6. PROFILE PICTURE
+============================================================ */
 
 .profile-pic {
-  width: 90px;
+    flex-shrink: 0;
+
+    width: 90px;
     height: 90px;
+
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 15px;
-    border: 3px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+    background: #eaf1ff;
+    border: 3px solid #ffffff;
+
+    box-shadow: 0 4px 14px rgba(45, 108, 223, 0.16);
+
+    margin: 0;
 }
 
 
+/* Optional logo image */
+
+.logo {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin: 0;
+}
+
+
+/* ============================================================
+   7. JOBSEEKER INFORMATION
+============================================================ */
+
+.jobseekers-card h3 {
+    margin: 0 0 8px;
+    color: #1e3a8a;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.jobseekers-card p {
+    margin: 5px 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
 .headline {
-  font-size: 14px;
-  color: #555;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .location {
-  font-size: 13px;
-  color: #888;
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 6px;
 }
+
+
+/* ============================================================
+   8. JOBSEEKER BADGE
+============================================================ */
+
+.job-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 8px;
+    padding: 6px 12px;
+
+    background: rgba(45, 108, 223, 0.1);
+    color: #2457b8;
+
+    border: 1px solid rgba(45, 108, 223, 0.15);
+    border-radius: 8px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   9. VIEW DETAILS BUTTON
+============================================================ */
+
+.jobseekers-card .view-details-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+    width: auto;
+    min-width: 140px;
+    margin: 0 0 0 auto;
+    padding: 12px 20px;
+
+    background: var(--primary) !important;
+    color: #ffffff !important;
+
+    border: 1px solid var(--primary) !important;
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    text-decoration: none;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.jobseekers-card .view-details-btn:hover {
+    background: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+    color: #ffffff !important;
+
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(45, 108, 223, 0.22);
+}
+
+
+/* ============================================================
+   10. NAVIGATION BUTTONS
+============================================================ */
+
+.nav-btn {
+    display: none;
+}
+
+
+/* ============================================================
+   11. OPTIONAL GLASS PANEL
+============================================================ */
+
+.glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+
+/* ============================================================
+   12. RESPONSIVE DESIGN — TABLETS
+============================================================ */
+
+@media (max-width: 768px) {
+    .jobseekers-section {
+        padding: 30px 18px 45px;
+    }
+
+    .jobseekers-header {
+        align-items: flex-start;
+    }
+
+    .jobseekers-card {
+        gap: 18px;
+        padding: 22px;
+        min-height: 150px;
+    }
+
+    .profile-pic {
+        width: 76px;
+        height: 76px;
+    }
+
+    .jobseekers-card h3 {
+        font-size: 17px;
+    }
+
+    .jobseekers-card .view-details-btn {
+        min-width: 120px;
+        padding: 10px 14px;
+    }
+}
+
+
+/* ============================================================
+   13. RESPONSIVE DESIGN — MOBILE
+============================================================ */
+
+@media (max-width: 520px) {
+    body {
+        padding-top: 65px;
+        background-attachment: scroll;
+    }
+
+    .jobseekers-section {
+        padding: 24px 14px 35px;
+    }
+
+    .jobseekers-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .review-btn {
+        width: 100%;
+    }
+
+    .jobseekers-card {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+
+        padding: 22px 20px;
+        min-height: auto;
+    }
+
+    .profile-pic {
+        width: 80px;
+        height: 80px;
+        align-self: flex-start;
+    }
+
+    .jobseekers-card h3 {
+        font-size: 18px;
+    }
+
+    .jobseekers-card .view-details-btn {
+        width: 100%;
+        min-width: 0;
+        margin: 6px 0 0;
+    }
+
+    .job-badge {
+        font-size: 12px;
+    }
+}
+```
