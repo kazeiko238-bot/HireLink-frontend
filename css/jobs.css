@@ -1,37 +1,26 @@
 
 /* ============================================================
-   1. GLOBAL RESET & THEME
-   Based on the first stylesheet's glass dashboard design
+   1. GLOBAL RESET & BACKGROUND
 ============================================================ */
 
 :root {
     --primary: #2d6cdf;
     --primary-hover: #1f56c2;
 
-    --bg-overlay: rgba(245, 247, 251, 0.85);
+    --blue-dark: #061c97;
+    --blue-mid: #005bed;
+    --blue-light: #0485e7;
+
     --glass-bg: rgba(255, 255, 255, 0.82);
     --glass-border: rgba(255, 255, 255, 0.65);
 
     --text-main: #1a1f36;
     --text-muted: #64748b;
 
-    --success: #10b981;
-    --success-bg: #dcfce7;
+    --card-radius: 18px;
 
-    --warning: #f59e0b;
-    --warning-bg: #fef3c7;
-
-    --danger: #ef4444;
-    --danger-bg: #fee2e2;
-
-    --info: #2563eb;
-    --info-bg: #eef5ff;
-
-    --card-radius: 16px;
-    --input-radius: 10px;
-
-    --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.07);
-    --shadow-hover: 0 12px 28px rgba(30, 64, 175, 0.12);
+    --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.12);
+    --shadow-hover: 0 16px 35px rgba(15, 23, 42, 0.2);
 }
 
 * {
@@ -46,13 +35,16 @@ html {
 
 body {
     font-family: "Inter", sans-serif;
-    color: var(--text-main);
+    margin: 0;
+    padding-top: 70px;
     min-height: 100vh;
+
+    color: var(--text-main);
 
     background:
         linear-gradient(
-            var(--bg-overlay),
-            var(--bg-overlay)
+            rgba(245, 247, 251, 0.84),
+            rgba(245, 247, 251, 0.84)
         ),
         url("../images/bg5.jpg");
 
@@ -63,464 +55,72 @@ body {
 }
 
 /* ============================================================
-   2. DASHBOARD CONTAINER
+   2. JOBS SECTION
 ============================================================ */
 
-.dashboard-container {
+.jobs-section {
     width: 100%;
-    max-width: 1500px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 30px 40px 40px;
+    padding: 40px 30px;
 }
 
-.dashboard-content {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-    align-items: start;
-    gap: 30px;
-    width: 100%;
-}
-
-.main-panel,
-.side-panel {
-    min-width: 0;
-    width: 100%;
-}
-
-.main-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.side-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-}
-
-/* ============================================================
-   3. TOPBAR
-============================================================ */
-
-.topbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-
+.jobs-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
 
-    width: 100%;
-    min-height: 70px;
-    padding: 15px 40px;
-
-    background: rgba(45, 108, 223, 0.96);
-    color: #ffffff;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    margin-bottom: 20px;
 }
 
-.topbar h1,
-.topbar h2,
-.topbar h3,
-.topbar a,
-.topbar p {
-    color: #ffffff;
-}
-
-.topbar h1 {
-    margin: 0;
-    font-size: 22px;
+.jobs-header h1,
+.jobs-header h2,
+.jobs-header h3 {
+    color: #1a1f36;
     font-weight: 800;
-    letter-spacing: -0.4px;
+    letter-spacing: -0.5px;
 }
 
-.topbar a {
-    text-decoration: none;
+.jobs-header h1 {
+    font-size: 28px;
 }
 
-.topbar a:hover {
-    opacity: 0.85;
+.jobs-header h2 {
+    font-size: 24px;
 }
 
-.topbar nav {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.topbar nav a {
-    font-size: 13px;
-    font-weight: 600;
-    transition: opacity 0.2s ease;
-}
-
-/* ============================================================
-   4. TITLES & TEXT
-============================================================ */
-
-h1,
-h2,
-h3,
-h4 {
-    color: #111827;
-    line-height: 1.4;
-}
-
-h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.7px;
-    margin-bottom: 8px;
-}
-
-h2 {
-    font-size: 1.35rem;
-    font-weight: 750;
-    letter-spacing: -0.3px;
-    margin-bottom: 16px;
-}
-
-h3 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-p {
+.jobs-header p {
+    margin-top: 6px;
     color: var(--text-muted);
     font-size: 14px;
-    line-height: 1.7;
-}
-
-.subtitle {
-    margin-bottom: 24px;
-    color: var(--text-muted);
-    font-size: 14px;
-    line-height: 1.7;
 }
 
 /* ============================================================
-   5. GENERAL CARDS / GLASS PANELS
+   3. REVIEW BUTTON
 ============================================================ */
 
-.card,
-.profile-card,
-.project-card,
-.experience-card,
-.education-card,
-.skills-card,
-.visibility-card {
-    min-width: 0;
-    width: 100%;
-    padding: 25px;
-
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--card-radius);
-
-    box-shadow: var(--shadow-card);
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    overflow-wrap: anywhere;
-
-    transition:
-        box-shadow 0.22s ease,
-        border-color 0.22s ease,
-        transform 0.22s ease;
-}
-
-.card h2,
-.profile-card h2,
-.project-card h2,
-.experience-card h2,
-.education-card h2,
-.skills-card h2,
-.visibility-card h2 {
-    margin-bottom: 18px;
-}
-
-.card:hover,
-.profile-card:hover,
-.project-card:hover,
-.experience-card:hover,
-.education-card:hover,
-.skills-card:hover,
-.visibility-card:hover {
-    border-color: rgba(45, 108, 223, 0.2);
-    box-shadow: var(--shadow-hover);
-}
-
-/* Keep cards in a row the same height when using a grid. */
-
-.projects-container,
-.experience-container,
-.education-container,
-.skills-container {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: stretch;
-    gap: 20px;
-    width: 100%;
-}
-
-.projects-container > *,
-.experience-container > *,
-.education-container > *,
-.skills-container > * {
-    min-width: 0;
-    height: 100%;
-}
-
-/* ============================================================
-   6. PROFILE CARD
-============================================================ */
-
-.profile-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 14px;
-}
-
-.profile-card h2 {
-    margin: 0;
-}
-
-.profile-card p {
-    margin: 0;
-}
-
-.profile-info {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.profile-info strong {
-    color: #334155;
-    font-weight: 700;
-}
-
-/* ============================================================
-   7. PROFILE PICTURE / AVATAR
-============================================================ */
-
-.profile-picture,
-.profile-avatar,
-.avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 120px;
-    height: 120px;
-    min-width: 120px;
-
-    margin: 0 auto 12px;
-
-    border-radius: 50%;
-    border: 4px solid rgba(45, 108, 223, 0.15);
-
-    background: #eef5ff;
-    color: var(--primary);
-
-    overflow: hidden;
-}
-
-.profile-picture img,
-.profile-avatar img,
-.avatar img,
-img.profile-picture,
-img.profile-avatar,
-img.avatar {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-.profile-picture img,
-.profile-avatar img,
-.avatar img {
-    border: none;
-}
-
-.profile-name {
-    color: #111827;
-    font-size: 20px;
-    font-weight: 800;
-    overflow-wrap: anywhere;
-}
-
-.profile-role {
-    color: var(--text-muted);
-    font-size: 13px;
-}
-
-/* ============================================================
-   8. FORMS & INPUTS
-============================================================ */
-
-form {
-    width: 100%;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    margin-bottom: 18px;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
-}
-
-.form-grid .full {
-    grid-column: 1 / -1;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-
-    color: #475569;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-input,
-textarea,
-select {
-    display: block;
-    width: 100%;
-    min-width: 0;
-    min-height: 44px;
-
-    padding: 12px 14px;
-
-    border: 1px solid #cbd5e1;
-    border-radius: var(--input-radius);
-
-    outline: none;
-    background: rgba(255, 255, 255, 0.95);
-    color: var(--text-main);
-
-    font-family: inherit;
-    font-size: 14px;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-}
-
-input::placeholder,
-textarea::placeholder {
-    color: #94a3b8;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-    border-color: var(--primary);
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(45, 108, 223, 0.1);
-}
-
-input:disabled,
-textarea:disabled,
-select:disabled {
-    background: #f1f5f9;
-    color: #64748b;
-    cursor: not-allowed;
-}
-
-textarea {
-    min-height: 110px;
-    resize: vertical;
-    line-height: 1.7;
-}
-
-input[type="file"] {
-    padding: 9px;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.9);
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-    width: auto;
-    min-height: auto;
-    accent-color: var(--primary);
-    box-shadow: none;
-}
-
-/* ============================================================
-   9. PROFILE IMAGE UPLOAD
-============================================================ */
-
-.profile-upload {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    margin-top: 8px;
-}
-
-.profile-upload label {
-    text-align: center;
-}
-
-.profile-upload input[type="file"] {
-    width: 100%;
-    max-width: 320px;
-}
-
-/* ============================================================
-   10. BUTTONS
-============================================================ */
-
-button,
-.btn {
-    font-family: inherit;
-}
-
-.btn,
-button.primary-btn,
-.primary-btn {
+.review-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
 
-    min-height: 42px;
-    padding: 12px 22px;
+    min-height: 44px;
+    padding: 12px 24px;
 
-    border: 1px solid var(--primary);
-    border-radius: 10px;
+    background: linear-gradient(
+        135deg,
+        #2d6cdf,
+        #1f56c2
+    );
 
-    background: var(--primary);
     color: #ffffff;
+    border: 1px solid rgba(45, 108, 223, 0.25);
+    border-radius: 50px;
 
+    font-family: inherit;
     font-size: 13px;
     font-weight: 700;
     text-align: center;
@@ -528,656 +128,508 @@ button.primary-btn,
 
     cursor: pointer;
 
-    box-shadow: 0 5px 12px rgba(45, 108, 223, 0.18);
+    box-shadow: 0 5px 14px rgba(45, 108, 223, 0.2);
 
     transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
 }
 
-.btn:hover,
-button.primary-btn:hover,
-.primary-btn:hover {
-    background: var(--primary-hover);
-    border-color: var(--primary-hover);
-    color: #ffffff;
+.review-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(45, 108, 223, 0.25);
+    box-shadow: 0 8px 20px rgba(45, 108, 223, 0.3);
+    filter: brightness(1.08);
 }
 
-.btn:active,
-button.primary-btn:active,
-.primary-btn:active {
+.review-btn:active {
     transform: translateY(0);
 }
 
-.btn:disabled,
-button:disabled {
-    background: #cbd5e1;
-    border-color: #cbd5e1;
-    color: #64748b;
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
+/* ============================================================
+   4. CAROUSEL WRAPPER
+============================================================ */
+
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+
+    padding: 25px 0;
 }
 
-.btn-secondary,
-.secondary-btn,
-.cancel-btn {
+/* ============================================================
+   5. JOBS CONTAINER
+============================================================ */
+
+.jobs-container {
+    display: flex;
+    align-items: stretch;
+    gap: 24px;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 25px 18px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
+}
+
+.jobs-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* ============================================================
+   6. JOB CARDS
+============================================================ */
+
+.jobs-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    flex: 0 0 260px;
+    width: 260px;
+    min-width: 260px;
+    min-height: 250px;
+
+    padding: 25px 20px;
+
+    background: linear-gradient(
+        135deg,
+        #061c97 0%,
+        #005bed 50%,
+        #0485e7 100%
+    );
+
+    color: #ffffff;
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--card-radius);
+
+    text-align: center;
+    overflow-wrap: anywhere;
+
+    box-shadow: var(--shadow-card);
+
+    cursor: pointer;
+    scroll-snap-align: start;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.jobs-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 255, 255, 0.65);
+    box-shadow: 0 18px 35px rgba(15, 23, 42, 0.28);
+    z-index: 5;
+}
+
+.jobs-card h3 {
+    width: 100%;
+    margin: 10px 0 6px;
+
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 750;
+    line-height: 1.45;
+
+    overflow-wrap: anywhere;
+}
+
+.jobs-card p {
+    width: 100%;
+    margin: 4px 0;
+
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 13px;
+    line-height: 1.65;
+
+    overflow-wrap: anywhere;
+}
+
+.jobs-card .company-name {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.jobs-card .job-location,
+.jobs-card .job-type,
+.jobs-card .job-salary {
+    font-size: 12px;
+}
+
+/* Optional content area for consistent card layout */
+
+.job-card-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+
+    width: 100%;
+    padding-top: 8px;
+}
+
+.job-card-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    margin-top: auto;
+}
+
+/* ============================================================
+   7. JOB CARD ACTION BUTTONS
+============================================================ */
+
+.jobs-card .job-action,
+.jobs-card .apply-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    min-height: 42px;
-    padding: 11px 20px;
+    width: 100%;
+    min-height: 40px;
+    padding: 10px 16px;
 
-    background: #ffffff;
-    color: #475569;
+    background: rgba(255, 255, 255, 0.96);
+    color: #1748a0;
 
-    border: 1px solid #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.7);
     border-radius: 10px;
 
-    font-size: 13px;
-    font-weight: 600;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 750;
     text-decoration: none;
 
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
 }
 
-.btn-secondary:hover,
-.secondary-btn:hover,
-.cancel-btn:hover {
-    background: #f1f5f9;
-    color: #1e293b;
-    border-color: #94a3b8;
-}
-
-.action-buttons {
-    display: flex;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 24px;
-}
-
-.action-buttons > button,
-.action-buttons > a {
-    flex-shrink: 0;
+.jobs-card .job-action:hover,
+.jobs-card .apply-btn:hover {
+    background: #eaf2ff;
+    color: #123b85;
+    transform: translateY(-2px);
 }
 
 /* ============================================================
-   11. VISIBILITY SWITCH
+   8. CAROUSEL NAVIGATION BUTTONS
 ============================================================ */
 
-.visibility-container,
-.visibility-setting {
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    right: -8px;
+
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-    width: 100%;
-}
+    justify-content: center;
 
-.visibility-text {
-    flex: 1;
-    min-width: 0;
-}
+    width: 46px;
+    height: 46px;
 
-.visibility-text h3 {
-    margin-bottom: 5px;
-}
+    transform: translateY(-50%);
 
-.visibility-text p {
-    font-size: 13px;
-}
+    background: rgba(255, 255, 255, 0.8);
+    color: #1f56c2;
 
-.switch {
-    position: relative;
-    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
 
-    width: 52px;
-    min-width: 52px;
-    height: 28px;
-}
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 
-.switch input {
-    width: 0;
-    height: 0;
-    min-height: 0;
-    opacity: 0;
-}
-
-.slider {
-    position: absolute;
-    inset: 0;
-
-    background: #cbd5e1;
-    border-radius: 999px;
+    font-size: 24px;
+    line-height: 1;
 
     cursor: pointer;
-    transition: background 0.25s ease;
+    z-index: 20;
+
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
-.slider::before {
-    content: "";
+.nav-btn:hover {
+    transform: translateY(-50%) scale(1.1);
+
+    background: linear-gradient(
+        135deg,
+        #2d6cdf,
+        #1f56c2
+    );
+
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.6);
+
+    box-shadow: 0 8px 22px rgba(45, 108, 223, 0.3);
+}
+
+.nav-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.nav-btn.prev-btn {
+    right: auto;
+    left: -8px;
+}
+
+/* ============================================================
+   9. BOOKMARK BUTTON
+============================================================ */
+
+.bookmark-btn {
     position: absolute;
+    top: 14px;
+    right: 14px;
 
-    width: 20px;
-    height: 20px;
-    left: 4px;
-    bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    width: 36px;
+    height: 36px;
+    padding: 0;
+
+    background: rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.85);
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 50%;
-    background: #ffffff;
 
-    box-shadow: 0 2px 5px rgba(15, 23, 42, 0.2);
-    transition: transform 0.25s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    font-size: 18px;
+    line-height: 1;
+
+    cursor: pointer;
+    z-index: 10;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
 }
 
-.switch input:checked + .slider {
-    background: var(--primary);
+.bookmark-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    transform: scale(1.1);
 }
 
-.switch input:checked + .slider::before {
-    transform: translateX(24px);
+.bookmark-btn.active {
+    color: #f5c518;
+    background: rgba(245, 197, 24, 0.17);
+    border-color: rgba(245, 197, 24, 0.55);
 }
 
-.switch input:focus-visible + .slider {
-    outline: 3px solid rgba(45, 108, 223, 0.25);
+.bookmark-btn:active {
+    transform: scale(0.95);
+}
+
+/* ============================================================
+   10. GENERAL LINKS & FOCUS STATES
+============================================================ */
+
+.jobs-section a {
+    transition: color 0.2s ease;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid rgba(45, 108, 223, 0.5);
     outline-offset: 3px;
 }
 
 /* ============================================================
-   12. SKILLS
+   11. RESPONSIVE TABLET LAYOUT
 ============================================================ */
 
-.skills-list {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 9px;
-    width: 100%;
-}
-
-.skill,
-.skill-tag {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    max-width: 100%;
-    padding: 7px 12px;
-
-    border: 1px solid #dbeafe;
-    border-radius: 8px;
-
-    background: #eef5ff;
-    color: #1e40af;
-
-    font-size: 12px;
-    font-weight: 700;
-
-    overflow-wrap: anywhere;
-}
-
-.skill button,
-.skill-tag button {
-    margin-left: 7px;
-}
-
-.add-skill {
-    display: flex;
-    align-items: stretch;
-    gap: 10px;
-    width: 100%;
-    margin-top: 15px;
-}
-
-.add-skill input {
-    flex: 1;
-    min-width: 0;
-}
-
-/* ============================================================
-   13. EXPERIENCE
-============================================================ */
-
-.experience-item {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    height: 100%;
-    padding: 20px;
-
-    background: rgba(255, 255, 255, 0.65);
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    border-radius: 12px;
-
-    overflow-wrap: anywhere;
-
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.experience-item:hover {
-    border-color: rgba(45, 108, 223, 0.3);
-    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
-}
-
-.experience-item h3 {
-    margin-bottom: 0;
-    font-size: 16px;
-}
-
-.experience-item .company,
-.experience-item .experience-company {
-    color: var(--primary);
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.experience-item .date,
-.experience-item .experience-date {
-    color: var(--text-muted);
-    font-size: 12px;
-}
-
-.experience-item p {
-    font-size: 13px;
-}
-
-/* ============================================================
-   14. EDUCATION
-============================================================ */
-
-.education-item {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    height: 100%;
-    padding: 20px;
-
-    background: rgba(255, 255, 255, 0.65);
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    border-radius: 12px;
-
-    overflow-wrap: anywhere;
-
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.education-item:hover {
-    border-color: rgba(45, 108, 223, 0.3);
-    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
-}
-
-.education-item h3 {
-    margin-bottom: 0;
-    font-size: 16px;
-}
-
-.education-item .school,
-.education-item .institution {
-    color: var(--primary);
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.education-item .date,
-.education-item .education-date {
-    color: var(--text-muted);
-    font-size: 12px;
-}
-
-.education-item p {
-    font-size: 13px;
-}
-
-/* ============================================================
-   15. PROJECTS
-============================================================ */
-
-.project-item {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    height: 100%;
-    padding: 20px;
-
-    background: rgba(255, 255, 255, 0.65);
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    border-radius: 12px;
-
-    overflow-wrap: anywhere;
-
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.project-item:hover {
-    border-color: rgba(45, 108, 223, 0.3);
-    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
-}
-
-.project-item h3 {
-    margin-bottom: 0;
-    font-size: 16px;
-}
-
-.project-item p {
-    font-size: 13px;
-}
-
-.project-item a {
-    color: var(--primary);
-    font-size: 13px;
-    font-weight: 700;
-    text-decoration: none;
-    overflow-wrap: anywhere;
-}
-
-.project-item a:hover {
-    color: var(--primary-hover);
-    text-decoration: underline;
-}
-
-/* ============================================================
-   16. STATUS LABELS
-============================================================ */
-
-.status,
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: fit-content;
-    max-width: 100%;
-    padding: 5px 10px;
-
-    border-radius: 7px;
-    font-size: 11px;
-    font-weight: 700;
-    overflow-wrap: anywhere;
-}
-
-.status-success {
-    background: var(--success-bg);
-    color: #166534;
-}
-
-.status-warning {
-    background: var(--warning-bg);
-    color: #92400e;
-}
-
-.status-danger {
-    background: var(--danger-bg);
-    color: #991b1b;
-}
-
-.status-info {
-    background: var(--info-bg);
-    color: #1e40af;
-}
-
-/* ============================================================
-   17. FOOTER
-============================================================ */
-
-footer {
-    width: 100%;
-    margin-top: 45px;
-    padding: 25px 20px;
-
-    background: rgba(255, 255, 255, 0.72);
-    border-top: 1px solid rgba(226, 232, 240, 0.8);
-
-    text-align: center;
-
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-footer p {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 12px;
-}
-
-footer a {
-    color: var(--primary);
-    text-decoration: none;
-}
-
-footer a:hover {
-    text-decoration: underline;
-}
-
-/* ============================================================
-   18. RESPONSIVE TABLET LAYOUT
-============================================================ */
-
-@media (max-width: 1100px) {
-    .dashboard-container {
-        padding: 28px 24px 35px;
-    }
-
-    .dashboard-content {
-        grid-template-columns: minmax(0, 1.6fr) minmax(250px, 1fr);
-        gap: 22px;
-    }
-
-    .topbar {
-        padding: 15px 24px;
-    }
-
-    .card,
-    .profile-card,
-    .project-card,
-    .experience-card,
-    .education-card,
-    .skills-card,
-    .visibility-card {
-        padding: 22px;
-    }
-}
-
-/* ============================================================
-   19. RESPONSIVE MOBILE LAYOUT
-============================================================ */
-
-@media (max-width: 768px) {
-    .topbar {
-        position: relative;
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 18px 20px;
-    }
-
-    .topbar nav {
-        width: 100%;
-        gap: 14px;
-    }
-
-    .dashboard-container {
-        padding: 24px 18px 30px;
-    }
-
-    .dashboard-content {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 22px;
-    }
-
-    .main-panel,
-    .side-panel {
-        width: 100%;
-    }
-
-    .main-panel,
-    .side-panel {
-        gap: 20px;
-    }
-
-    h1 {
-        font-size: 1.7rem;
-    }
-
-    h2 {
-        font-size: 1.2rem;
-    }
-
-    .form-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 15px;
-    }
-
-    .form-grid .full {
-        grid-column: auto;
-    }
-
-    .projects-container,
-    .experience-container,
-    .education-container,
-    .skills-container {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .card,
-    .profile-card,
-    .project-card,
-    .experience-card,
-    .education-card,
-    .skills-card,
-    .visibility-card {
-        padding: 20px;
-        border-radius: 14px;
-    }
-
-    .action-buttons {
-        justify-content: stretch;
-    }
-
-    .action-buttons > button,
-    .action-buttons > a {
-        flex: 1;
-    }
-
-    .visibility-container,
-    .visibility-setting {
-        align-items: flex-start;
-    }
-}
-
-/* ============================================================
-   20. SMALL MOBILE DEVICES
-============================================================ */
-
-@media (max-width: 480px) {
+@media (max-width: 900px) {
     body {
         background-attachment: scroll;
     }
 
-    .topbar {
-        padding: 16px;
+    .jobs-section {
+        padding: 32px 22px;
     }
 
-    .topbar h1 {
-        font-size: 20px;
+    .jobs-header h1 {
+        font-size: 25px;
     }
 
-    .topbar nav {
-        gap: 10px 14px;
+    .jobs-header h2 {
+        font-size: 22px;
     }
 
-    .topbar nav a {
-        font-size: 12px;
+    .jobs-container {
+        gap: 20px;
+        padding: 22px 14px;
     }
 
-    .dashboard-container {
-        padding: 20px 12px 25px;
+    .jobs-card {
+        flex-basis: 245px;
+        width: 245px;
+        min-width: 245px;
+        min-height: 240px;
     }
 
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    h2 {
-        font-size: 1.1rem;
-    }
-
-    .subtitle {
-        font-size: 13px;
-    }
-
-    .card,
-    .profile-card,
-    .project-card,
-    .experience-card,
-    .education-card,
-    .skills-card,
-    .visibility-card {
-        padding: 17px;
-        border-radius: 12px;
-    }
-
-    .profile-picture,
-    .profile-avatar,
-    .avatar {
-        width: 100px;
-        height: 100px;
-        min-width: 100px;
-    }
-
-    .action-buttons {
-        flex-direction: column;
-    }
-
-    .action-buttons > button,
-    .action-buttons > a,
-    .btn,
-    .primary-btn,
-    .secondary-btn,
-    .cancel-btn {
-        width: 100%;
-    }
-
-    .add-skill {
-        flex-direction: column;
-    }
-
-    .visibility-container,
-    .visibility-setting {
-        gap: 12px;
-    }
-
-    footer {
-        margin-top: 30px;
-        padding: 20px 12px;
+    .nav-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 21px;
     }
 }
 
 /* ============================================================
-   21. ACCESSIBILITY & REDUCED MOTION
+   12. RESPONSIVE MOBILE LAYOUT
 ============================================================ */
 
-button:focus-visible,
-a:focus-visible {
-    outline: 3px solid rgba(45, 108, 223, 0.35);
-    outline-offset: 3px;
+@media (max-width: 600px) {
+    body {
+        padding-top: 60px;
+    }
+
+    .jobs-section {
+        padding: 25px 12px;
+    }
+
+    .jobs-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .jobs-header h1 {
+        font-size: 23px;
+    }
+
+    .jobs-header h2 {
+        font-size: 20px;
+    }
+
+    .review-btn {
+        min-height: 42px;
+        padding: 10px 20px;
+    }
+
+    .carousel-wrapper {
+        padding: 14px 0;
+    }
+
+    .jobs-container {
+        gap: 16px;
+        padding: 20px 12px;
+    }
+
+    .jobs-card {
+        flex-basis: 235px;
+        width: 235px;
+        min-width: 235px;
+        min-height: 230px;
+
+        padding: 22px 17px;
+        border-radius: 15px;
+    }
+
+    .jobs-card h3 {
+        font-size: 16px;
+    }
+
+    .jobs-card p {
+        font-size: 12px;
+    }
+
+    .nav-btn {
+        right: 0;
+        width: 38px;
+        height: 38px;
+        font-size: 20px;
+    }
+
+    .nav-btn.prev-btn {
+        right: auto;
+        left: 0;
+    }
 }
+
+/* ============================================================
+   13. SMALL MOBILE DEVICES
+============================================================ */
+
+@media (max-width: 380px) {
+    .jobs-section {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+
+    .jobs-card {
+        flex-basis: 215px;
+        width: 215px;
+        min-width: 215px;
+        padding: 19px 14px;
+    }
+
+    .jobs-container {
+        gap: 12px;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .jobs-header h1 {
+        font-size: 21px;
+    }
+
+    .review-btn {
+        width: 100%;
+    }
+}
+
+/* ============================================================
+   14. REDUCED MOTION ACCESSIBILITY
+============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
         scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
     }
 }
