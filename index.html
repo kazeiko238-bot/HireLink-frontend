@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In | HireLink</title>
     <link rel="stylesheet" href="css/index.css">
-     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/mobile.css">
     <link rel="icon" type="image/png" href="images/logo.png">
 </head>
 <body>
-    
+
 <div class="bg-container">
     <img src="images/background.jpg" alt="HireLink Background" class="static-bg">
     <div class="bg-overlay"></div>
@@ -18,16 +18,16 @@
 
     <header class="header">
         <div class="brand">
-        <img src="images/logo.png" alt="weblogo" class="logo">
+            <img src="images/logo.png" alt="weblogo" class="logo">
             <h2>HireLink</h2>
         </div>
 
         <button class="hamburger" onclick="this.classList.toggle('open'); document.querySelector('.navpages').classList.toggle('open')">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-        
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
         <nav class="navpages">
             <a href="jobs.html">Jobs</a>
             <a href="people.html">People</a>
@@ -37,146 +37,184 @@
     </header>
 
     <main class="content">
-       <div class="left">
-    <p>Welcome to <span>Hirelink | Jobseeker Site</span></p>
-    <p>A click-step away from your career success.</p>
-    
-    <div class="role-switch-container">
-        <a href="index-jobseeker.html" class="role-option active">JOBSEEKER</a>
-        <a href="index-company.html" class="role-option inactive">EMPLOYER</a>
-    </div>
-</div>
+        <div class="left">
+            <p>Welcome to <span>Hirelink | Jobseeker Site</span></p>
+            <p>A click-step away from your career success.</p>
 
-        <div class="right">
-             <!-- Login Form -->
-            <form id="login" class="auth-form active" onsubmit="return false;">
-            <h2 class="form-title">Welcome Back</h2>
-            
-            <div class="form-group">
-                <label for="login-email">Email Address</label>
-                <input type="email" id="login-email" name="email" class="form-control" placeholder="Enter your email" required>
+            <div class="role-switch-container">
+                <a href="index-jobseeker.html" class="role-option active">JOBSEEKER</a>
+                <a href="index-company.html" class="role-option inactive">EMPLOYER</a>
             </div>
-            
-            <div class="form-group">
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" name="password" class="form-control" placeholder="Enter your password" required>
-             <div class="forgot-password">
-             <a href="#" id="forgotPasswordLink">Forgot password?</a>
-            </div>
-            </div>
-            
-            <div class="remember-me">
-                <input type="checkbox" id="remember-me" name="remember">
-                <label for="remember-me">Remember me</label>
-            </div>
-            
-            <button type="button" name="login-btn" class="btn">Login</button>
-            
-           
-             <div class="form-footer">
-                Don't have an account? <a href="#" class="tab-link" data-tab="register">Register</a>
-            </div>
-            </form>
-           <form id="register" class="auth-form" onsubmit="return false;">
-            <h2 class="form-title">Create Account</h2>
-            
-            <div id="jobseeker-fields">
-            <div class="form-group">
-                <label for="register-fname">First Name</label>
-                <input type="text" id="register-fname" name="fName" class="form-control" placeholder="Enter your first name" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="register-lname">Last Name</label>
-                <input type="text" id="register-lname" name="lName" class="form-control" placeholder="Enter your last name" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="register-email">Email Address</label>
-                <input type="email" id="register-email" name="email" class="form-control" placeholder="Enter your email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="register-password">Password</label>
-                <input type="password" id="register-password" name="password" class="form-control" placeholder="Create a password" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="register-confirm-password">Confirm Password</label>
-                <input type="password" id="register-confirm-password" class="form-control" placeholder="Confirm your password" required>
-            </div>
-            </div>
-  
-        <div class="remember-me">
-                <input type="checkbox" id="terms" required>
-                <label for="terms">I agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></label>
-            </div>
-            
-          <div class="verify" id="verify-section" style="display:none;">
-  <h2>Email Verification</h2>
-
-  <p class="verify-subtext">
-    Enter the 6-digit code sent to your email
-  </p>
-
-  <div class="code-inputs">
-    <input type="text" maxlength="1">
-    <input type="text" maxlength="1">
-    <input type="text" maxlength="1">
-    <input type="text" maxlength="1">
-    <input type="text" maxlength="1">
-    <input type="text" maxlength="1">
-  </div>
-
-  <button class="verify-btn">Verify</button>
-
-  <p class="resend-text">
-    Didn't get the code? 
-    <span id="resend-code" class="resend-link">Resend</span>
-  </p>
-</div>
-
-            <button type="button" name="create-btn" class="btn">Create Account</button>
-
-           
-            
-            <div class="form-footer">
-                Already have an account? <a href="index-jobseeker.html" class="tab-link" data-tab="login">Login</a>
-            </div>
-
-            
-        </form>
-    </div>
-    
-            
-        </form>
-    </div>
-    </main>
-    <script src="index-jobseeker.js"></script>
-
-     <!-- FOOTER -->
- <footer class="site-footer">
-    <div class="footer-content">
-        <div class="footer-brand">
-            <h2 class="footer-logo">HIRELINK</h2>
-            <p class="footer-slogan">A click-step away from your career success.</p>
         </div>
 
-        <hr class="footer-divider">
+        <div class="right">
 
-        <ul class="footer-links">
-             <li><a href="about.html">ABOUT US</a></li>
+            <!-- ===== LOGIN FORM ===== -->
+            <form id="login" class="auth-form active" onsubmit="return false;">
+                <h2 class="form-title">Welcome Back</h2>
+
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" name="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" class="form-control" placeholder="Enter your password" required>
+                    <div class="forgot-password">
+                        <a href="#" id="forgotPasswordLink">Forgot password?</a>
+                    </div>
+                </div>
+
+                <div class="remember-me">
+                    <input type="checkbox" id="remember-me" name="remember">
+                    <label for="remember-me">Remember me</label>
+                </div>
+
+                <button type="button" name="login-btn" class="btn">Login</button>
+
+                <div class="form-footer">
+                    Don't have an account? <a href="#" class="tab-link" data-tab="register">Register</a>
+                </div>
+            </form>
+
+            <!-- ===== FORGOT PASSWORD FORM ===== -->
+            <form id="forgot" class="auth-form" onsubmit="return false;">
+                <h2 class="form-title">Reset Password</h2>
+
+                <!-- Step 1: enter email -->
+                <div id="forgot-step-1">
+                    <p class="verify-subtext">Enter your email and we'll send you a 6-digit code.</p>
+
+                    <div class="form-group">
+                        <label for="forgot-email">Email Address</label>
+                        <input type="email" id="forgot-email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+
+                    <button type="button" id="forgot-send-btn" class="btn">Send Code</button>
+                </div>
+
+                <!-- Step 2: enter code + new password -->
+                <div id="forgot-step-2" style="display:none;">
+                    <p class="verify-subtext">Enter the code sent to your email and choose a new password.</p>
+
+                    <div class="form-group">
+                        <label for="reset-code">6-digit Code</label>
+                        <input type="text" id="reset-code" class="form-control" maxlength="6" inputmode="numeric" placeholder="123456">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reset-password">New Password</label>
+                        <input type="password" id="reset-password" class="form-control" placeholder="New password">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reset-confirm">Confirm New Password</label>
+                        <input type="password" id="reset-confirm" class="form-control" placeholder="Confirm new password">
+                    </div>
+
+                    <button type="button" id="reset-btn" class="btn">Reset Password</button>
+                </div>
+
+                <div class="form-footer">
+                    <a href="#" id="back-to-login">Back to login</a>
+                </div>
+            </form>
+
+            <!-- ===== REGISTER FORM ===== -->
+            <form id="register" class="auth-form" onsubmit="return false;">
+                <h2 class="form-title">Create Account</h2>
+
+                <div id="jobseeker-fields">
+                    <div class="form-group">
+                        <label for="register-fname">First Name</label>
+                        <input type="text" id="register-fname" name="fName" class="form-control" placeholder="Enter your first name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-lname">Last Name</label>
+                        <input type="text" id="register-lname" name="lName" class="form-control" placeholder="Enter your last name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-email">Email Address</label>
+                        <input type="email" id="register-email" name="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" name="password" class="form-control" placeholder="Create a password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-confirm-password">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" class="form-control" placeholder="Confirm your password" required>
+                    </div>
+                </div>
+
+                <div class="remember-me">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></label>
+                </div>
+
+                <div class="verify" id="verify-section" style="display:none;">
+                    <h2>Email Verification</h2>
+
+                    <p class="verify-subtext">
+                        Enter the 6-digit code sent to your email
+                    </p>
+
+                    <div class="code-inputs">
+                        <input type="text" maxlength="1">
+                        <input type="text" maxlength="1">
+                        <input type="text" maxlength="1">
+                        <input type="text" maxlength="1">
+                        <input type="text" maxlength="1">
+                        <input type="text" maxlength="1">
+                    </div>
+
+                    <button class="verify-btn">Verify</button>
+
+                    <p class="resend-text">
+                        Didn't get the code?
+                        <span id="resend-code" class="resend-link">Resend</span>
+                    </p>
+                </div>
+
+                <button type="button" name="create-btn" class="btn">Create Account</button>
+
+                <div class="form-footer">
+                    Already have an account? <a href="index-jobseeker.html" class="tab-link" data-tab="login">Login</a>
+                </div>
+            </form>
+
+        </div>
+    </main>
+
+    <script src="index-jobseeker.js"></script>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2 class="footer-logo">HIRELINK</h2>
+                <p class="footer-slogan">A click-step away from your career success.</p>
+            </div>
+
+            <hr class="footer-divider">
+
+            <ul class="footer-links">
+                <li><a href="about.html">ABOUT US</a></li>
                 <li><a href="contact.html">CONTACT</a></li>
                 <li><a href="terms.html">TERMS OF SERVICE</a></li>
                 <li><a href="privacy.html">PRIVACY POLICY</a></li>
-        </ul>
+            </ul>
 
-      
-        <div class="footer-bottom">
-            <p>&copy; 2026 HireLink. All rights reserved.</p>
+            <div class="footer-bottom">
+                <p>&copy; 2026 HireLink. All rights reserved.</p>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
 </body>
 </html>
