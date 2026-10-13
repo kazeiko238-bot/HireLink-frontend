@@ -1,338 +1,621 @@
-
 const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
-const loginPanel = document.getElementById("loginPanel");
-const forgotPanel = document.getElementById("forgotPanel");
-const resetPanel = document.getElementById("resetPanel");
-const globalMessage = document.getElementById("globalMessage");
+// ======================================================
+// ORIGINAL HTML ELEMENTS
+// ======================================================
 
-const loginForm = document.getElementById("loginForm");
-const forgotForm = document.getElementById("forgotForm");
-const resetForm = document.getElementById("resetForm");
+const registerFields = document.getElementById("jobseeker-fields");
+const terms = document.querySelector("#register .remember-me");
+const verifySection = document.getElementById("verify-section");
 
-const loginEmail = document.getElementById("loginEmail");
-const loginPassword = document.getElementById("loginPassword");
-const forgotEmail = document.getElementById("forgotEmail");
-const resetEmail = document.getElementById("resetEmail");
-const verificationCode = document.getElementById("verificationCode");
-const newPassword = document.getElementById("newPassword");
-const confirmPassword = document.getElementById("confirmPassword");
+const loginForm = document.getElementById("login");
+const registerForm = document.getElementById("register");
 
-const loginButton = document.getElementById("loginButton");
-const sendCodeButton = document.getElementById("sendCodeButton");
-const resetPasswordButton = document.getElementById("resetPasswordButton");
-const resendCodeButton = document.getElementById("resendCodeButton");
+const tabLinks = document.querySelectorAll(".tab-link");
+const createBtn = document.querySelector('[name="create-btn"]');
+const loginBtn = document.querySelector('[name="login-btn"]');
 
-// Keep the email used for the current password-reset flow.
-let passwordResetEmail = "";
+const codeInputs = document.querySelectorAll(
+    "#verify-section .code-inputs input"
+);
 
-// ================= MESSAGES =================
-function showMessage(message, type = "info") {
-    globalMessage.textContent = message;
-    globalMessage.className = `message show ${type}`;
+const registerVerifyBtn = document.querySelector(".verify-btn");
+const resendRegistrationCode = document.getElementById("resend-code");
+
+// ======================================================
+// FORGOT / RESET PASSWORD ELEMENTS
+// ======================================================
+
+const forgotForm = document.getElementById("forgot-password");
+const resetForm = document.getElementById("reset-password");
+
+const forgotEmail = document.getElementById("forgot-email");
+const resetEmail = document.getElementById("reset-email");
+const resetCode = document.getElementById("reset-code");
+const newPassword = document.getElementById("new-password");
+const confirmNewPassword = document.getElementById("confirm-new-password");
+
+const forgotLink = document.getElementById("forgotPasswordLink");
+const backToLogin = document.getElementById("back-to-login");
+const changeResetEmail = document.getElementById("change-reset-email");
+
+const sendResetCodeBtn = document.getElementById("send-reset-code");
+const resetPasswordBtn = document.getElementById("submit-reset-password");
+const resendResetCodeBtn = document.getElementById("resend-reset-code");
+
+const forgotMessage = document.getElementById("forgot-message");
+const resetMessage = document.getElementById("reset-message");
+
+let registrationInProgress = false;
+
+// ======================================================
+// MESSAGE HELPERS
+// ======================================================
+
+function showFormMessage(element, message, type = "info") {
+    if (!element) {
+        alert(message);
+        return;
+    }
+
+    element.textContent = message;
+    element.className = `message show ${type}`;
 }
 
-function clearMessage() {
-    globalMessage.textContent = "";
-    globalMessage.className = "message";
+function clearFormMessages() {
+    [forgotMessage, resetMessage].forEach(element => {
+        if (element) {
+            element.textContent = "";
+            element.className = "";
+        }
+    });
 }
 
-// ================= API RESPONSE HANDLER =================
-async function readApiResponse(response) {
+function setLoading(button, loading, normalText, loadingText) {
+    if (!button) return;
+
+    button.disabled = loading;
+    button.textContent = loading ? loadingText : normalText;
+}
+
+// ======================================================
+// API HELPERS
+// ======================================================
+
+async function readResponse(response) {
     const text = await response.text();
-
-    let data;
+    let data = {};
 
     try {
         data = text ? JSON.parse(text) : {};
     } catch (error) {
-        console.error(
-            "Expected JSON but received a non-JSON response.",
-            {
-                url: response.url,
-                status: response.status,
-                response: text.slice(0, 300)
-            }
-        );
+        console.error("Invalid server response:", {
+            url: response.url,
+            status: response.status,
+            response: text.slice(0, 300)
+        });
 
         throw new Error(
             response.status === 404
-                ? "API endpoint not found. Check your backend route and deployment."
-                : "The server returned an unexpected response. Check the backend logs."
+                ? "API route not found. Check your backend routes."
+                : "Unexpected server response. Check the backend logs."
         );
     }
 
     if (!response.ok) {
         throw new Error(
-            data.error ||
-            data.message ||
-            `Request failed (${response.status}).`
+            data.error || data.message || `Request failed (${response.status}).`
         );
     }
 
     return data;
 }
 
-// ================= PANEL NAVIGATION =================
-function showPanel(panel) {
-    loginPanel.hidden = panel !== "login";
-    forgotPanel.hidden = panel !== "forgot";
-    resetPanel.hidden = panel !== "reset";
+async function postJSON(endpoint, body) {
+    const response = await fetch(`${API_BASE}${endpoint}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify(body)
+    });
 
-    clearMessage();
+    return readResponse(response);
 }
 
-document.getElementById("openForgotPassword").addEventListener("click", () => {
-    // Carry the email over if the user already entered it.
-    forgotEmail.value = loginEmail.value.trim();
-    showPanel("forgot");
-});
+// ======================================================
+// PANEL NAVIGATION
+// ======================================================
 
-document.getElementById("backToLoginFromForgot").addEventListener("click", () => {
-    showPanel("login");
-});
+function showPanel(panelName) {
+    const panels = {
+        login: loginForm,
+        register: registerForm,
+        forgot: forgotForm,
+        reset: resetForm
+    };
 
-document.getElementById("backToForgot").addEventListener("click", () => {
-    forgotEmail.value = passwordResetEmail;
-    showPanel("forgot");
-});
+    Object.entries(panels).forEach(([name, panel]) => {
+        if (!panel) return;
 
-// ================= SHOW / HIDE PASSWORD =================
-document.querySelectorAll(".toggle-password").forEach(button => {
-    button.addEventListener("click", () => {
-        const target = document.getElementById(button.dataset.target);
+        const visible = name === panelName;
 
-        if (!target) return;
+        panel.hidden = !visible;
+        panel.classList.toggle("active", visible);
+    });
 
-        const isPassword = target.type === "password";
+    clearFormMessages();
+}
 
-        target.type = isPassword ? "text" : "password";
-        button.textContent = isPassword ? "Hide" : "Show";
-        button.setAttribute(
-            "aria-label",
-            isPassword ? "Hide password" : "Show password"
-        );
+tabLinks.forEach(link => {
+    link.addEventListener("click", event => {
+        event.preventDefault();
+
+        const tab = link.dataset.tab;
+
+        if (tab === "login" || tab === "register") {
+            showPanel(tab);
+        }
     });
 });
 
-// ================= LOGIN =================
-loginForm.addEventListener("submit", async event => {
+if (forgotLink) {
+    forgotLink.addEventListener("click", event => {
+        event.preventDefault();
+
+        forgotEmail.value =
+            document.getElementById("login-email").value.trim();
+
+        showPanel("forgot");
+    });
+}
+
+if (backToLogin) {
+    backToLogin.addEventListener("click", event => {
+        event.preventDefault();
+        showPanel("login");
+    });
+}
+
+if (changeResetEmail) {
+    changeResetEmail.addEventListener("click", event => {
+        event.preventDefault();
+
+        forgotEmail.value = resetEmail.value.trim();
+        showPanel("forgot");
+    });
+}
+
+// ======================================================
+// SHOW / HIDE PASSWORD
+// ======================================================
+
+document.querySelectorAll(".toggle-password").forEach(button => {
+    button.addEventListener("click", () => {
+        const input = document.getElementById(button.dataset.target);
+
+        if (!input) return;
+
+        const show = input.type === "password";
+
+        input.type = show ? "text" : "password";
+        button.textContent = show ? "Hide" : "Show";
+    });
+});
+
+// ======================================================
+// REGISTRATION
+// POST /api/verification/send-code
+// ======================================================
+
+createBtn.addEventListener("click", async event => {
     event.preventDefault();
-    clearMessage();
 
-    const email = loginEmail.value.trim().toLowerCase();
-    const password = loginPassword.value;
+    if (registrationInProgress) return;
 
-    if (!email || !password) {
-        showMessage("Please enter your email and password.", "error");
+    const fName = document.getElementById("register-fname").value.trim();
+    const lName = document.getElementById("register-lname").value.trim();
+    const email = document.getElementById("register-email").value.trim().toLowerCase();
+    const password = document.getElementById("register-password").value;
+    const confirmPassword = document.getElementById("register-confirm-password").value;
+    const termsCheckbox = document.getElementById("terms");
+
+    if (!fName || !lName || !email || !password || !confirmPassword) {
+        alert("Fill in all required fields!");
         return;
     }
 
-    loginButton.disabled = true;
-    loginButton.textContent = "Signing in...";
-
-    try {
-        const response = await fetch(`${API_BASE}/api/auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify({ email, password })
-        });
-
-        const data = await readApiResponse(response);
-
-        showMessage("Login successful. Redirecting...", "success");
-
-        // Keep the existing role-based navigation behavior.
-        if (data.role === "jobseeker") {
-            window.location.href = "jobseeker.html";
-        } else if (data.role === "employer") {
-            window.location.href = "employer.html";
-        } else {
-            showMessage("Login succeeded, but the account role is unrecognized.", "error");
-        }
-
-    } catch (error) {
-        console.error("Login error:", error);
-        showMessage(error.message || "Unable to sign in.", "error");
-
-    } finally {
-        loginButton.disabled = false;
-        loginButton.textContent = "Sign In";
-    }
-});
-
-// ================= SEND RESET CODE =================
-forgotForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    clearMessage();
-
-    const email = forgotEmail.value.trim().toLowerCase();
-
-    if (!email) {
-        showMessage("Please enter your registered email address.", "error");
-        return;
-    }
-
-    sendCodeButton.disabled = true;
-    sendCodeButton.textContent = "Sending code...";
-
-    try {
-        const response = await fetch(`${API_BASE}/api/auth/forgot-password`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify({ email })
-        });
-
-        const data = await readApiResponse(response);
-
-        passwordResetEmail = email;
-        resetEmail.value = email;
-        verificationCode.value = "";
-        newPassword.value = "";
-        confirmPassword.value = "";
-
-        showPanel("reset");
-
-        showMessage(
-            data.message ||
-            "If this email is registered, a verification code will be sent.",
-            "success"
-        );
-
-    } catch (error) {
-        console.error("Forgot password error:", error);
-        showMessage(error.message || "Unable to send the verification code.", "error");
-
-    } finally {
-        sendCodeButton.disabled = false;
-        sendCodeButton.textContent = "Send Verification Code";
-    }
-});
-
-// ================= RESET PASSWORD =================
-resetForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    clearMessage();
-
-    const email = resetEmail.value.trim().toLowerCase();
-    const code = verificationCode.value.trim();
-    const password = newPassword.value;
-    const confirmation = confirmPassword.value;
-
-    if (!/^\d{6}$/.test(code)) {
-        showMessage("Enter the 6-digit verification code.", "error");
+    if (!document.getElementById("register-email").checkValidity()) {
+        alert("Enter a valid email address.");
         return;
     }
 
     if (password.length < 8) {
-        showMessage("Your new password must be at least 8 characters long.", "error");
+        alert("Password must be at least 8 characters long.");
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+    if (!termsCheckbox.checked) {
+        alert("Please agree to the Terms of Service and Privacy Policy.");
+        return;
+    }
+
+    registrationInProgress = true;
+    setLoading(createBtn, true, "Create Account", "Sending code...");
+
+    try {
+        const data = await postJSON("/api/verification/send-code", {
+            fName,
+            lName,
+            email,
+            password,
+            role: "jobseeker"
+        });
+
+        console.log("Send registration code response:", data);
+
+        registerFields.style.display = "none";
+        terms.style.display = "none";
+        createBtn.style.display = "none";
+        verifySection.style.display = "block";
+
+        codeInputs.forEach(input => {
+            input.value = "";
+        });
+
+        codeInputs[0]?.focus();
+
+        alert(data.message || "Verification code sent. Check your email.");
+    } catch (error) {
+        console.error("Registration error:", error);
+        alert(error.message || "Failed to send verification code.");
+    } finally {
+        registrationInProgress = false;
+        setLoading(createBtn, false, "Create Account", "Sending code...");
+    }
+});
+
+// ======================================================
+// REGISTRATION CODE INPUTS
+// ======================================================
+
+codeInputs.forEach((input, index) => {
+    input.addEventListener("input", event => {
+        event.target.value = event.target.value.replace(/\D/g, "").slice(-1);
+
+        if (event.target.value && codeInputs[index + 1]) {
+            codeInputs[index + 1].focus();
+        }
+    });
+
+    input.addEventListener("keydown", event => {
+        if (
+            event.key === "Backspace" &&
+            !input.value &&
+            codeInputs[index - 1]
+        ) {
+            codeInputs[index - 1].focus();
+        }
+    });
+});
+
+// ======================================================
+// VERIFY REGISTRATION CODE
+// POST /api/verification/verify-code
+// ======================================================
+
+registerVerifyBtn.addEventListener("click", async () => {
+    const code = Array.from(codeInputs)
+        .map(input => input.value.trim())
+        .join("");
+
+    if (!/^\d{6}$/.test(code)) {
+        alert("Enter the complete 6-digit verification code.");
+        return;
+    }
+
+    setLoading(registerVerifyBtn, true, "Verify", "Verifying...");
+
+    try {
+        const data = await postJSON("/api/verification/verify-code", {
+            code
+        });
+
+        alert(data.message || "Account created successfully!");
+        window.location.href = "/jobs.html";
+    } catch (error) {
+        console.error("Registration verification error:", error);
+        alert(`Verification failed: ${error.message}`);
+    } finally {
+        setLoading(registerVerifyBtn, false, "Verify", "Verifying...");
+    }
+});
+
+// ======================================================
+// RESEND REGISTRATION CODE
+// POST /api/verification/resend-code
+// ======================================================
+
+resendRegistrationCode.addEventListener("click", async () => {
+    try {
+        const response = await fetch(
+            `${API_BASE}/api/verification/resend-code`,
+            {
+                method: "POST",
+                credentials: "include"
+            }
+        );
+
+        const data = await readResponse(response);
+
+        alert(data.message || "Verification code sent again!");
+    } catch (error) {
+        console.error("Resend registration code error:", error);
+        alert(error.message || "Failed to resend verification code.");
+    }
+});
+
+// ======================================================
+// LOGIN
+// POST /api/auth/login
+// ======================================================
+
+loginBtn.addEventListener("click", async event => {
+    event.preventDefault();
+
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+
+    if (!email || !password) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    setLoading(loginBtn, true, "Login", "Signing in...");
+
+    try {
+        const data = await postJSON("/api/auth/login", {
+            email,
+            password
+        });
+
+        localStorage.setItem("userName", data.name || data.userName || "");
+        localStorage.setItem("userRole", data.role || "");
+
+        const overlay = document.getElementById("loginOverlay");
+
+        if (overlay) {
+            overlay.classList.add("hidden");
+        }
+
+        if (data.role === "jobseeker") {
+            window.location.href = "jobs.html";
+        } else if (data.role === "employer") {
+            window.location.href = "people.html";
+        } else {
+            alert("Login succeeded, but the account role was not recognized.");
+        }
+    } catch (error) {
+        console.error("Login error:", error);
+        alert(error.message || "Login failed.");
+    } finally {
+        setLoading(loginBtn, false, "Login", "Signing in...");
+    }
+});
+
+// ======================================================
+// FORGOT PASSWORD — SEND VERIFICATION CODE
+// POST /api/auth/forgot-password
+// ======================================================
+
+sendResetCodeBtn.addEventListener("click", async event => {
+    event.preventDefault();
+
+    const email = forgotEmail.value.trim().toLowerCase();
+
+    if (!email || !forgotEmail.checkValidity()) {
+        showFormMessage(
+            forgotMessage,
+            "Please enter a valid email address.",
+            "error"
+        );
+        return;
+    }
+
+    setLoading(
+        sendResetCodeBtn,
+        true,
+        "Send Verification Code",
+        "Sending code..."
+    );
+
+    try {
+        const data = await postJSON("/api/auth/forgot-password", { email });
+
+        resetEmail.value = email;
+        resetCode.value = "";
+        newPassword.value = "";
+        confirmNewPassword.value = "";
+
+        showPanel("reset");
+
+        showFormMessage(
+            resetMessage,
+            data.message ||
+                "If this email is registered, a verification code will be sent.",
+            "success"
+        );
+    } catch (error) {
+        console.error("Forgot-password error:", error);
+
+        showFormMessage(
+            forgotMessage,
+            error.message || "Unable to send the verification code.",
+            "error"
+        );
+    } finally {
+        setLoading(
+            sendResetCodeBtn,
+            false,
+            "Send Verification Code",
+            "Sending code..."
+        );
+    }
+});
+
+// ======================================================
+// RESET PASSWORD
+// POST /api/auth/reset-password
+// ======================================================
+
+resetPasswordBtn.addEventListener("click", async event => {
+    event.preventDefault();
+
+    const email = resetEmail.value.trim().toLowerCase();
+    const code = resetCode.value.trim();
+    const password = newPassword.value;
+    const confirmation = confirmNewPassword.value;
+
+    if (!/^\d{6}$/.test(code)) {
+        showFormMessage(
+            resetMessage,
+            "Enter the complete 6-digit verification code.",
+            "error"
+        );
+        return;
+    }
+
+    if (password.length < 8) {
+        showFormMessage(
+            resetMessage,
+            "Your new password must contain at least 8 characters.",
+            "error"
+        );
         return;
     }
 
     if (password.length > 128) {
-        showMessage("Your password must not exceed 128 characters.", "error");
+        showFormMessage(
+            resetMessage,
+            "Your password cannot exceed 128 characters.",
+            "error"
+        );
         return;
     }
 
     if (password !== confirmation) {
-        showMessage("The new passwords do not match.", "error");
+        showFormMessage(
+            resetMessage,
+            "Your new passwords do not match.",
+            "error"
+        );
         return;
     }
 
-    resetPasswordButton.disabled = true;
-    resetPasswordButton.textContent = "Resetting password...";
+    setLoading(
+        resetPasswordBtn,
+        true,
+        "Reset Password",
+        "Resetting password..."
+    );
 
     try {
-        const response = await fetch(`${API_BASE}/api/auth/reset-password`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify({
-                email,
-                code,
-                newPassword: password
-            })
+        const data = await postJSON("/api/auth/reset-password", {
+            email,
+            code,
+            newPassword: password
         });
 
-        const data = await readApiResponse(response);
-
-        // Clear sensitive values from the form.
-        verificationCode.value = "";
+        resetCode.value = "";
         newPassword.value = "";
-        confirmPassword.value = "";
+        confirmNewPassword.value = "";
 
         showPanel("login");
-        loginEmail.value = email;
-        loginPassword.value = "";
 
-        showMessage(
-            data.message || "Password reset successfully. Please sign in.",
-            "success"
+        document.getElementById("login-email").value = email;
+        document.getElementById("login-password").value = "";
+
+        alert(
+            data.message ||
+            "Password reset successfully. Please sign in with your new password."
         );
-
     } catch (error) {
-        console.error("Reset password error:", error);
-        showMessage(error.message || "Unable to reset your password.", "error");
+        console.error("Reset-password error:", error);
 
+        showFormMessage(
+            resetMessage,
+            error.message || "Unable to reset your password.",
+            "error"
+        );
     } finally {
-        resetPasswordButton.disabled = false;
-        resetPasswordButton.textContent = "Reset Password";
+        setLoading(
+            resetPasswordBtn,
+            false,
+            "Reset Password",
+            "Resetting password..."
+        );
     }
 });
 
-// ================= RESEND VERIFICATION CODE =================
-resendCodeButton.addEventListener("click", async () => {
-    clearMessage();
+// ======================================================
+// RESEND PASSWORD RESET CODE
+// Reuses /api/auth/forgot-password
+// ======================================================
 
-    const email = passwordResetEmail || resetEmail.value.trim().toLowerCase();
+resendResetCodeBtn.addEventListener("click", async event => {
+    event.preventDefault();
+
+    const email = resetEmail.value.trim().toLowerCase();
 
     if (!email) {
-        showMessage("Enter your email address first.", "error");
         showPanel("forgot");
+
+        showFormMessage(
+            forgotMessage,
+            "Please enter your email address.",
+            "error"
+        );
         return;
     }
 
-    resendCodeButton.disabled = true;
-    resendCodeButton.textContent = "Sending...";
+    setLoading(resendResetCodeBtn, true, "Resend Code", "Sending...");
 
     try {
-        // The current authController has no dedicated resend endpoint.
-        // Request a new code through the forgot-password endpoint.
-        const response = await fetch(`${API_BASE}/api/auth/forgot-password`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include",
-            body: JSON.stringify({ email })
-        });
+        const data = await postJSON("/api/auth/forgot-password", { email });
 
-        const data = await readApiResponse(response);
+        resetCode.value = "";
 
-        passwordResetEmail = email;
-        resetEmail.value = email;
-        verificationCode.value = "";
-
-        showMessage(
+        showFormMessage(
+            resetMessage,
             data.message ||
-            "If this email is registered, a new verification code will be sent.",
+                "If this email is registered, a new verification code will be sent.",
             "success"
         );
-
     } catch (error) {
-        console.error("Resend code error:", error);
-        showMessage(error.message || "Unable to resend the code.", "error");
+        console.error("Resend reset code error:", error);
 
+        showFormMessage(
+            resetMessage,
+            error.message || "Unable to resend the code.",
+            "error"
+        );
     } finally {
-        resendCodeButton.disabled = false;
-        resendCodeButton.textContent = "Resend Verification Code";
+        setLoading(resendResetCodeBtn, false, "Resend Code", "Sending...");
     }
 });
+
+// ======================================================
+// INITIAL STATE
+// ======================================================
+
+if (forgotForm) forgotForm.hidden = true;
+if (resetForm) resetForm.hidden = true;
+
+loginForm.classList.add("active");
+registerForm.classList.remove("active");
