@@ -1,193 +1,92 @@
 
 /* ============================================================
-   1. GLOBAL RESET & BACKGROUND
-============================================================ */
-
-:root {
-    --primary: #2d6cdf;
-    --primary-hover: #1f56c2;
-
-    --blue-dark: #061c97;
-    --blue-mid: #005bed;
-    --blue-light: #0485e7;
-
-    --glass-bg: rgba(255, 255, 255, 0.82);
-    --glass-border: rgba(255, 255, 255, 0.65);
-
-    --text-main: #1a1f36;
-    --text-muted: #64748b;
-
-    --card-radius: 18px;
-
-    --shadow-card: 0 8px 24px rgba(15, 23, 42, 0.12);
-    --shadow-hover: 0 16px 35px rgba(15, 23, 42, 0.2);
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: "Inter", sans-serif;
-    margin: 0;
-    padding-top: 70px;
-    min-height: 100vh;
-
-    color: var(--text-main);
-
-    background:
-        linear-gradient(
-            rgba(245, 247, 251, 0.84),
-            rgba(245, 247, 251, 0.84)
-        ),
-        url("../images/bg5.jpg");
-
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-}
-
-/* ============================================================
-   2. JOBS SECTION
+   9. JOBS SECTION
 ============================================================ */
 
 .jobs-section {
     width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 40px 30px;
+    max-width: none;
+    margin: 0;
+    padding: 20px 12px;
 }
 
 .jobs-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
-    gap: 16px;
-
-    margin-bottom: 20px;
-}
-
-.jobs-header h1,
-.jobs-header h2,
-.jobs-header h3 {
-    color: #1a1f36;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-}
-
-.jobs-header h1 {
-    font-size: 28px;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .jobs-header h2 {
-    font-size: 24px;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    color: #111827;
 }
-
-.jobs-header p {
-    margin-top: 6px;
-    color: var(--text-muted);
-    font-size: 14px;
-}
-
-/* ============================================================
-   3. REVIEW BUTTON
-============================================================ */
 
 .review-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    min-height: 44px;
-    padding: 12px 24px;
-
-    background: linear-gradient(
-        135deg,
-        #2d6cdf,
-        #1f56c2
-    );
-
+    background: var(--primary);
     color: #ffffff;
-    border: 1px solid rgba(45, 108, 223, 0.25);
-    border-radius: 50px;
-
+    border: 1px solid var(--primary);
+    padding: 10px 18px;
+    border-radius: 9px;
     font-family: inherit;
     font-size: 13px;
-    font-weight: 700;
-    text-align: center;
-    text-decoration: none;
-
+    font-weight: 600;
     cursor: pointer;
-
-    box-shadow: 0 5px 14px rgba(45, 108, 223, 0.2);
-
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        filter 0.25s ease;
+    transition: all 0.2s ease;
 }
 
 .review-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(45, 108, 223, 0.3);
-    filter: brightness(1.08);
-}
-
-.review-btn:active {
-    transform: translateY(0);
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(45, 108, 223, 0.2);
 }
 
 /* ============================================================
-   4. CAROUSEL WRAPPER
+   10. TWO-COLUMN JOB GRID
 ============================================================ */
 
 .carousel-wrapper {
     position: relative;
     width: 100%;
     min-width: 0;
-
-    padding: 25px 0;
 }
-
-/* ============================================================
-   5. JOBS CONTAINER
-============================================================ */
 
 .jobs-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
-    gap: 24px;
+    gap: 14px;
 
     width: 100%;
-    min-width: 0;
+    margin: 0;
+    padding: 4px 0 12px;
 
-    padding: 25px 18px;
-
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    scroll-behavior: smooth;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-
-    scrollbar-width: none;
+    overflow: visible;
 }
 
-.jobs-container::-webkit-scrollbar {
-    display: none;
+/* Empty state */
+
+#jobsContainer:empty::before {
+    content: "No jobs available yet.";
+    grid-column: 1 / -1;
+    display: block;
+    padding: 25px 15px;
+
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+
+    color: var(--text-muted);
+    text-align: center;
 }
 
 /* ============================================================
-   6. JOB CARDS
+   11. RECTANGULAR JOB CARDS
 ============================================================ */
 
 .jobs-card {
@@ -195,441 +94,210 @@ body {
 
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 8px;
 
-    flex: 0 0 260px;
-    width: 260px;
-    min-width: 260px;
-    min-height: 250px;
+    width: 100%;
+    min-width: 0;
+    min-height: 165px;
+    height: 100%;
 
-    padding: 25px 20px;
+    margin: 0;
+    padding: 20px 22px;
 
-    background: linear-gradient(
-        135deg,
-        #061c97 0%,
-        #005bed 50%,
-        #0485e7 100%
-    );
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 
-    color: #ffffff;
+    color: var(--text-main);
+    text-align: left;
 
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: var(--card-radius);
+    border: 1px solid var(--glass-border);
+    border-left: 4px solid var(--primary);
+    border-radius: 12px;
 
-    text-align: center;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+
     overflow-wrap: anywhere;
-
-    box-shadow: var(--shadow-card);
-
     cursor: pointer;
-    scroll-snap-align: start;
 
     transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .jobs-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(255, 255, 255, 0.65);
-    box-shadow: 0 18px 35px rgba(15, 23, 42, 0.28);
-    z-index: 5;
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.97);
+    border-color: rgba(45, 108, 223, 0.25);
+    border-left-color: var(--primary);
+    box-shadow: 0 9px 20px rgba(30, 64, 175, 0.1);
 }
 
 .jobs-card h3 {
     width: 100%;
-    margin: 10px 0 6px;
+    margin: 0 0 2px;
 
-    color: #ffffff;
-    font-size: 18px;
+    color: #111827;
+    font-size: 17px;
     font-weight: 750;
     line-height: 1.45;
-
-    overflow-wrap: anywhere;
 }
 
 .jobs-card p {
     width: 100%;
-    margin: 4px 0;
+    margin: 0;
 
-    color: rgba(255, 255, 255, 0.86);
+    color: var(--text-muted);
     font-size: 13px;
-    line-height: 1.65;
-
-    overflow-wrap: anywhere;
+    line-height: 1.5;
 }
 
 .jobs-card .company-name {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 14px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.jobs-card .job-location {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.jobs-card .salary,
+.jobs-card .salary-range {
+    color: #334155;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.jobs-card .job-type {
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 3px;
+    padding: 5px 9px;
+
+    background: #eef5ff;
+    color: #1e40af;
+
+    border: 1px solid #dbeafe;
+    border-radius: 6px;
+
+    font-size: 11px;
     font-weight: 700;
 }
 
-.jobs-card .job-location,
-.jobs-card .job-type,
-.jobs-card .job-salary {
-    font-size: 12px;
+.jobs-card .logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    margin-bottom: 4px;
 }
 
-/* Optional content area for consistent card layout */
-
-.job-card-content {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 6px;
-
-    width: 100%;
-    padding-top: 8px;
-}
-
-.job-card-footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-
-    width: 100%;
-    margin-top: auto;
-}
-
-/* ============================================================
-   7. JOB CARD ACTION BUTTONS
-============================================================ */
-
-.jobs-card .job-action,
-.jobs-card .apply-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-    min-height: 40px;
-    padding: 10px 16px;
-
-    background: rgba(255, 255, 255, 0.96);
-    color: #1748a0;
-
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    border-radius: 10px;
-
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 750;
-    text-decoration: none;
-
-    cursor: pointer;
-    transition: all 0.25s ease;
-}
-
-.jobs-card .job-action:hover,
-.jobs-card .apply-btn:hover {
-    background: #eaf2ff;
-    color: #123b85;
-    transform: translateY(-2px);
-}
-
-/* ============================================================
-   8. CAROUSEL NAVIGATION BUTTONS
-============================================================ */
-
-.nav-btn {
-    position: absolute;
-    top: 50%;
-    right: -8px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 46px;
-    height: 46px;
-
-    transform: translateY(-50%);
-
-    background: rgba(255, 255, 255, 0.8);
-    color: #1f56c2;
-
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    font-size: 24px;
-    line-height: 1;
-
-    cursor: pointer;
-    z-index: 20;
-
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
-
-    transition:
-        transform 0.25s ease,
-        background 0.25s ease,
-        color 0.25s ease,
-        box-shadow 0.25s ease;
-}
-
-.nav-btn:hover {
-    transform: translateY(-50%) scale(1.1);
-
-    background: linear-gradient(
-        135deg,
-        #2d6cdf,
-        #1f56c2
-    );
-
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.6);
-
-    box-shadow: 0 8px 22px rgba(45, 108, 223, 0.3);
-}
-
-.nav-btn:active {
-    transform: translateY(-50%) scale(0.95);
-}
-
-.nav-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-.nav-btn.prev-btn {
-    right: auto;
-    left: -8px;
-}
-
-/* ============================================================
-   9. BOOKMARK BUTTON
-============================================================ */
+/* Bookmark button */
 
 .bookmark-btn {
     position: absolute;
-    top: 14px;
-    right: 14px;
+    top: 12px;
+    right: 12px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     padding: 0;
 
-    background: rgba(255, 255, 255, 0.14);
-    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.85);
+    color: #64748b;
 
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    border: 1px solid #e2e8f0;
     border-radius: 50%;
 
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-
-    font-size: 18px;
+    font-size: 17px;
     line-height: 1;
-
     cursor: pointer;
-    z-index: 10;
+    z-index: 5;
 
-    transition:
-        transform 0.25s ease,
-        background 0.25s ease,
-        color 0.25s ease,
-        border-color 0.25s ease;
+    transition: all 0.2s ease;
 }
 
 .bookmark-btn:hover {
-    background: rgba(255, 255, 255, 0.28);
-    color: #ffffff;
-    transform: scale(1.1);
+    background: #eef5ff;
+    color: var(--primary);
+    transform: scale(1.08);
 }
 
 .bookmark-btn.active {
-    color: #f5c518;
-    background: rgba(245, 197, 24, 0.17);
-    border-color: rgba(245, 197, 24, 0.55);
-}
-
-.bookmark-btn:active {
-    transform: scale(0.95);
+    color: #d99b00;
+    background: #fff8db;
+    border-color: #f5d66e;
 }
 
 /* ============================================================
-   10. GENERAL LINKS & FOCUS STATES
+   12. HIDE CAROUSEL ARROWS
 ============================================================ */
 
-.jobs-section a {
-    transition: color 0.2s ease;
-}
-
-button:focus-visible,
-a:focus-visible {
-    outline: 3px solid rgba(45, 108, 223, 0.5);
-    outline-offset: 3px;
+.nav-btn {
+    display: none;
 }
 
 /* ============================================================
-   11. RESPONSIVE TABLET LAYOUT
+   13. TABLET
 ============================================================ */
 
-@media (max-width: 900px) {
-    body {
-        background-attachment: scroll;
-    }
-
+@media (max-width: 768px) {
     .jobs-section {
-        padding: 32px 22px;
-    }
-
-    .jobs-header h1 {
-        font-size: 25px;
-    }
-
-    .jobs-header h2 {
-        font-size: 22px;
+        padding: 18px 10px;
     }
 
     .jobs-container {
-        gap: 20px;
-        padding: 22px 14px;
-    }
-
-    .jobs-card {
-        flex-basis: 245px;
-        width: 245px;
-        min-width: 245px;
-        min-height: 240px;
-    }
-
-    .nav-btn {
-        width: 42px;
-        height: 42px;
-        font-size: 21px;
-    }
-}
-
-/* ============================================================
-   12. RESPONSIVE MOBILE LAYOUT
-============================================================ */
-
-@media (max-width: 600px) {
-    body {
-        padding-top: 60px;
-    }
-
-    .jobs-section {
-        padding: 25px 12px;
-    }
-
-    .jobs-header {
-        align-items: flex-start;
-        flex-direction: column;
         gap: 12px;
     }
 
-    .jobs-header h1 {
-        font-size: 23px;
-    }
-
-    .jobs-header h2 {
-        font-size: 20px;
-    }
-
-    .review-btn {
-        min-height: 42px;
-        padding: 10px 20px;
-    }
-
-    .carousel-wrapper {
-        padding: 14px 0;
-    }
-
-    .jobs-container {
-        gap: 16px;
-        padding: 20px 12px;
-    }
-
     .jobs-card {
-        flex-basis: 235px;
-        width: 235px;
-        min-width: 235px;
-        min-height: 230px;
-
-        padding: 22px 17px;
-        border-radius: 15px;
+        min-height: 155px;
+        padding: 17px;
     }
 
     .jobs-card h3 {
         font-size: 16px;
     }
-
-    .jobs-card p {
-        font-size: 12px;
-    }
-
-    .nav-btn {
-        right: 0;
-        width: 38px;
-        height: 38px;
-        font-size: 20px;
-    }
-
-    .nav-btn.prev-btn {
-        right: auto;
-        left: 0;
-    }
 }
 
 /* ============================================================
-   13. SMALL MOBILE DEVICES
+   14. MOBILE
 ============================================================ */
 
-@media (max-width: 380px) {
+@media (max-width: 520px) {
     .jobs-section {
-        padding-right: 8px;
-        padding-left: 8px;
+        padding: 15px 8px;
     }
 
-    .jobs-card {
-        flex-basis: 215px;
-        width: 215px;
-        min-width: 215px;
-        padding: 19px 14px;
+    .jobs-header {
+        align-items: flex-start;
+        margin-bottom: 12px;
+    }
+
+    .jobs-header h2 {
+        font-size: 1.25rem;
     }
 
     .jobs-container {
+        grid-template-columns: minmax(0, 1fr);
         gap: 12px;
-        padding-right: 10px;
-        padding-left: 10px;
+        padding: 3px 0 10px;
     }
 
-    .jobs-header h1 {
-        font-size: 21px;
-    }
-
-    .review-btn {
-        width: 100%;
-    }
-}
-
-/* ============================================================
-   14. REDUCED MOTION ACCESSIBILITY
-============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
-        transition-duration: 0.01ms !important;
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
+    .jobs-card {
+        min-height: 135px;
+        padding: 17px;
     }
 }
