@@ -364,13 +364,14 @@ button.cancel:hover {
 
 /* ============================================================
    9. JOBS SECTION
+   Reduce excessive left and right spacing.
 ============================================================ */
 
 .jobs-section {
     width: 100%;
-    max-width: 1250px;
-    margin: 0 auto;
-    padding: 40px 20px;
+    max-width: none;
+    margin: 0;
+    padding: 25px 12px;
 }
 
 .jobs-header {
@@ -379,7 +380,7 @@ button.cancel:hover {
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
-    margin-bottom: 22px;
+    margin-bottom: 18px;
 }
 
 .jobs-header h2 {
@@ -413,9 +414,7 @@ button.cancel:hover {
 }
 
 /* ============================================================
-   10. JOB CARDS LAYOUT
-   Two rectangular cards per row on larger screens.
-   Preserve the original background and card appearance.
+   10. TWO-COLUMN JOB CARDS LAYOUT
 ============================================================ */
 
 .carousel-wrapper {
@@ -433,10 +432,10 @@ button.cancel:hover {
     width: 100%;
     min-width: 0;
 
-    gap: 16px;
+    gap: 14px;
     margin: 0;
 
-    padding: 8px 4px 25px;
+    padding: 6px 2px 20px;
     overflow: visible;
 }
 
@@ -449,7 +448,7 @@ button.cancel:hover {
     grid-column: 1 / -1;
 
     width: 100%;
-    padding: 35px 20px;
+    padding: 30px 15px;
 
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -462,7 +461,6 @@ button.cancel:hover {
 
 /* ============================================================
    11. RECTANGULAR JOB CARDS
-   Original glass styling, border, colors, and hover effect.
 ============================================================ */
 
 .jobs-card {
@@ -475,10 +473,10 @@ button.cancel:hover {
 
     width: 100%;
     min-width: 0;
-    min-height: 165px;
+    min-height: 155px;
     height: 100%;
 
-    padding: 23px 28px;
+    padding: 20px 22px;
     gap: 8px;
 
     background: var(--glass-bg);
@@ -619,7 +617,7 @@ button.cancel:hover {
     }
 
     .jobs-section {
-        padding: 30px 18px;
+        padding: 22px 10px;
     }
 
     .jobs-container,
@@ -628,8 +626,8 @@ button.cancel:hover {
     }
 
     .jobs-card {
-        min-height: 150px;
-        padding: 20px;
+        min-height: 145px;
+        padding: 18px;
     }
 }
 
@@ -677,17 +675,21 @@ button.cancel:hover {
     .jobs-container,
     #jobsContainer {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
+        gap: 10px;
     }
 
     .jobs-card {
-        min-height: 140px;
-        padding: 18px;
+        min-height: 135px;
+        padding: 16px 14px;
         border-radius: 11px;
     }
 
     .jobs-card h3 {
-        font-size: 17px;
+        font-size: 16px;
+    }
+
+    .jobs-card p {
+        font-size: 12px;
     }
 }
 
@@ -731,7 +733,7 @@ button.cancel:hover {
     }
 
     .jobs-section {
-        padding: 25px 12px;
+        padding: 18px 10px;
     }
 
     .jobs-header h2 {
@@ -743,8 +745,8 @@ button.cancel:hover {
     .jobs-container,
     #jobsContainer {
         grid-template-columns: 1fr;
-        gap: 13px;
-        padding: 6px 2px 20px;
+        gap: 12px;
+        padding: 5px 0 18px;
     }
 
     .jobs-card {
