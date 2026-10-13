@@ -35,10 +35,16 @@ html {
     scroll-behavior: smooth;
 }
 
+
+/* ============================================================
+   2. BODY & BACKGROUND
+============================================================ */
+
 body {
     font-family: "Inter", sans-serif;
     margin: 0;
     padding-top: 70px;
+
     color: var(--text-main);
     min-height: 100vh;
 
@@ -57,15 +63,21 @@ body {
 
 
 /* ============================================================
-   2. PEOPLE SECTION
+   3. PEOPLE SECTION
 ============================================================ */
 
 .people-section {
     width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 30px 0 50px;
+    max-width: 1250px;
+
+    margin: 0 auto;
+    padding: 40px 20px;
 }
+
+
+/* ============================================================
+   4. PEOPLE HEADER
+============================================================ */
 
 .people-header {
     display: flex;
@@ -73,44 +85,43 @@ body {
     align-items: center;
     flex-wrap: wrap;
 
-    gap: 16px;
-    margin: 0 24px 24px;
+    gap: 15px;
+    margin-bottom: 22px;
 }
 
 .people-header h1,
 .people-header h2 {
-    color: #1e3a8a;
-    font-size: 28px;
-    font-weight: 800;
     margin: 0;
+
+    color: #111827;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.4px;
 }
 
 
 /* ============================================================
-   3. PEOPLE CONTAINER
-   TWO CARDS SIDE BY SIDE, NO SIDE MARGINS
+   5. PEOPLE CONTAINER
+   SAME VERTICAL LAYOUT AS JOBS.CSS
 ============================================================ */
 
 .people-wrapper {
     position: relative;
     width: 100%;
-    margin: 0;
-    padding: 0;
+    min-width: 0;
 }
 
 .people-container {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 
     width: 100%;
-    max-width: none;
+    gap: 16px;
 
     margin: 0;
-    padding: 10px 0 30px;
+    padding: 8px 4px 25px;
 
-    align-items: stretch;
     overflow: visible;
 }
 
@@ -120,109 +131,121 @@ body {
 
 
 /* ============================================================
-   4. PERSON CARDS
+   6. PERSON CARDS
+   SAME SIZE AND PROPORTIONS AS JOBS-CARD
 ============================================================ */
 
 .person-card {
     position: relative;
 
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 22px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 
     width: 100%;
     min-width: 0;
-    min-height: 230px;
+    min-height: 140px;
 
     margin: 0;
-    padding: 28px;
+    padding: 23px 28px;
+    gap: 8px;
 
     background: var(--glass-bg);
 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
     border: 1px solid var(--glass-border);
-    border-left: 6px solid #cbd5e1;
-    border-radius: 16px;
+    border-left: 5px solid var(--primary);
+    border-radius: 12px;
 
     color: var(--text-main);
     text-align: left;
 
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.045);
 
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-
-    overflow: hidden;
+    cursor: pointer;
+    overflow-wrap: anywhere;
 
     transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        background 0.25s ease,
-        border-color 0.25s ease;
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease,
+        border-color 0.22s ease;
 }
 
 .person-card:hover {
     transform: translateY(-3px);
 
-    background: rgba(255, 255, 255, 0.93);
+    background: rgba(255, 255, 255, 0.97);
+
+    border-color: rgba(45, 108, 223, 0.25);
     border-left-color: var(--primary);
 
-    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.14);
-
-    z-index: 2;
+    box-shadow: 0 12px 25px rgba(30, 64, 175, 0.1);
 }
 
 
 /* ============================================================
-   5. PROFILE PICTURE
+   7. PROFILE PICTURE
 ============================================================ */
 
 .profile-pic {
     flex-shrink: 0;
 
-    width: 110px;
-    height: 110px;
+    width: 45px;
+    height: 45px;
 
-    margin: 0;
+    margin: 0 0 6px;
 
     border-radius: 50%;
     object-fit: cover;
 
     background: #e6eefb;
-    border: 3px solid rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.9);
 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 
 /* ============================================================
-   6. PERSON INFORMATION
+   8. PERSON NAME
 ============================================================ */
 
 .person-card h3 {
-    margin: 0 0 10px;
+    width: 100%;
 
-    color: #172554;
-    font-size: 23px;
-    font-weight: 800;
-    line-height: 1.35;
+    margin: 0 0 3px;
+
+    color: #111827;
+    font-size: 18px;
+    font-weight: 750;
+    line-height: 1.45;
 
     overflow-wrap: anywhere;
 }
 
-.person-card p {
-    margin: 7px 0;
 
-    color: #334155;
-    font-size: 16px;
+/* ============================================================
+   9. PERSON INFORMATION
+============================================================ */
+
+.person-card p {
+    margin: 0;
+
+    color: var(--text-muted);
+    font-size: 13px;
     line-height: 1.6;
 
     overflow-wrap: anywhere;
 }
 
 .headline {
-    color: #334155;
-    font-size: 16px;
+    margin: 0;
+
+    color: var(--text-muted);
+    font-size: 13px;
     font-weight: 500;
     line-height: 1.6;
 
@@ -230,43 +253,67 @@ body {
 }
 
 .location {
-    color: #475569;
-    font-size: 15px;
-    line-height: 1.5;
+    margin-top: 2px;
 
-    margin-top: 8px;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.6;
 
     overflow-wrap: anywhere;
 }
 
 
 /* ============================================================
-   7. OPTIONAL PROFILE BADGE
+   10. OPTIONAL PROFILE BADGE
 ============================================================ */
 
 .person-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+
     width: fit-content;
     max-width: 100%;
 
-    margin-top: 10px;
-    padding: 7px 12px;
+    margin-top: 2px;
+    padding: 5px 10px;
 
-    background: #e6eef8;
-    color: #244fa5;
+    background: #eef5ff;
+    color: #1e40af;
 
-    border: 1px solid rgba(45, 108, 223, 0.15);
-    border-radius: 8px;
+    border: 1px solid rgba(45, 108, 223, 0.12);
+    border-radius: 6px;
 
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 700;
 
     overflow-wrap: anywhere;
 }
 
 
+/* Supports the existing job-badge class if used */
+
+.person-card .job-badge {
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+    max-width: 100%;
+
+    margin-top: 2px;
+    padding: 5px 10px;
+
+    background: #eef5ff;
+    color: #1e40af;
+
+    border-radius: 6px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
 /* ============================================================
-   8. VIEW DETAILS BUTTON
+   11. VIEW DETAILS BUTTON
 ============================================================ */
 
 .person-card .view-details-btn {
@@ -275,19 +322,20 @@ body {
     justify-content: center;
 
     flex-shrink: 0;
-    min-width: 145px;
+    width: fit-content;
+    min-width: 120px;
 
-    margin: 0 0 0 auto;
-    padding: 13px 20px;
+    margin-top: 8px;
+    padding: 10px 16px;
 
     background: var(--primary);
     color: #ffffff;
 
     border: 1px solid var(--primary);
-    border-radius: 10px;
+    border-radius: 9px;
 
     font-family: inherit;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 700;
 
     text-decoration: none;
@@ -295,7 +343,7 @@ body {
 
     cursor: pointer;
 
-    transition: 0.25s ease;
+    transition: all 0.2s ease;
 }
 
 .person-card .view-details-btn:hover {
@@ -315,100 +363,103 @@ body {
 
 
 /* ============================================================
-   9. NAVIGATION BUTTONS
+   12. REVIEW BUTTON
+============================================================ */
+
+.review-btn {
+    background: var(--primary);
+    color: #ffffff;
+
+    border: 1px solid var(--primary);
+    padding: 11px 18px;
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.review-btn:hover {
+    background: var(--primary-hover);
+    color: #ffffff;
+
+    border-color: var(--primary-hover);
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 5px 12px rgba(45, 108, 223, 0.2);
+}
+
+
+/* ============================================================
+   13. NAVIGATION BUTTONS
 ============================================================ */
 
 .nav-btn {
     display: none;
-
-    position: absolute;
-    right: -10px;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    width: 42px;
-    height: 42px;
-
-    border-radius: 50%;
-    border: none;
-
-    background: #ffffff;
-    color: var(--primary);
-
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-
-    cursor: pointer;
-    font-size: 24px;
-
-    z-index: 3;
 }
 
 
 /* ============================================================
-   10. EMPTY STATE
+   14. EMPTY STATE
 ============================================================ */
 
 .empty-state {
     width: 100%;
-    padding: 50px 24px;
+    padding: 35px 20px;
 
-    background: rgba(255, 255, 255, 0.82);
+    background: var(--glass-bg);
 
     border: 1px solid var(--glass-border);
-    border-radius: 16px;
+    border-radius: 14px;
 
     color: var(--text-muted);
+    font-size: 14px;
+    font-style: italic;
     text-align: center;
 
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.045);
 }
 
 
 /* ============================================================
-   11. TABLET LAYOUT
+   15. TABLET LAYOUT
 ============================================================ */
 
 @media (max-width: 900px) {
+    .people-section {
+        padding: 32px 16px;
+    }
+
     .people-container {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
+        gap: 14px;
     }
 
     .person-card {
-        flex-direction: column;
-        align-items: flex-start;
-
-        min-height: 300px;
-        padding: 22px;
-    }
-
-    .profile-pic {
-        width: 90px;
-        height: 90px;
+        min-height: 140px;
+        padding: 22px 24px;
     }
 
     .person-card h3 {
-        font-size: 21px;
+        font-size: 17px;
     }
 
     .person-card p,
     .headline {
-        font-size: 15px;
-    }
-
-    .person-card .view-details-btn {
-        width: 100%;
-        margin: auto 0 0;
+        font-size: 13px;
     }
 }
 
 
 /* ============================================================
-   12. MOBILE LAYOUT
+   16. MOBILE LAYOUT
 ============================================================ */
 
 @media (max-width: 600px) {
@@ -417,93 +468,78 @@ body {
     }
 
     .people-section {
-        padding: 24px 0 35px;
+        padding: 24px 12px 35px;
     }
 
     .people-header {
         flex-direction: column;
         align-items: flex-start;
 
-        margin: 0 16px 20px;
+        gap: 12px;
+        margin-bottom: 18px;
     }
 
     .people-header h1,
     .people-header h2 {
-        font-size: 24px;
+        font-size: 1.35rem;
     }
 
     .people-container {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 16px;
-
-        padding: 10px 0 24px;
+        gap: 14px;
+        padding: 6px 2px 20px;
     }
 
     .person-card {
-        flex-direction: row;
-        align-items: center;
-        gap: 16px;
+        width: 100%;
+        min-height: 130px;
 
-        min-height: 190px;
-        padding: 20px 16px;
+        padding: 20px;
+        gap: 7px;
 
         border-radius: 12px;
     }
 
     .profile-pic {
-        width: 75px;
-        height: 75px;
+        width: 42px;
+        height: 42px;
     }
 
     .person-card h3 {
-        font-size: 19px;
+        font-size: 17px;
     }
 
     .person-card p,
     .headline {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .location {
-        font-size: 13px;
+        font-size: 12px;
     }
 
     .person-card .view-details-btn {
-        width: auto;
+        width: fit-content;
         min-width: 110px;
 
-        margin: 10px 0 0;
-        padding: 10px 13px;
+        margin-top: 8px;
+        padding: 10px 14px;
 
-        font-size: 13px;
+        font-size: 12px;
     }
 }
 
 
 /* ============================================================
-   13. EXTRA SMALL PHONES
+   17. EXTRA SMALL PHONES
 ============================================================ */
 
 @media (max-width: 380px) {
-    .people-header {
-        margin-left: 12px;
-        margin-right: 12px;
-    }
-
-    .people-container {
-        padding-left: 0;
-        padding-right: 0;
-        gap: 12px;
+    .people-section {
+        padding: 20px 8px 28px;
     }
 
     .person-card {
-        gap: 12px;
-        padding: 16px 12px;
-    }
-
-    .profile-pic {
-        width: 62px;
-        height: 62px;
+        padding: 17px;
     }
 
     .person-card h3 {
@@ -512,33 +548,34 @@ body {
 
     .person-card p,
     .headline {
-        font-size: 13px;
+        font-size: 12px;
     }
 
     .location {
-        font-size: 12px;
+        font-size: 11px;
     }
 
     .person-card .view-details-btn {
-        min-width: 95px;
-        padding: 9px 10px;
-        font-size: 12px;
+        min-width: 100px;
+        padding: 9px 12px;
     }
 }
 
 
 /* ============================================================
-   14. REDUCED MOTION ACCESSIBILITY
+   18. REDUCED MOTION ACCESSIBILITY
 ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
     .person-card,
-    .person-card .view-details-btn {
+    .person-card .view-details-btn,
+    .review-btn {
         transition: none;
     }
 
     .person-card:hover,
-    .person-card .view-details-btn:hover {
+    .person-card .view-details-btn:hover,
+    .review-btn:hover {
         transform: none;
     }
 }
