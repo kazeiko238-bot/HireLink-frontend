@@ -260,8 +260,6 @@ textarea {
 
 /* ============================================================
    7. POST A JOB BUTTON
-   Explicit styling prevents white/invisible button appearance.
-   Supports common existing button IDs and classes.
 ============================================================ */
 
 #postJobBtn,
@@ -325,8 +323,6 @@ button.primary-btn:hover {
 
 /* ============================================================
    8. CANCEL BUTTON
-   Neutral white style with readable dark text.
-   Supports common existing cancel selectors.
 ============================================================ */
 
 .cancel-btn,
@@ -368,13 +364,14 @@ button.cancel:hover {
 
 /* ============================================================
    9. JOBS SECTION
+   Uses the available screen width without side margins.
 ============================================================ */
 
 .jobs-section {
     width: 100%;
-    max-width: 1250px;
-    margin: 0 auto;
-    padding: 40px 20px;
+    max-width: none;
+    margin: 0;
+    padding: 40px 0;
 }
 
 .jobs-header {
@@ -417,8 +414,7 @@ button.cancel:hover {
 }
 
 /* ============================================================
-   10. JOBS CONTAINER
-   TWO CARDS SIDE BY SIDE
+   10. TWO-COLUMN JOB CARD LAYOUT
 ============================================================ */
 
 .carousel-wrapper {
@@ -433,15 +429,16 @@ button.cancel:hover {
     align-items: stretch;
 
     width: 100%;
-    gap: 20px;
+    gap: 16px;
 
-    padding: 8px 4px 25px;
+    padding: 8px 0 25px;
     overflow: visible;
 }
 
 #jobsContainer:empty::before {
     content: "Loading jobs or none found...";
     display: block;
+    grid-column: 1 / -1;
     padding: 35px 20px;
 
     background: var(--glass-bg);
@@ -451,12 +448,11 @@ button.cancel:hover {
     color: var(--text-muted);
     font-style: italic;
     text-align: center;
-
-    grid-column: 1 / -1;
 }
 
 /* ============================================================
    11. RECTANGULAR JOB CARDS
+   Original card appearance preserved.
 ============================================================ */
 
 .jobs-card {
@@ -594,7 +590,7 @@ button.cancel:hover {
     }
 
     .jobs-section {
-        padding: 30px 18px;
+        padding: 30px 0;
     }
 
     .jobs-card {
@@ -640,6 +636,11 @@ button.cancel:hover {
 
     .jobs-header {
         align-items: flex-start;
+    }
+
+    /* Keep two cards side by side on tablets */
+    .jobs-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .jobs-card {
@@ -693,17 +694,18 @@ button.cancel:hover {
     }
 
     .jobs-section {
-        padding: 25px 12px;
+        padding: 25px 0;
     }
 
     .jobs-header h2 {
         font-size: 1.3rem;
     }
 
+    /* Switch to one card per row on narrow phones */
     .jobs-container {
         grid-template-columns: 1fr;
         gap: 13px;
-        padding: 6px 2px 20px;
+        padding: 6px 0 20px;
     }
 
     .jobs-card {
