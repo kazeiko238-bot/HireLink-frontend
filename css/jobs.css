@@ -7,7 +7,7 @@
     --primary: #2d6cdf;
     --primary-hover: #1f56c2;
 
-    --bg-overlay: rgba(245, 247, 251, 0.40);
+    --bg-overlay: rgba(245, 247, 251, 0.85);
     --glass-bg: rgba(255, 255, 255, 0.82);
     --glass-border: rgba(255, 255, 255, 0.45);
 
@@ -63,10 +63,9 @@ body {
     display: flex;
     align-items: flex-start;
     max-width: 1500px;
-    width: 100%;
     margin: 0 auto;
-    padding: 30px 24px;
-    gap: 24px;
+    padding: 40px;
+    gap: 35px;
 }
 
 .main-panel {
@@ -100,7 +99,7 @@ h3 {
     color: var(--text-muted);
     font-size: 0.95rem;
     line-height: 1.6;
-    margin-bottom: 22px;
+    margin-bottom: 25px;
 }
 
 /* ============================================================
@@ -111,7 +110,7 @@ h3 {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 22px;
+    margin-bottom: 25px;
 }
 
 .tab {
@@ -205,8 +204,8 @@ textarea {
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 24px;
+    gap: 12px;
+    margin-top: 30px;
     padding-right: 0;
 }
 
@@ -224,7 +223,7 @@ textarea {
     letter-spacing: 0.3px;
 
     border: 1px solid var(--primary) !important;
-    padding: 12px 22px;
+    padding: 13px 26px;
     border-radius: 10px;
 
     cursor: pointer;
@@ -293,6 +292,7 @@ button.primary-btn {
     opacity: 1;
 
     box-shadow: 0 4px 12px rgba(45, 108, 223, 0.2);
+
     transition: all 0.2s ease;
 }
 
@@ -368,9 +368,9 @@ button.cancel:hover {
 
 .jobs-section {
     width: 100%;
-    max-width: 1500px;
+    max-width: 1250px;
     margin: 0 auto;
-    padding: 24px 16px;
+    padding: 40px 20px;
 }
 
 .jobs-header {
@@ -378,8 +378,8 @@ button.cancel:hover {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 15px;
+    margin-bottom: 22px;
 }
 
 .jobs-header h2 {
@@ -395,7 +395,7 @@ button.cancel:hover {
     background: var(--primary);
     color: #ffffff;
     border: 1px solid var(--primary);
-    padding: 10px 16px;
+    padding: 11px 18px;
     border-radius: 9px;
     font-family: inherit;
     font-size: 13px;
@@ -413,17 +413,15 @@ button.cancel:hover {
 }
 
 /* ============================================================
-   10. JOB CARDS CONTAINER
-   Two rectangular cards per row.
-   Minimal spacing and no horizontal carousel.
+   10. JOB CARDS LAYOUT
+   Two rectangular cards per row on larger screens.
+   Preserve the original background and card appearance.
 ============================================================ */
 
 .carousel-wrapper {
     position: relative;
     width: 100%;
     min-width: 0;
-    margin: 0;
-    padding: 0;
 }
 
 .jobs-container,
@@ -434,15 +432,15 @@ button.cancel:hover {
 
     width: 100%;
     min-width: 0;
-    gap: 14px;
 
+    gap: 16px;
     margin: 0;
-    padding: 4px 0 12px;
 
+    padding: 8px 4px 25px;
     overflow: visible;
 }
 
-/* Empty/loading state */
+/* Loading / empty state */
 
 #jobsContainer:empty::before,
 .jobs-container:empty::before {
@@ -451,11 +449,11 @@ button.cancel:hover {
     grid-column: 1 / -1;
 
     width: 100%;
-    padding: 28px 16px;
+    padding: 35px 20px;
 
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: 12px;
+    border-radius: 14px;
 
     color: var(--text-muted);
     font-style: italic;
@@ -464,6 +462,7 @@ button.cancel:hover {
 
 /* ============================================================
    11. RECTANGULAR JOB CARDS
+   Original glass styling, border, colors, and hover effect.
 ============================================================ */
 
 .jobs-card {
@@ -479,8 +478,8 @@ button.cancel:hover {
     min-height: 165px;
     height: 100%;
 
-    padding: 20px 22px;
-    gap: 7px;
+    padding: 23px 28px;
+    gap: 8px;
 
     background: var(--glass-bg);
 
@@ -488,13 +487,13 @@ button.cancel:hover {
     -webkit-backdrop-filter: blur(10px);
 
     border: 1px solid var(--glass-border);
-    border-left: 4px solid var(--primary);
+    border-left: 5px solid var(--primary);
     border-radius: 12px;
 
     color: var(--text-main);
     text-align: left;
 
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.045);
 
     cursor: pointer;
     overflow-wrap: anywhere;
@@ -508,10 +507,13 @@ button.cancel:hover {
 
 .jobs-card:hover {
     transform: translateY(-3px);
+
     background: rgba(255, 255, 255, 0.97);
+
     border-color: rgba(45, 108, 223, 0.25);
     border-left-color: var(--primary);
-    box-shadow: 0 10px 22px rgba(30, 64, 175, 0.1);
+
+    box-shadow: 0 12px 25px rgba(30, 64, 175, 0.1);
 }
 
 /* Job title */
@@ -523,9 +525,7 @@ button.cancel:hover {
     color: #111827;
     font-size: 18px;
     font-weight: 750;
-    line-height: 1.4;
-
-    overflow-wrap: anywhere;
+    line-height: 1.45;
 }
 
 /* Job details */
@@ -534,19 +534,19 @@ button.cancel:hover {
     margin: 0;
     color: var(--text-muted);
     font-size: 13px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 /* Company logo */
 
 .logo {
-    width: 42px;
-    height: 42px;
+    width: 45px;
+    height: 45px;
     object-fit: contain;
-    margin: 0 0 5px;
+    margin: 0 0 6px;
 }
 
-/* Job type label */
+/* Job type */
 
 .jobs-card .job-type {
     display: inline-flex;
@@ -554,8 +554,8 @@ button.cancel:hover {
     width: fit-content;
     max-width: 100%;
 
-    margin-top: 3px;
-    padding: 5px 9px;
+    margin-top: 2px;
+    padding: 5px 10px;
 
     background: #eef5ff;
     color: #1e40af;
@@ -569,7 +569,7 @@ button.cancel:hover {
 
 .jobs-card .salary,
 .jobs-card .salary-range {
-    margin-top: 3px;
+    margin-top: 2px;
     color: #475569;
     font-size: 13px;
     font-weight: 600;
@@ -583,23 +583,12 @@ button.cancel:hover {
     font-size: 12px;
 }
 
-/* Bookmark button compatibility */
-
-.jobs-card .bookmark-btn,
-.jobs-card .save-job-btn,
-.jobs-card .favorite-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    z-index: 2;
-}
-
 /* ============================================================
    12. HIDE CAROUSEL NAVIGATION
 ============================================================ */
 
 .nav-btn {
-    display: none !important;
+    display: none;
 }
 
 /* ============================================================
@@ -613,10 +602,10 @@ button.cancel:hover {
     -webkit-backdrop-filter: blur(10px);
 
     border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 22px;
+    border-radius: 18px;
+    padding: 25px;
 
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
 
 /* ============================================================
@@ -625,12 +614,12 @@ button.cancel:hover {
 
 @media (max-width: 992px) {
     .dashboard-content {
-        padding: 25px 18px;
-        gap: 20px;
+        padding: 30px 24px;
+        gap: 25px;
     }
 
     .jobs-section {
-        padding: 20px 12px;
+        padding: 30px 18px;
     }
 
     .jobs-container,
@@ -639,22 +628,16 @@ button.cancel:hover {
     }
 
     .jobs-card {
-        min-height: 155px;
-        padding: 18px;
-    }
-
-    .jobs-card h3 {
-        font-size: 17px;
+        min-height: 150px;
+        padding: 20px;
     }
 }
-
-/* Tablets and smaller screens */
 
 @media (max-width: 768px) {
     .dashboard-content {
         flex-direction: column;
-        padding: 22px 16px;
-        gap: 20px;
+        padding: 25px 18px;
+        gap: 25px;
     }
 
     .main-panel,
@@ -689,7 +672,7 @@ button.cancel:hover {
         align-items: flex-start;
     }
 
-    /* Keep two columns on tablets */
+    /* Keep two cards per row on tablets */
 
     .jobs-container,
     #jobsContainer {
@@ -698,17 +681,13 @@ button.cancel:hover {
     }
 
     .jobs-card {
-        min-height: 145px;
-        padding: 17px;
+        min-height: 140px;
+        padding: 18px;
         border-radius: 11px;
     }
 
     .jobs-card h3 {
-        font-size: 16px;
-    }
-
-    .jobs-card p {
-        font-size: 12px;
+        font-size: 17px;
     }
 }
 
@@ -716,13 +695,13 @@ button.cancel:hover {
    15. SMALL MOBILE DEVICES
 ============================================================ */
 
-@media (max-width: 520px) {
+@media (max-width: 480px) {
     body {
         background-attachment: scroll;
     }
 
     .dashboard-content {
-        padding: 20px 12px;
+        padding: 22px 14px;
     }
 
     h1 {
@@ -752,20 +731,20 @@ button.cancel:hover {
     }
 
     .jobs-section {
-        padding: 18px 8px;
+        padding: 25px 12px;
     }
 
     .jobs-header h2 {
         font-size: 1.3rem;
     }
 
-    /* Switch to one column when cards would be too narrow */
+    /* One card per row on narrow phones */
 
     .jobs-container,
     #jobsContainer {
         grid-template-columns: 1fr;
-        gap: 12px;
-        padding: 4px 0 16px;
+        gap: 13px;
+        padding: 6px 2px 20px;
     }
 
     .jobs-card {
