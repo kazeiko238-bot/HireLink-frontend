@@ -8,14 +8,15 @@
     --primary-hover: #1f56c2;
 
     --bg-overlay: rgba(245, 247, 251, 0.85);
-    --glass-bg: rgba(255, 255, 255, 0.82);
-    --glass-border: rgba(255, 255, 255, 0.45);
+    --glass-bg: rgba(255, 255, 255, 0.84);
+    --glass-border: rgba(255, 255, 255, 0.5);
 
     --text-main: #1a1f36;
     --text-muted: #64748b;
 
     --success: #10b981;
     --warning: #f59e0b;
+    --danger: #ef4444;
 }
 
 * {
@@ -69,14 +70,6 @@ body {
     min-width: 0;
 }
 
-/* Optional glass panel styling.
-   Apply these classes to existing HTML panels if desired. */
-
-.main-panel,
-.side-panel {
-    border-radius: 18px;
-}
-
 /* ============================================================
    3. TITLES & TEXT
 ============================================================ */
@@ -118,9 +111,11 @@ h3 {
     border: 1px solid #e2e8f0;
     background: rgba(255, 255, 255, 0.8);
     color: #475569;
+
     font-family: inherit;
     font-size: 13px;
     font-weight: 600;
+
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -166,12 +161,14 @@ select {
     width: 100%;
     min-width: 0;
     padding: 12px 14px;
+
     border-radius: 10px;
     border: 1px solid #cbd5e1;
     outline: none;
 
     background: rgba(255, 255, 255, 0.9);
     color: var(--text-main);
+
     font-family: inherit;
     font-size: 14px;
 
@@ -215,6 +212,7 @@ textarea {
 
 .primary-btn {
     position: relative;
+
     background: var(--primary);
     color: #fff;
 
@@ -247,14 +245,6 @@ textarea {
     transform: translateY(0);
 }
 
-.primary-btn:focus-visible,
-.review-btn:focus-visible,
-.nav-btn:focus-visible,
-.tab:focus-visible {
-    outline: 3px solid rgba(45, 108, 223, 0.3);
-    outline-offset: 3px;
-}
-
 .primary-btn:disabled {
     background: #cbd5e1;
     color: #64748b;
@@ -268,6 +258,7 @@ textarea {
 ============================================================ */
 
 .jobs-section {
+    width: 100%;
     max-width: 1250px;
     margin: 0 auto;
     padding: 40px 20px;
@@ -279,7 +270,7 @@ textarea {
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
 .jobs-header h2 {
@@ -302,7 +293,6 @@ textarea {
     border-radius: 9px;
 
     cursor: pointer;
-
     transition: all 0.2s ease;
 }
 
@@ -313,153 +303,186 @@ textarea {
 }
 
 /* ============================================================
-   8. JOB CAROUSEL
+   8. JOB LIST CONTAINER
+   Vertical list instead of horizontal carousel
 ============================================================ */
 
 .carousel-wrapper {
     position: relative;
+    width: 100%;
     min-width: 0;
 }
 
 .jobs-container {
     display: flex;
+    flex-direction: column;
     align-items: stretch;
-    gap: 24px;
 
-    padding: 25px 12px 35px;
+    width: 100%;
+    gap: 16px;
 
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scroll-snap-type: x proximity;
+    padding: 8px 4px 25px;
 
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    overflow: visible;
 }
 
-.jobs-container::-webkit-scrollbar {
-    display: none;
-}
+/* Loading / Empty Message */
 
 #jobsContainer:empty::before {
     content: "Loading jobs or none found...";
+    display: block;
+
+    padding: 35px 20px;
+
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+
     color: var(--text-muted);
+    font-size: 14px;
     font-style: italic;
-    padding: 20px;
+    text-align: center;
 }
 
 /* ============================================================
-   9. JOB / COMPANY CARDS
+   9. RECTANGULAR JOB CARDS
 ============================================================ */
 
 .jobs-card {
     position: relative;
 
-    flex: 0 0 280px;
-    min-width: 280px;
-    min-height: 230px;
-
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    align-items: flex-start;
+    justify-content: center;
 
-    padding: 25px 22px;
+    width: 100%;
+    min-width: 0;
+    min-height: 140px;
+
+    padding: 23px 28px;
+    gap: 8px;
 
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 
     border: 1px solid var(--glass-border);
-    border-radius: 18px;
+    border-left: 5px solid var(--primary);
+    border-radius: 12px;
 
     color: var(--text-main);
-    text-align: center;
+    text-align: left;
 
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.045);
 
     cursor: pointer;
-    scroll-snap-align: start;
+    overflow-wrap: anywhere;
 
     transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        background 0.25s ease,
-        border-color 0.25s ease;
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease,
+        border-color 0.22s ease;
 }
 
 .jobs-card:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.96);
-    border-color: rgba(45, 108, 223, 0.3);
-    box-shadow: 0 18px 30px rgba(30, 64, 175, 0.12);
-    z-index: 2;
+    transform: translateY(-3px);
+
+    background: rgba(255, 255, 255, 0.97);
+
+    border-color: rgba(45, 108, 223, 0.25);
+    border-left-color: var(--primary);
+
+    box-shadow: 0 12px 25px rgba(30, 64, 175, 0.1);
 }
+
+/* Job Position */
 
 .jobs-card h3 {
-    margin: 8px 0;
+    width: 100%;
+
+    margin: 0 0 3px;
+
     color: #111827;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1.5;
+    font-size: 18px;
+    font-weight: 750;
+    line-height: 1.45;
 }
 
+/* Job Description / Other Card Text */
+
 .jobs-card p {
+    margin: 0;
+
     color: var(--text-muted);
     font-size: 13px;
     line-height: 1.6;
-    margin: 0;
 }
 
+/* Company Logo
+   Keep it small if your existing JavaScript inserts one. */
+
 .logo {
-    width: 60px;
-    height: 60px;
+    width: 45px;
+    height: 45px;
     object-fit: contain;
-    margin-bottom: 8px;
+    margin: 0 0 6px;
+}
+
+/* Employment Type */
+
+.jobs-card .job-type {
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+
+    margin-top: 2px;
+    padding: 5px 10px;
+
+    background: #eef5ff;
+    color: #1e40af;
+
+    border-radius: 6px;
+
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+/* Salary Range */
+
+.jobs-card .salary,
+.jobs-card .salary-range {
+    margin-top: 2px;
+
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Optional Job Location */
+
+.jobs-card .job-location {
+    margin-top: 2px;
+
+    color: #64748b;
+    font-size: 12px;
 }
 
 /* ============================================================
-   10. CAROUSEL NAVIGATION BUTTON
+   10. CAROUSEL NAVIGATION
+   Hidden because the job listings are now vertical.
+   Existing HTML and JavaScript can remain in place.
 ============================================================ */
 
 .nav-btn {
-    position: absolute;
-    right: -5px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 42px;
-    height: 42px;
-
-    border-radius: 50%;
-    border: 1px solid #e2e8f0;
-
-    background: rgba(255, 255, 255, 0.95);
-    color: var(--primary);
-
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-
-    cursor: pointer;
-    font-size: 23px;
-
-    transition: all 0.2s ease;
-    z-index: 5;
-}
-
-.nav-btn:hover {
-    background: var(--primary);
-    color: #fff;
-    border-color: var(--primary);
-    box-shadow: 0 6px 15px rgba(45, 108, 223, 0.25);
+    display: none;
 }
 
 /* ============================================================
    11. OPTIONAL GLASS PANEL
-   Apply class="glass-panel" to existing HTML sections
 ============================================================ */
 
 .glass-panel {
@@ -476,7 +499,19 @@ textarea {
 }
 
 /* ============================================================
-   12. RESPONSIVE DESIGN
+   12. ACCESSIBILITY
+============================================================ */
+
+.primary-btn:focus-visible,
+.review-btn:focus-visible,
+.tab:focus-visible,
+.jobs-card:focus-visible {
+    outline: 3px solid rgba(45, 108, 223, 0.3);
+    outline-offset: 3px;
+}
+
+/* ============================================================
+   13. TABLET RESPONSIVENESS
 ============================================================ */
 
 @media (max-width: 992px) {
@@ -489,10 +524,15 @@ textarea {
         padding: 30px 18px;
     }
 
-    .jobs-container {
-        gap: 18px;
+    .jobs-card {
+        min-height: 135px;
+        padding: 22px 24px;
     }
 }
+
+/* ============================================================
+   14. MOBILE RESPONSIVENESS
+============================================================ */
 
 @media (max-width: 768px) {
     .dashboard-content {
@@ -534,17 +574,18 @@ textarea {
     }
 
     .jobs-card {
-        flex-basis: 260px;
-        min-width: 260px;
+        min-height: 130px;
+        padding: 20px;
+        border-radius: 11px;
     }
 
-    .nav-btn {
-        right: 0;
+    .jobs-card h3 {
+        font-size: 17px;
     }
 }
 
 /* ============================================================
-   13. SMALL MOBILE DEVICES
+   15. SMALL MOBILE DEVICES
 ============================================================ */
 
 @media (max-width: 480px) {
@@ -589,22 +630,27 @@ textarea {
         font-size: 1.3rem;
     }
 
+    .jobs-container {
+        gap: 13px;
+        padding: 6px 2px 20px;
+    }
+
     .jobs-card {
-        flex-basis: 245px;
-        min-width: 245px;
-        min-height: 215px;
-        padding: 20px 17px;
+        min-height: 125px;
+        padding: 18px 16px;
+        gap: 7px;
     }
 
-    .logo {
-        width: 50px;
-        height: 50px;
+    .jobs-card h3 {
+        font-size: 16px;
     }
 
-    .nav-btn {
-        width: 36px;
-        height: 36px;
-        font-size: 20px;
+    .jobs-card p {
+        font-size: 12px;
+    }
+
+    .jobs-card .job-type {
+        font-size: 10px;
     }
 
     .glass-panel {
@@ -613,7 +659,7 @@ textarea {
 }
 
 /* ============================================================
-   14. ACCESSIBILITY
+   16. REDUCED MOTION
 ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
