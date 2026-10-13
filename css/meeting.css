@@ -1,5 +1,7 @@
+```css
 /* ============================================================
    1. GLOBAL RESET & BACKGROUND
+   MATCHED TO meeting.css
 ============================================================ */
 
 :root {
@@ -12,18 +14,6 @@
 
     --text-main: #1a1f36;
     --text-muted: #64748b;
-
-    --success: #10b981;
-    --success-bg: #dcfce7;
-
-    --warning: #f59e0b;
-    --warning-bg: #fef3c7;
-
-    --danger: #ef4444;
-    --danger-bg: #fee2e2;
-
-    --info: #2563eb;
-    --info-bg: #eef5ff;
 }
 
 * {
@@ -37,10 +27,11 @@ html {
 body {
     font-family: "Inter", sans-serif;
     margin: 0;
-    padding: 0;
+    padding-top: 70px;
     color: var(--text-main);
     min-height: 100vh;
 
+    /* Same glazed background as meeting.css */
     background:
         linear-gradient(
             var(--bg-overlay),
@@ -53,7 +44,7 @@ body {
     background-attachment: fixed;
     background-repeat: no-repeat;
 }
-
+```
 
 /* ============================================================
    2. HEADER & NAVIGATION
