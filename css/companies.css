@@ -1,189 +1,639 @@
+```css
+/* ============================================================
+   1. GLOBAL RESET & BACKGROUND
+============================================================ */
+
+:root {
+    --primary: #2d6cdf;
+    --primary-hover: #1f56c2;
+
+    --bg-overlay: rgba(245, 247, 251, 0.82);
+    --glass-bg: rgba(255, 255, 255, 0.82);
+    --glass-border: rgba(255, 255, 255, 0.45);
+
+    --text-main: #1a1f36;
+    --text-muted: #64748b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    width: 100%;
+    overflow-x: hidden;
+}
 
 body {
-  font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     margin: 0;
-    padding-top: 70px; /* Space for your header */
-    color: #ffffff;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                url('../images/bg5.jpg'); 
+    padding-top: 70px;
+
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    color: var(--text-main);
+
+    background:
+        linear-gradient(
+            var(--bg-overlay),
+            var(--bg-overlay)
+        ),
+        url("../images/bg5.jpg");
+
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Keeps image still while you scroll */
+    background-attachment: fixed;
     background-repeat: no-repeat;
 }
 
 
-.companies-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-
-.review-btn{
-  background: linear-gradient(90deg, #013486, #026edb);
-    color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 12px 24px;
-    border-radius: 50px; /* Pill shape */
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-
-.review-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
-    filter: brightness(1.1);
-}
-
-.carousel-wrapper{
-  position:relative;
-}
-
-.companies-container{
-   display: flex;
-    gap: 30px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding: 30px 15px; /* Extra padding so the zoom doesn't hit the edges */
-    flex-wrap: nowrap;
-}
-
-.companies-container::-webkit-scrollbar{
-  display:none;
-}
-
+/* ============================================================
+   2. COMPANIES SECTION
+   FULL WIDTH WITH MINIMAL SIDE MARGINS
+============================================================ */
 
 .companies-section {
-    max-width: 1200px;
-    margin: auto;
-    padding: 60px 20px;
+    width: 100%;
+    max-width: none;
+
+    margin: 0;
+    padding: 30px 12px;
 }
 
-/* Updated Company Card: Gradient & Glass Borders */
-.company-card {
-    min-width: 240px;
-    min-height: 220px;
-    background: linear-gradient (135deg,  #061c97 0%, #005bed 50%, #0091ff 100%);
 
-    border: 3px solid rgba(0, 0, 0, 0.3);
-    border-radius: 30px;
-    padding: 24px;
-    text-align: center;
+/* ============================================================
+   3. COMPANIES HEADER
+============================================================ */
+
+.companies-header {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    color: #ffffff;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                box-shadow 0.4s ease, 
-                border-color 0.4s ease;
-    cursor: pointer;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
+    flex-wrap: wrap;
 
-/* Hover Animation */
-.company-card:hover {
-    transform: scale(1.08); 
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    z-index: 10;
-}
-
-
-
-.company-card h3 {
-    font-size: 18px;
-    font-weight: 700;
-    margin: 10px 0;
-    color: #ffffff;
-}
-
-/* Job Badge - Glass Style */
-.job-badge {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(5px);
-    color: #ffffff;
-    padding: 6px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50px;
-    font-size: 13px;
-    margin-bottom: 15px;
-}
-
-/* View Details Button - Pill Gradient */
-.company-card .view-details-btn {
-    display: block;
     width: 100%;
-    margin-top: 15px;
-    padding: 10px;
-    background: linear-gradient(90deg, #3b82f6, #60d3ed);
+    gap: 15px;
+
+    margin: 0 0 22px;
+    padding: 0 4px;
+}
+
+.companies-header h1,
+.companies-header h2 {
+    margin: 0;
+
+    color: #111827;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
+
+
+/* ============================================================
+   4. REVIEW BUTTON
+============================================================ */
+
+.review-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 24px;
+
+    background: linear-gradient(90deg, #013486, #026edb);
     color: #ffffff;
-    border: none;
+
+    border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 50px;
+
+    font-family: inherit;
+    font-size: 14px;
     font-weight: 600;
+
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.company-card .view-details-btn:hover {
-    transform: scale(1.05);
+.review-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
     filter: brightness(1.1);
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
 }
 
-/* --- Navigation Button (Matching Jobs) --- */
-.nav-btn {
-    position: absolute;
-    right: -15px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    
-    /* Glass Effect */
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    
-    color: white;
-    cursor: pointer;
+
+/* ============================================================
+   5. CAROUSEL WRAPPER
+============================================================ */
+
+.carousel-wrapper {
+    position: relative;
+
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ============================================================
+   6. COMPANIES CONTAINER
+   TWO CARDS SIDE BY SIDE
+============================================================ */
+
+.companies-container {
+    display: grid !important;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+    align-items: stretch;
+    gap: 16px;
+
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+
+    margin: 0;
+    padding: 6px 0 20px;
+
+    overflow: visible;
+    scroll-behavior: smooth;
+}
+
+.companies-container::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* ============================================================
+   7. COMPANY CARD
+   MATCHES JOBS / PEOPLE CARD LAYOUT
+============================================================ */
+
+.company-card {
+    position: relative;
+
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: center;
-    align-items: center;
-    z-index: 100;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    width: 100%;
+    min-width: 0;
+    min-height: 180px;
+
+    margin: 0;
+    padding: 23px 24px;
+    gap: 8px;
+
+    /* Glass-style background */
+    background: var(--glass-bg);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    /* Blue left border */
+    border: 1px solid var(--glass-border);
+    border-left: 5px solid var(--primary);
+
+    border-radius: 12px;
+
+    color: var(--text-main);
+    text-align: left;
+
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+
+    overflow-wrap: anywhere;
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        background 0.22s ease,
+        border-color 0.22s ease;
 }
 
-.nav-btn:hover {
-     transform: translateY(-50%) scale(1.2); /* Zooms out while staying vertically centered */
-    background: linear-gradient(135deg, #0e49a9, #0c6fd2); /* Matches Card/Review button */
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5);
+.company-card:hover {
+    transform: translateY(-3px);
+
+    background: rgba(255, 255, 255, 0.94);
+
+    border-left: 5px solid var(--primary);
+
+    box-shadow: 0 12px 25px rgba(30, 64, 175, 0.13);
+
+    z-index: 2;
 }
 
-.profile-pic {
-  width: 95px;
-  height: 95px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 15px;
+
+/* ============================================================
+   8. COMPANY NAME
+============================================================ */
+
+.company-card h3 {
+    width: 100%;
+    min-width: 0;
+
+    margin: 0 0 3px;
+
+    color: #111827;
+    font-size: 18px;
+    font-weight: 750;
+    line-height: 1.45;
+
+    overflow-wrap: anywhere;
 }
 
+
+/* ============================================================
+   9. COMPANY DESCRIPTION / INFORMATION
+============================================================ */
+
+.company-card p {
+    width: 100%;
+    margin: 0;
+
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.6;
+
+    overflow-wrap: anywhere;
+}
 
 .headline {
-  font-size: 14px;
-  color: #555;
+    width: 100%;
+    margin: 0;
+
+    color: #475569;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.6;
+
+    overflow-wrap: anywhere;
 }
 
 .location {
-  font-size: 13px;
-  color: #888;
+    width: 100%;
+    margin-top: 2px;
+
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.6;
+
+    overflow-wrap: anywhere;
 }
 
+
+/* ============================================================
+   10. COMPANY PROFILE PICTURE / LOGO
+============================================================ */
+
+.profile-pic {
+    flex-shrink: 0;
+
+    width: 45px;
+    height: 45px;
+
+    margin: 0 0 6px;
+
+    border-radius: 50%;
+    object-fit: cover;
+
+    background: #e6eefb;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.company-logo {
+    width: 45px;
+    height: 45px;
+
+    margin: 0 0 6px;
+
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   11. JOB BADGE
+============================================================ */
+
+.job-badge {
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+    max-width: 100%;
+
+    margin-top: 2px;
+    padding: 5px 10px;
+
+    background: #eef5ff;
+    color: #1e40af;
+
+    border: 1px solid rgba(45, 108, 223, 0.15);
+    border-radius: 6px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   12. VIEW DETAILS BUTTON
+============================================================ */
+
+.company-card .view-details-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: fit-content;
+    min-width: 120px;
+    max-width: 100%;
+
+    margin-top: 8px;
+    padding: 10px 16px;
+
+    background: var(--primary);
+    color: #ffffff;
+
+    border: 1px solid var(--primary);
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    text-decoration: none;
+    text-align: center;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.company-card .view-details-btn:hover {
+    background: var(--primary-hover);
+    color: #ffffff;
+
+    border-color: var(--primary-hover);
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 14px rgba(45, 108, 223, 0.22);
+}
+
+.company-card .view-details-btn:active {
+    transform: translateY(0);
+}
+
+
+/* ============================================================
+   13. CAROUSEL NAVIGATION BUTTON
+============================================================ */
+
+.nav-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 42px;
+    height: 42px;
+
+    background: rgba(255, 255, 255, 0.9);
+    color: #1d4ed8;
+
+    border: 1px solid #dbeafe;
+    border-radius: 50%;
+
+    cursor: pointer;
+    z-index: 10;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+    transition: all 0.25s ease;
+}
+
+.nav-btn:hover {
+    transform: translateY(-50%) scale(1.08);
+
+    background: var(--primary);
+    color: #ffffff;
+
+    border-color: var(--primary);
+
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+
+/* ============================================================
+   14. EMPTY STATE
+============================================================ */
+
+.empty-state {
+    grid-column: 1 / -1;
+
+    width: 100%;
+    padding: 35px 20px;
+
+    background: rgba(255, 255, 255, 0.75);
+
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+
+    color: var(--text-muted);
+    font-size: 14px;
+    text-align: center;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+
+/* ============================================================
+   15. TABLET LAYOUT
+   KEEP TWO COLUMNS
+============================================================ */
+
+@media (max-width: 900px) {
+    .companies-section {
+        padding: 25px 10px;
+    }
+
+    .companies-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px;
+    }
+
+    .company-card {
+        min-height: 160px;
+        padding: 20px;
+    }
+
+    .company-card h3 {
+        font-size: 17px;
+    }
+
+    .company-card p,
+    .headline {
+        font-size: 12px;
+    }
+
+    .location {
+        font-size: 12px;
+    }
+
+    .profile-pic,
+    .company-logo {
+        width: 42px;
+        height: 42px;
+    }
+}
+
+
+/* ============================================================
+   16. MOBILE LAYOUT
+   ONE COLUMN ON SMALL SCREENS
+============================================================ */
+
+@media (max-width: 600px) {
+    body {
+        background-attachment: scroll;
+    }
+
+    .companies-section {
+        padding: 22px 8px;
+    }
+
+    .companies-header {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 12px;
+        margin-bottom: 16px;
+        padding: 0 2px;
+    }
+
+    .companies-header h1,
+    .companies-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .companies-container {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 12px;
+
+        padding: 5px 0 16px;
+    }
+
+    .company-card {
+        min-height: 140px;
+        padding: 18px 16px;
+
+        border-left: 5px solid var(--primary);
+    }
+
+    .company-card h3 {
+        font-size: 16px;
+    }
+
+    .company-card p,
+    .headline {
+        font-size: 12px;
+    }
+
+    .location {
+        font-size: 12px;
+    }
+
+    .profile-pic,
+    .company-logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .company-card .view-details-btn {
+        min-width: 105px;
+        padding: 9px 13px;
+        font-size: 12px;
+    }
+
+    .nav-btn {
+        width: 36px;
+        height: 36px;
+        right: 4px;
+    }
+}
+
+
+/* ============================================================
+   17. EXTRA SMALL PHONES
+============================================================ */
+
+@media (max-width: 380px) {
+    .companies-section {
+        padding: 18px 6px;
+    }
+
+    .companies-container {
+        gap: 10px;
+    }
+
+    .company-card {
+        padding: 16px 13px;
+    }
+
+    .company-card h3 {
+        font-size: 15px;
+    }
+
+    .company-card p,
+    .headline,
+    .location {
+        font-size: 11px;
+    }
+
+    .company-card .view-details-btn {
+        min-width: 95px;
+        padding: 8px 10px;
+    }
+}
+
+
+/* ============================================================
+   18. REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+```
