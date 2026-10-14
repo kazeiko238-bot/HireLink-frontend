@@ -361,3 +361,156 @@ body {
     margin: 5px 0;
 }
 
+/* =========================================
+   AVAILABLE POSITIONS - JOB CARD GRID
+========================================= */
+
+.jobs-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+}
+
+.section-heading {
+    margin-bottom: 22px;
+}
+
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.job-grid-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 22px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Consistent card dimensions */
+.job-card {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    width: 100%;
+    min-width: 0;
+    height: 360px;
+    padding: 22px;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 14px;
+    cursor: pointer;
+    transition:
+        height 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease;
+}
+
+/* Prevent long text from stretching the card */
+.job-card h2,
+.job-card h3,
+.job-card h4,
+.job-card p,
+.job-card span,
+.job-card div {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    box-sizing: border-box;
+}
+
+/* Description preview */
+.job-card .job-description,
+.job-card .description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+    line-height: 1.6;
+}
+
+/* See more link */
+.job-card .see-more {
+    display: inline-block;
+    align-self: flex-start;
+    margin-top: 8px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #2d6cdf;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.job-card .see-more:hover {
+    text-decoration: underline;
+}
+
+/* Full details when expanded */
+.job-card.expanded {
+    height: auto;
+    min-height: 360px;
+    overflow: visible;
+}
+
+.job-card.expanded .job-description,
+.job-card.expanded .description {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+}
+
+/* Keep card content within its boundaries */
+.job-card img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.job-card button,
+.job-card a {
+    position: relative;
+    z-index: 2;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    .jobs-section {
+        padding: 0 18px;
+    }
+
+    .job-grid-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .jobs-section {
+        padding: 0 14px;
+    }
+
+    .job-grid-cards {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .job-card {
+        height: 340px;
+        padding: 18px;
+    }
+
+    .job-card.expanded {
+        height: auto;
+        min-height: 340px;
+    }
+}
