@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (!res.ok) {
-        console.error("JOB POST ERROR:", data);
+        console.error("JOB POST ERROR:", res.status, data);
         alert(data.error || "Failed to post job");
         return;
       }
@@ -98,6 +98,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Shows a message in the jobs container without using innerHTML.
+  function showMessage(text) {
+    container.innerHTML = "";
+    const p = document.createElement("p");
+    p.textContent = text;
+    container.appendChild(p);
+  }
+
   async function loadJobs() {
     try {
       const res = await fetch(`${API_BASE}/api/jobpost`, {
@@ -107,10 +115,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const jobs = await res.json();
 
+      // Show the real reason instead of "No job ads found".
+      if (!res.ok) {
+        console.error("LOAD JOBS ERROR:", res.status, jobs);
+
+        if (res.status === 401) {
+          showMessage("Your session has expired. Please log out and log in again.");
+        } else if (res.status === 404) {
+          showMessage("No company profile is linked to this account.");
+        } else {
+          showMessage(jobs.error || "Failed to load jobs.");
+        }
+        return;
+      }
+
+      console.log("Company job posts:", jobs);
+
       container.innerHTML = "";
 
       if (!Array.isArray(jobs) || jobs.length === 0) {
-        container.innerHTML = "<p>No job ads found.</p>";
+        showMessage("No job ads found.");
         return;
       }
 
@@ -130,14 +154,21 @@ document.addEventListener("DOMContentLoaded", () => {
           ? `₱${Number(job.salary_max).toLocaleString()}`
           : "N/A";
 
-        card.innerHTML = `
-          <h3>${job.title || "No title"}</h3>
-          <p class="job-type">${job.job_type || "N/A"}</p>
-          <p class="salary">${minSalary} - ${maxSalary}</p>
-        `;
+        const title = document.createElement("h3");
+        title.textContent = job.title || "No title";
+
+        const type = document.createElement("p");
+        type.className = "job-type";
+        type.textContent = job.job_type || "N/A";
+
+        const salary = document.createElement("p");
+        salary.className = "salary";
+        salary.textContent = `${minSalary} - ${maxSalary}`;
+
+        card.append(title, type, salary);
 
         card.addEventListener("click", () => {
-          window.location.href = `view_joblist.html?id=${job.id}`;
+          window.location.href = `view_joblist.html?id=${encodeURIComponent(job.id)}`;
         });
 
         container.appendChild(card);
@@ -145,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     } catch (err) {
       console.error("LOAD JOBS ERROR:", err);
-      container.innerHTML = "<p>Failed to load jobs</p>";
+      showMessage("Failed to load jobs.");
     }
   }
 
