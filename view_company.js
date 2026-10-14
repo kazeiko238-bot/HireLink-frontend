@@ -1,4 +1,3 @@
-
 // ========================================
 // HIRELINK - VIEW COMPANY
 // ========================================
@@ -58,14 +57,11 @@ function displayCompanyEmail(email) {
 
     const savedEmail = String(email ?? "").trim();
 
-    // Clear any hardcoded/example email.
+    // Clear any placeholder text.
     companyEmailEl.textContent = "";
     companyEmailEl.removeAttribute("href");
 
-    if (
-        savedEmail &&
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(savedEmail)
-    ) {
+    if (savedEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(savedEmail)) {
         companyEmailEl.textContent = savedEmail;
         companyEmailEl.href = `mailto:${savedEmail}`;
         companyEmailEl.style.pointerEvents = "auto";
@@ -75,10 +71,7 @@ function displayCompanyEmail(email) {
         companyEmailEl.style.pointerEvents = "none";
         companyEmailEl.setAttribute("aria-disabled", "true");
 
-        console.warn(
-            "No valid company_email returned by the API.",
-            email
-        );
+        console.warn("No valid company email returned by the API.", email);
     }
 }
 
@@ -112,8 +105,6 @@ async function loadProfile() {
             ? result
             : result.companies || result.data || [];
 
-        console.log("Companies API response:", result);
-
         // Support different ID field names.
         const company = companies.find(c =>
             String(c.company_id ?? c.id) === String(companyId)
@@ -132,33 +123,45 @@ async function loadProfile() {
             return;
         }
 
+        // Debugging: shows exactly what the API sent.
         console.log("Selected company:", company);
+        console.log("Fields returned by API:", Object.keys(company));
 
-        // Populate company information.
+        // Company name.
         setText(
             companyNameEl,
             company.company_name ?? company.name,
             "Company name unavailable"
         );
 
-        const industry =
-            company.industry ?? company.industry_name ?? "";
-
+        // Industry.
+        const industry = company.industry ?? company.industry_name ?? "";
         setText(industryEl, industry);
         setText(industrySubtitleEl, industry);
-        setText(locationEl, company.location);
-        setText(companySizeEl, company.company_size);
 
+        // Location and description.
+        setText(locationEl, company.location);
         setText(descriptionEl, company.description);
 
-        // IMPORTANT: use the actual email returned by Neon/API.
-        displayCompanyEmail(company.company_email);
+        // Company size (accepts alternate field names).
+        const size =
+            company.company_size ??
+            company.size ??
+            company.companySize ??
+            company.employees;
+
+        setText(companySizeEl, size);
+
+        // Company email (accepts alternate field names).
+        const email =
+            company.company_email ??
+            company.email ??
+            company.contact_email;
+
+        displayCompanyEmail(email);
 
         // Company profile picture.
-        const picture =
-            company.profile_picture ??
-            company.logo ??
-            "";
+        const picture = company.profile_picture ?? company.logo ?? "";
 
         if (picture && profilePictureEl) {
             profilePictureEl.src = picture;
@@ -200,7 +203,8 @@ async function loadReviews() {
 
         reviewContainer.innerHTML = "";
 
-        const average = Number(data.avg_rating || 0);
+        // Handles numbers, numeric strings like "4.5000", null, and NaN.
+        const average = Number(data.avg_rating) || 0;
 
         const ratingHeading = document.createElement("h3");
         ratingHeading.textContent = `⭐ ${average.toFixed(1)} / 5`;
@@ -239,19 +243,17 @@ function renderReview(review) {
         ? new Date(review.created_at).toLocaleDateString()
         : "";
 
-    meta.textContent =
-        `${firstName} ${lastName} • ${reviewDate}`;
+    meta.textContent = `${firstName} ${lastName} • ${reviewDate}`;
 
     const stars = document.createElement("div");
     stars.className = "review-stars";
 
     const rating = Math.max(
         0,
-        Math.min(5, Number(review.star_review) || 0)
+        Math.min(5, Math.round(Number(review.star_review) || 0))
     );
 
-    stars.textContent =
-        "★".repeat(rating) + "☆".repeat(5 - rating);
+    stars.textContent = "★".repeat(rating) + "☆".repeat(5 - rating);
 
     const content = document.createElement("div");
     content.className = "review-content";
@@ -375,9 +377,7 @@ async function loadCompanyJobs() {
 
             if (job.title?.toLowerCase().includes("developer")) {
                 icon = "</>";
-            } else if (
-                job.title?.toLowerCase().includes("designer")
-            ) {
+            } else if (job.title?.toLowerCase().includes("designer")) {
                 icon = "▤";
             }
 
