@@ -1,141 +1,170 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company | HireLink</title>
+
     <link rel="stylesheet" href="css/view_company.css">
     <link rel="stylesheet" href="css/header.css">
-     <link rel="stylesheet" href="css/footer.css">
-    v<link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/mobile.css">
+
     <link rel="icon" type="image/png" href="images/logo.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
 </head>
+
+<body>
 
 <header class="header">
     <div class="brand">
-        <button class="back-btn">&lt;</button>
+        <button class="back-btn" type="button">&lt;</button>
         <h2>HireLink</h2>
     </div>
-    
+
     <div class="auth-area" id="authArea">
-        <button class="signin-btn" id="signInBtn">Sign In</button>
+        <button class="signin-btn" id="signInBtn" type="button">Sign In</button>
     </div>
 </header>
 
-<body>
-    <section class="hero">
-           <h2>Available Companies</h2>
-           <p>Find the right company, not just the right job </p>
-        
-        <div class="search-bar">
-            <div class="location-group">
-                <div class="location-icon"></div>
-                <div class="multi-dropdown" id="provinceDropdown">
-                    <input type="text" id="provinceInput" placeholder="Select province" autocomplete="off" />
-                    <ul id="provinceList"></ul>
-                </div>
-            </div>
+<section class="hero">
+    <h2>Available Companies</h2>
+    <p>Find the right company, not just the right job</p>
 
-            <div class="search-group">
-                <div class="search-input-wrapper">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" placeholder="Search public profiles..." />
-                </div>
-                <button class="search-btn">Search</button>
-            </div>
-        </div>
-    </section>
+    <div class="search-bar">
+        <div class="location-group">
+            <div class="location-icon"></div>
 
-    <div class="profile-container" id="companyProfile">
-        
-        <div class="company_name">
-            <img src="images/avatar.png" class="profile-img" id="profile_picture" alt="Company Logo">
-            <div class="company-info-text">
-                <div class="company-name" id="company_name">TechNova Solutions</div>
-                <div class="industry" id="industry_subtext">Software Development</div>
+            <div class="multi-dropdown" id="provinceDropdown">
+                <input type="text"
+                       id="provinceInput"
+                       placeholder="Select province"
+                       autocomplete="off">
+
+                <ul id="provinceList"></ul>
             </div>
         </div>
 
-        <div class="main-content">
-            <div class="section">
-                <div class="section-title">Company Information</div>
-                <div class="info-grid">
-                    <div class="info-box">
-                        <div class="label">Industry</div>
-                        <div class="value" id="industry">Technology</div>
-                    </div>
-                   <div class="info-box">
-    <div class="label">Company Email</div>
-    <a class="value" id="company_email" href="#">
-        Loading email...
-    </a>
-</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="label">Company Size</div>
-                        <div class="value" id="company_size">50 - 100 Employees</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="label">Location</div>
-                        <div class="value" id="location">123 Road, San Francisco, CA</div>
-                    </div>
-                </div>
+        <div class="search-group">
+            <div class="search-input-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text"
+                       placeholder="Search public profiles...">
             </div>
 
-            <div class="description-section">
-                <div class="section-title">Company Description</div>
-                <div class="description-box" id="description">
-                    TechNova Solutions is a leading technology company focused on building scalable
-                    software solutions for businesses worldwide. We specialize in AI-driven 
-                    analytics and cloud infrastructure designed for modern enterprises.
-                </div>
-            </div>
+            <button class="search-btn" type="button">Search</button>
+        </div>
+    </div>
+</section>
+
+<div class="profile-container" id="companyProfile">
+
+    <div class="company_name">
+        <img src="images/avatar.png"
+             class="profile-img"
+             id="profile_picture"
+             alt="Company Logo">
+
+        <div class="company-info-text">
+            <div class="company-name" id="company_name">Loading company...</div>
+            <div class="industry" id="industry_subtext"></div>
         </div>
     </div>
 
-   <div class="jobs-section">
-  <div>
-    <h2 class="section-heading">Available Positions</h2>
-  </div>
+    <div class="main-content">
 
- <div class="carousel-wrapper">
-    <div class="job-grid-cards" id="jobsContainer"></div>
-    <button class="nav-btn" id="nextBtn">&#8250;</button>
+        <div class="section">
+            <div class="section-title">Company Information</div>
+
+            <div class="info-grid">
+
+                <div class="info-box">
+                    <div class="label">Industry</div>
+                    <div class="value" id="industry">Loading...</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="label">Company Email</div>
+                    <a class="value"
+                       id="company_email"
+                       href="#">
+                        Loading email...
+                    </a>
+                </div>
+
+                <div class="info-box">
+                    <div class="label">Company Size</div>
+                    <div class="value" id="company_size">Loading...</div>
+                </div>
+
+                <div class="info-box">
+                    <div class="label">Location</div>
+                    <div class="value" id="location">Loading...</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="description-section">
+            <div class="section-title">Company Description</div>
+
+            <div class="description-box" id="description">
+                Loading company description...
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="jobs-section">
+    <div>
+        <h2 class="section-heading">Available Positions</h2>
+    </div>
+
+    <div class="carousel-wrapper">
+        <div class="job-grid-cards" id="jobsContainer"></div>
+
+        <button class="nav-btn" id="nextBtn" type="button">
+            &#8250;
+        </button>
+    </div>
 </div>
 
 <div class="review-section">
 
-  <!-- AVERAGE RATING -->
-  <div id="avgRating"></div>
+    <div id="avgRating"></div>
 
-  <!-- INPUT AREA -->
-  <div class="review-input-row">
+    <div class="review-input-row">
+        <select id="starReview">
+            <option value="5">★★★★★ (5)</option>
+            <option value="4">★★★★☆ (4)</option>
+            <option value="3">★★★☆☆ (3)</option>
+            <option value="2">★★☆☆☆ (2)</option>
+            <option value="1">★☆☆☆☆ (1)</option>
+        </select>
 
-    <!-- STAR SELECT (MISSING BEFORE) -->
-    <select id="starReview">
-      <option value="5">★★★★★ (5)</option>
-      <option value="4">★★★★☆ (4)</option>
-      <option value="3">★★★☆☆ (3)</option>
-      <option value="2">★★☆☆☆ (2)</option>
-      <option value="1">★☆☆☆☆ (1)</option>
-    </select>
+        <input type="text"
+               id="reviewInput"
+               placeholder="Write a review...">
 
-    <input type="text" id="reviewInput" placeholder="Write a review..." />
-    <button id="sendReviewBtn">Send</button>
+        <button id="sendReviewBtn" type="button">Send</button>
+    </div>
 
-  </div>
-
-  <!-- REVIEWS LIST -->
-  <div id="reviewContainer"></div>
+    <div id="reviewContainer"></div>
 
 </div>
 
-    <footer class="site-footer">
+<footer class="site-footer">
     <div class="footer-content">
+
         <div class="footer-brand">
             <h2 class="footer-logo">HIRELINK</h2>
-            <p class="footer-slogan">A click-step away from your career success.</p>
+            <p class="footer-slogan">
+                A click-step away from your career success.
+            </p>
         </div>
 
         <hr class="footer-divider">
@@ -147,15 +176,18 @@
             <li><a href="#">PRIVACY POLICY</a></li>
         </ul>
 
-      
         <div id="footer-user-area" class="footer-user-area"></div>
+
         <div class="footer-bottom">
             <p>&copy; 2026 HireLink. All rights reserved.</p>
         </div>
+
     </div>
 </footer>
+
 <script src="footer.js"></script>
-    <script src="view_company.js"></script>
-    <script src="overlay.js"></script>
+<script src="view_company.js"></script>
+<script src="overlay.js"></script>
+
 </body>
 </html>
