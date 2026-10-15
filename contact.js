@@ -51,13 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // The server did not return JSON; fall through to the error below.
       }
 
-      const body = await res.text();
-
-  if (!res.ok) {
-    console.error("Contact email failed:", res.status, body);
-  } else {
-    console.log("Contact email sent to Brevo:", body);
-  }
+      if (res.ok) {
+        showStatus(result.message || "Message sent! We will get back to you soon.", false);
+        form.reset();
+      } else {
+        showStatus(result.error || "Failed to send. Please try again.", true);
+      } 
 
     } catch (err) {
       console.error("Contact form error:", err);
