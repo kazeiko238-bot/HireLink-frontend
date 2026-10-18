@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
 
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
@@ -6,12 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("jobsContainer");
   const nextBtn = document.getElementById("nextBtn");
 
-  // Existing search elements
+  // Search elements
   const titleInput = document.getElementById("jobSearchInput");
   const provinceInput = document.getElementById("provinceInput");
   const searchBtn = document.querySelector(".search-btn");
 
-  // New filter elements
+  // Filter elements
   const companyInput = document.getElementById("companySearchInput");
   const industryFilter = document.getElementById("industryFilter");
   const jobTypeFilter = document.getElementById("jobTypeFilter");
@@ -236,7 +235,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       allJobs = jobs;
 
-      renderJobs(allJobs);
+      // Apply anything already typed/selected while jobs were loading
+      handleSearch();
 
     } catch (err) {
 
@@ -248,8 +248,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  loadJobs();
-
 
   // ============================================================
   // 4. SEARCH AND FILTER LOGIC
@@ -257,31 +255,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleSearch() {
 
-    // Existing search inputs
-    const titleQuery = (titleInput?.value || "")
-      .trim()
-      .toLowerCase();
+    const titleQuery = (titleInput?.value || "").trim().toLowerCase();
+    const provinceQuery = (provinceInput?.value || "").trim().toLowerCase();
+    const companyQuery = (companyInput?.value || "").trim().toLowerCase();
+    const selectedIndustry = (industryFilter?.value || "").trim().toLowerCase();
+    const selectedJobType = (jobTypeFilter?.value || "").trim().toLowerCase();
 
-    const provinceQuery = (provinceInput?.value || "")
-      .trim()
-      .toLowerCase();
-
-    // New company search
-    const companyQuery = (companyInput?.value || "")
-      .trim()
-      .toLowerCase();
-
-    // New industry filter
-    const selectedIndustry = (industryFilter?.value || "")
-      .trim()
-      .toLowerCase();
-
-    // New job type filter
-    const selectedJobType = (jobTypeFilter?.value || "")
-      .trim()
-      .toLowerCase();
-
-    // New salary range
     const minSalary = salaryMinFilter?.value
       ? Number(salaryMinFilter.value)
       : null;
@@ -316,55 +295,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const filteredJobs = allJobs.filter((job) => {
 
       const jobTitle = String(job.title || "").toLowerCase();
-
       const jobLocation = String(job.location || "").toLowerCase();
-
       const companyName = String(job.company_name || "").toLowerCase();
-
       const industry = String(job.industry || "").toLowerCase();
 
-      const jobType = String(job.job_type || "")
-        .trim()
-        .toLowerCase();
+      // Normalise job type so "Full-time", "Full Time" and "fulltime" all match
+      const normalize = (value) =>
+        String(value || "").toLowerCase().replace(/[\s-]+/g, "");
 
+      const jobType = normalize(job.job_type);
 
-      // A. Existing job title search
-      if (!jobTitle.includes(titleQuery)) {
+      // A. Job title
+      if (!jobTitle.includes(titleQuery)) return false;
+
+      // B. Province / location
+      if (!jobLocation.includes(provinceQuery)) return false;
+
+      // C. Company name
+      if (!companyName.includes(companyQuery)) return false;
+
+      // D. Industry
+      if (selectedIndustry && !industry.includes(selectedIndustry)) {
         return false;
       }
 
-
-      // B. Existing province/location search
-      if (!jobLocation.includes(provinceQuery)) {
+      // E. Job type
+      if (selectedJobType && jobType !== normalize(selectedJobType)) {
         return false;
       }
 
-
-      // C. Company name search
-      if (!companyName.includes(companyQuery)) {
-        return false;
-      }
-
-
-      // D. Industry filter
-      if (
-        selectedIndustry &&
-        !industry.includes(selectedIndustry)
-      ) {
-        return false;
-      }
-
-
-      // E. Job type filter
-      if (
-        selectedJobType &&
-        jobType !== selectedJobType
-      ) {
-        return false;
-      }
-
-
-      // F. Salary range filter
+      // F. Salary range
       const jobMin =
         job.salary_min !== null &&
         job.salary_min !== undefined &&
@@ -379,12 +339,8 @@ document.addEventListener("DOMContentLoaded", () => {
           ? Number(job.salary_max)
           : null;
 
-      const salaryFilterActive =
-        minSalary !== null || maxSalary !== null;
+      const salaryFilterActive = minSalary !== null || maxSalary !== null;
 
-
-      // Exclude jobs with missing or invalid salary data
-      // when the user has selected a salary filter.
       if (salaryFilterActive) {
 
         if (
@@ -396,70 +352,64 @@ document.addEventListener("DOMContentLoaded", () => {
           return false;
         }
 
-        // The job's maximum must reach the selected minimum.
-        if (
-          minSalary !== null &&
-          jobMax < minSalary
-        ) {
-          return false;
-        }
+        // The job's maximum must reach the selected minimum
+        if (minSalary !== null && jobMax < minSalary) return false;
 
-        // The job's minimum must not exceed the selected maximum.
-        if (
-          maxSalary !== null &&
-          jobMin > maxSalary
-        ) {
-          return false;
-        }
-
+        // The job's minimum must not exceed the selected maximum
+        if (maxSalary !== null && jobMin > maxSalary) return false;
       }
 
-      // Job matches every active filter
       return true;
-
     });
 
-
-    // Display the filtered results
     renderJobs(filteredJobs);
-
   }
 
 
   // ============================================================
-  // 5. CONNECT SEARCH INPUTS AND FILTERS
+  // 5. CONNECT SEARCH INPUTS AND FILTERS (LIVE SEARCH)
   // ============================================================
 
-  // Existing live job title search
-  if (titleInput) {
-    titleInput.addEventListener("input", handleSearch);
+  // Small delay so filtering doesn't run on every single keystroke
+  function debounce(fn, delay = 200) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
   }
 
-  // Existing live province search
-  if (provinceInput) {
-    provinceInput.addEventListener("input", handleSearch);
-  }
+  const liveSearch = debounce(handleSearch, 200);
 
-  // New live company search
-  if (companyInput) {
-    companyInput.addEventListener("input", handleSearch);
-  }
+  // Text inputs: search while typing
+  [titleInput, provinceInput, companyInput].forEach((input) => {
+    if (!input) return;
 
-  // New dropdown filters
+    input.addEventListener("input", liveSearch);
+
+    // "change" is fired by provinces.js when a province is picked from the list
+    input.addEventListener("change", handleSearch);
+
+    // Enter key searches immediately
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSearch();
+      }
+    });
+  });
+
+  // Dropdown filters: search as soon as a value is picked
   [
     industryFilter,
     jobTypeFilter,
     salaryMinFilter,
     salaryMaxFilter
   ].forEach((filter) => {
-
-    if (filter) {
-      filter.addEventListener("change", handleSearch);
-    }
-
+    if (filter) filter.addEventListener("change", handleSearch);
   });
 
-  // Existing Search button
+  // Search button still works too
   if (searchBtn) {
     searchBtn.addEventListener("click", handleSearch);
   }
@@ -471,20 +421,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function clearSearch() {
 
-    // Existing search inputs
     if (titleInput) titleInput.value = "";
     if (provinceInput) provinceInput.value = "";
-
-    // New search and filter inputs
     if (companyInput) companyInput.value = "";
     if (industryFilter) industryFilter.value = "";
     if (jobTypeFilter) jobTypeFilter.value = "";
     if (salaryMinFilter) salaryMinFilter.value = "";
     if (salaryMaxFilter) salaryMaxFilter.value = "";
 
-    // Restore every loaded job
     renderJobs(allJobs);
-
   }
 
   if (clearFiltersBtn) {
@@ -497,16 +442,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================================
 
   if (nextBtn) {
-
     nextBtn.addEventListener("click", () => {
-
       container.scrollBy({
         left: 300,
         behavior: "smooth"
       });
-
     });
-
   }
 
 
@@ -518,15 +459,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const dropdown = document.getElementById("notifDropdown");
 
   if (btn && dropdown) {
-
     btn.addEventListener("click", () => {
       dropdown.classList.toggle("show");
     });
-
   }
 
   document.addEventListener("click", (e) => {
-
     if (
       btn &&
       dropdown &&
@@ -535,8 +473,13 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       dropdown.classList.remove("show");
     }
-
   });
 
-});
 
+  // ============================================================
+  // 9. START
+  // ============================================================
+
+  loadJobs();
+
+});
