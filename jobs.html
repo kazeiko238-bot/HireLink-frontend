@@ -73,7 +73,7 @@
       Explore opportunities that match your skills and career goals
     </p>
 
-    <!-- EXISTING JOB TITLE AND LOCATION SEARCH -->
+    <!-- JOB TITLE AND LOCATION SEARCH -->
     <div class="search-bar">
 
       <!-- Province Search -->
@@ -158,45 +158,25 @@
 
           <option value="">All industries</option>
 
-          <option value="Information Technology">
-            Information Technology
-          </option>
+          <option value="Information Technology">Information Technology</option>
 
-          <option value="Healthcare">
-            Healthcare
-          </option>
+          <option value="Healthcare">Healthcare</option>
 
-          <option value="Education">
-            Education
-          </option>
+          <option value="Education">Education</option>
 
-          <option value="Finance">
-            Finance &amp; Accounting
-          </option>
+          <option value="Finance">Finance &amp; Accounting</option>
 
-          <option value="Engineering">
-            Engineering &amp; Construction
-          </option>
+          <option value="Engineering">Engineering &amp; Construction</option>
 
-          <option value="Marketing">
-            Marketing &amp; Advertising
-          </option>
+          <option value="Marketing">Marketing &amp; Advertising</option>
 
-          <option value="BPO">
-            BPO &amp; Customer Service
-          </option>
+          <option value="BPO">BPO &amp; Customer Service</option>
 
-          <option value="Manufacturing">
-            Manufacturing
-          </option>
+          <option value="Manufacturing">Manufacturing</option>
 
-          <option value="Retail">
-            Retail &amp; Sales
-          </option>
+          <option value="Retail">Retail &amp; Sales</option>
 
-          <option value="Hospitality">
-            Hospitality &amp; Tourism
-          </option>
+          <option value="Hospitality">Hospitality &amp; Tourism</option>
 
         </select>
 
@@ -495,14 +475,13 @@
 
 
   <!-- ================= SCRIPTS ================= -->
-  <!-- Keep jobs.js responsible for fetching and filtering jobs -->
   <script src="jobs.js"></script>
 
   <script src="footer.js"></script>
 
   <script src="overlay.js"></script>
 
-  <!-- Preserve existing province dropdown functionality -->
+  <!-- Province dropdown (fires a "change" event so jobs.js filters instantly) -->
   <script src="provinces.js"></script>
 
 </body>
