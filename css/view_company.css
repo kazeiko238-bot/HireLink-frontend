@@ -514,3 +514,84 @@ body {
         min-height: 340px;
     }
 }
+
+
+/* ==========================================
+   AVAILABLE POSITIONS — DESCRIPTION PREVIEW
+   Add this at the END of view_company.css
+========================================== */
+
+.job-card {
+    position: relative;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+}
+
+.job-card .job-description,
+.job-card .description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    line-height: 1.65;
+    text-align: left;
+}
+
+.job-card .see-more {
+    display: inline-block;
+    align-self: flex-start;
+    margin-top: 8px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #7db4ff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.job-card .see-more:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Show the complete description when expanded */
+.job-card.expanded .job-description,
+.job-card.expanded .description {
+    display: block;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    overflow: visible;
+    white-space: normal;
+}
+
+.job-card.expanded {
+    height: auto;
+    min-height: 360px;
+    overflow: visible;
+}
+
+/* Keep long words and descriptions inside the card */
+.job-card h2,
+.job-card h3,
+.job-card h4,
+.job-card p,
+.job-card span {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+/* Responsive expanded cards */
+@media (max-width: 600px) {
+    .job-card.expanded {
+        height: auto;
+        min-height: 340px;
+    }
+}
+
