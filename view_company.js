@@ -22,7 +22,9 @@ const avgBox = document.getElementById("avgRating");
 const jobsContainer = document.getElementById("jobsContainer");
 const nextBtn = document.getElementById("nextBtn");
 
-// Back button
+// =====================
+// BACK BUTTON
+// =====================
 document.querySelector(".back-btn")?.addEventListener("click", () => {
     if (document.referrer) {
         window.history.back();
@@ -31,7 +33,9 @@ document.querySelector(".back-btn")?.addEventListener("click", () => {
     }
 });
 
-// Helpers
+// =====================
+// HELPERS
+// =====================
 function setText(element, value, fallback = "Not provided") {
     if (!element) return;
 
@@ -45,6 +49,20 @@ function getArrayResponse(result, key) {
     if (Array.isArray(result?.data)) return result.data;
 
     return [];
+}
+
+function readFirstValue(...values) {
+    for (const value of values) {
+        if (value !== null && value !== undefined) {
+            const text = String(value).trim();
+
+            if (text !== "") {
+                return text;
+            }
+        }
+    }
+
+    return "";
 }
 
 async function readResponse(response) {
@@ -69,7 +87,9 @@ function formatSalary(value) {
     })}`;
 }
 
-// Company email
+// =====================
+// COMPANY EMAIL
+// =====================
 function displayCompanyEmail(email) {
     if (!companyEmailEl) return;
 
@@ -90,7 +110,9 @@ function displayCompanyEmail(email) {
     }
 }
 
-// Company description
+// =====================
+// COMPANY DESCRIPTION: SEE ALL / SEE LESS
+// =====================
 function setupCompanyDescription(description) {
     if (!descriptionEl) return;
 
@@ -135,10 +157,16 @@ function setupCompanyDescription(description) {
     });
 }
 
-// Load company profile
+// =====================
+// LOAD COMPANY PROFILE
+// =====================
 async function loadProfile() {
     if (!companyId) {
         setText(companyNameEl, "", "Company ID is missing");
+        setText(industryEl, "", "Not provided");
+        setText(industrySubtitleEl, "", "");
+        setText(companySizeEl, "", "Not provided");
+        setText(locationEl, "", "Not provided");
         displayCompanyEmail("");
         setupCompanyDescription("");
         return;
@@ -148,7 +176,9 @@ async function loadProfile() {
         const response = await fetch(`${API_BASE}/api/companies`, {
             method: "GET",
             credentials: "include",
-            headers: { Accept: "application/json" }
+            headers: {
+                Accept: "application/json"
+            }
         });
 
         const result = await readResponse(response);
@@ -174,20 +204,21 @@ async function loadProfile() {
             setText(locationEl, "", "Not provided");
             displayCompanyEmail("");
             setupCompanyDescription("");
+
             console.error("Company not found:", companyId);
             return;
         }
 
         setText(
             companyNameEl,
-            company.company_name ?? company.name,
+            readFirstValue(company.company_name, company.name),
             "Company name unavailable"
         );
 
-        const industry =
-            company.industry ??
-            company.industry_name ??
-            "";
+        const industry = readFirstValue(
+            company.industry,
+            company.industry_name
+        );
 
         setText(industryEl, industry);
         setText(industrySubtitleEl, industry, "");
@@ -195,19 +226,24 @@ async function loadProfile() {
 
         setupCompanyDescription(company.description);
 
-        const size =
-            company.company_size ??
-            company.size ??
-            company.companySize ??
-            company.employees;
+        // Read the saved company size.
+        const size = readFirstValue(
+            company.company_size,
+            company.size,
+            company.companySize,
+            company.employees
+        );
 
-        setText(companySizeEl, size);
+        setText(companySizeEl, size, "Not provided");
 
-        displayCompanyEmail(
-            company.company_email ??
-            company.email ??
+        // Read the saved company email, preferring company_email.
+        const email = readFirstValue(
+            company.company_email,
+            company.email,
             company.contact_email
         );
+
+        displayCompanyEmail(email);
 
         if (profilePictureEl) {
             profilePictureEl.onerror = () => {
@@ -220,6 +256,14 @@ async function loadProfile() {
                 company.logo ||
                 "images/avatar.png";
         }
+
+        // Temporary diagnostic log.
+        console.log("Company data received:", {
+            id: company.company_id ?? company.id,
+            company_name: company.company_name ?? company.name,
+            company_email: company.company_email,
+            company_size: company.company_size
+        });
     } catch (error) {
         console.error("Error loading company profile:", error);
 
@@ -238,7 +282,9 @@ async function loadProfile() {
     }
 }
 
-// Load reviews
+// =====================
+// LOAD REVIEWS AND AVERAGE RATING
+// =====================
 async function loadReviews() {
     if (!companyId || !reviewContainer || !avgBox) return;
 
@@ -247,7 +293,9 @@ async function loadReviews() {
             `${API_BASE}/api/review/${encodeURIComponent(companyId)}`,
             {
                 credentials: "include",
-                headers: { Accept: "application/json" }
+                headers: {
+                    Accept: "application/json"
+                }
             }
         );
 
@@ -320,7 +368,9 @@ function renderReview(review) {
     reviewContainer.appendChild(card);
 }
 
-// Submit review
+// =====================
+// SUBMIT REVIEW
+// =====================
 btn?.addEventListener("click", async () => {
     if (!input || !starSelect) return;
 
@@ -379,7 +429,9 @@ btn?.addEventListener("click", async () => {
     }
 });
 
-// Job description See All / See Less
+// =====================
+// JOB DESCRIPTION: SEE ALL / SEE LESS
+// =====================
 function setupJobDescription(description, text) {
     description.textContent =
         String(text ?? "").trim() || "No description available.";
@@ -417,7 +469,9 @@ function setupJobDescription(description, text) {
     });
 }
 
-// Load company job posts
+// =====================
+// LOAD COMPANY JOB POSTS
+// =====================
 async function loadCompanyJobs() {
     if (!jobsContainer) return;
 
@@ -434,7 +488,9 @@ async function loadCompanyJobs() {
             {
                 method: "GET",
                 credentials: "include",
-                headers: { Accept: "application/json" }
+                headers: {
+                    Accept: "application/json"
+                }
             }
         );
 
@@ -497,7 +553,6 @@ async function loadCompanyJobs() {
             description.className = "description-subtext";
 
             content.append(title, details, description);
-
             setupJobDescription(description, job.description);
 
             const applyButton = document.createElement("button");
@@ -539,13 +594,15 @@ async function loadCompanyJobs() {
             jobsContainer.appendChild(card);
         });
     } catch (error) {
-        console.error("Error fetching job posts:", error);
+        console.error("Error fetching company jobs:", error);
         jobsContainer.textContent =
             error.message || "Unable to load job posts.";
     }
 }
 
-// Carousel navigation
+// =====================
+// JOB CAROUSEL NAVIGATION
+// =====================
 nextBtn?.addEventListener("click", () => {
     jobsContainer?.scrollBy({
         left: 360,
@@ -553,7 +610,9 @@ nextBtn?.addEventListener("click", () => {
     });
 });
 
-// Initialize
+// =====================
+// INITIALIZE PAGE
+// =====================
 loadProfile();
 loadReviews();
 loadCompanyJobs();
