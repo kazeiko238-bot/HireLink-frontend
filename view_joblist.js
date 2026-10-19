@@ -1,3 +1,4 @@
+
 const API_BASE = "https://hirelink-backend-1.onrender.com";
 
 const params = new URLSearchParams(window.location.search);
@@ -7,337 +8,480 @@ const filterBtn = document.getElementById("filterBtn");
 const filterDropdown = document.getElementById("filterDropdown");
 
 const interviewOverlay = document.getElementById("interviewModal");
-const interviewModal = document.getElementById("interviewModal");
 const closeInterviewBtn = document.getElementById("closeInterviewModal");
 const cancelInterviewBtn = document.getElementById("cancelInterview");
+const interviewType = document.getElementById("interviewType");
+const locationGroup = document.getElementById("locationGroup");
+
 function closeInterviewModal() {
-    interviewOverlay.style.display = "none";
+    if (interviewOverlay) {
+        interviewOverlay.style.display = "none";
+    }
 }
-closeInterviewBtn.addEventListener("click", closeInterviewModal);
-cancelInterviewBtn.addEventListener("click", closeInterviewModal);
-interviewOverlay.addEventListener("click", (e) => {
-    if (e.target === interviewOverlay) {
+
+closeInterviewBtn?.addEventListener("click", closeInterviewModal);
+cancelInterviewBtn?.addEventListener("click", closeInterviewModal);
+
+interviewOverlay?.addEventListener("click", (event) => {
+    if (event.target === interviewOverlay) {
         closeInterviewModal();
     }
 });
 
-const interviewType = document.getElementById("interviewType");
-const locationGroup = document.getElementById("locationGroup");
-
-// -------- Back button --------
-document.querySelector('.back-btn')?.addEventListener('click', () => {
-  if (document.referrer) window.history.back();
-  else window.location.href = '/';
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && interviewOverlay?.style.display === "flex") {
+        closeInterviewModal();
+    }
 });
 
-// -------- ROLE UI CONTROL --------
-fetch(`${API_BASE}/api/me`, { credentials: "include" })
-  .then(res => res.json())
-  .then(user => {
-    if (user.role === "employer") {
-      const btn = document.getElementById("applyBtn");
-      if (btn) btn.style.display = "none";
+document.querySelector(".back-btn")?.addEventListener("click", () => {
+    if (document.referrer) {
+        window.history.back();
+    } else {
+        window.location.href = "/";
     }
+});
 
-    if (user.role === "jobseeker") {
-      const container = document.getElementById("applicationsContainer");
-      if (container) container.style.display = "none";
+function setupDescriptionToggle() {
+    const description = document.getElementById("description");
+    const toggleBtn = document.getElementById("descriptionToggle");
+
+    if (!description || !toggleBtn) return;
+
+    description.classList.add("description-preview");
+    description.classList.remove("description-expanded");
+
+    toggleBtn.textContent = "See more";
+    toggleBtn.setAttribute("aria-expanded", "false");
+    toggleBtn.hidden = true;
+
+    requestAnimationFrame(() => {
+        const hasOverflow =
+            description.scrollHeight > description.clientHeight + 2;
+
+        toggleBtn.hidden = !hasOverflow;
+    });
+
+    toggleBtn.onclick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const isExpanded =
+            description.classList.contains("description-expanded");
+
+        if (isExpanded) {
+            description.classList.remove("description-expanded");
+            description.classList.add("description-preview");
+
+            toggleBtn.textContent = "See more";
+            toggleBtn.setAttribute("aria-expanded", "false");
+        } else {
+            description.classList.remove("description-preview");
+            description.classList.add("description-expanded");
+
+            toggleBtn.textContent = "See less";
+            toggleBtn.setAttribute("aria-expanded", "true");
+        }
+    };
+}
+
+async function loadRoleUI() {
+    try {
+        const res = await fetch(`${API_BASE}/api/me`, {
+            credentials: "include"
+        });
+
+        if (!res.ok) return;
+
+        const user = await res.json();
+
+        if (user.role === "employer") {
+            const applyBtn = document.getElementById("applyBtn");
+
+            if (applyBtn) {
+                applyBtn.style.display = "none";
+            }
+        }
+
+        if (user.role === "jobseeker") {
+            const applicationsContainer =
+                document.getElementById("applicationsContainer");
+
+            const jobToggleBtn = document.getElementById("jobToggleBtn");
+
+            if (applicationsContainer) {
+                applicationsContainer.style.display = "none";
+            }
+
+            if (jobToggleBtn) {
+                jobToggleBtn.style.display = "none";
+            }
+
+            if (filterBtn) {
+                filterBtn.style.display = "none";
+            }
+        }
+    } catch (error) {
+        console.error("Role check error:", error);
     }
+}
 
-     if (user.role === "jobseeker") {
-      const closeBtn = document.getElementById("jobToggleBtn");
-      if (closeBtn) closeBtn.style.display = "none";
-
-    const filterBtn = document.getElementById("filterBtn");
-      if (filterBtn) filterBtn.style.display = "none";
-    }
-  });
-
-// =====================
-// LOAD JOB DETAILS
-// =====================
 async function loadProfile() {
-  if (!jobId) return console.error("No job id in URL");
-
-  try {
-    const res = await fetch(`${API_BASE}/api/jobpost/${jobId}`, {
-      credentials: "include"
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Failed");
-
-    document.getElementById("job_name").textContent = data.title || "N/A";
-    document.getElementById("company_name").textContent = data.company_name || "N/A";
-    document.getElementById("email").textContent = data.email || "N/A";
-    document.getElementById("job_type").textContent = data.job_type || "N/A";
-    document.getElementById("description").textContent = data.description || "N/A";
-    document.getElementById("location").textContent = data.location || "N/A";
-    document.getElementById("contact_no").textContent = data.contact_no || "N/A";
-
-    document.getElementById("salary_min").textContent =
-      data.salary_min ? `₱${Number(data.salary_min).toLocaleString()}` : "N/A";
-
-    document.getElementById("salary_max").textContent =
-      data.salary_max ? `₱${Number(data.salary_max).toLocaleString()}` : "N/A";
-
-    document.getElementById("applyBtn").dataset.jobId = data.id ?? jobId;
-
-  } catch (err) {
-    console.error("Job load error:", err.message);
-  }
-}
-
-// =====================
-// APPLY JOB
-// =====================
-document.getElementById("applyBtn")?.addEventListener("click", async function () {
-  const jobId = this.dataset.jobId;
-
-  this.disabled = true;
-  this.innerText = "Applying...";
-
-  try {
-    const res = await fetch(`${API_BASE}/api/application`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ job_id: jobId })
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
-
-    this.innerText = "Applied ✓";
-    this.style.background = "green";
-
-  } catch (err) {
-    alert(err.message);
-    this.disabled = false;
-    this.innerText = "Apply";
-  }
-});
-
-// =====================
-// CHAT
-// =====================
-async function openChat(otherUserId) {
-  try {
-    const res = await fetch(`${API_BASE}/api/chat/conversation/start`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ otherUserId })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok || !data.conversationId) {
-      throw new Error(data.error || "Failed");
+    if (!jobId) {
+        console.error("No job id in URL");
+        return;
     }
 
-    await fetch(`${API_BASE}/api/chat/context/set`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({
-        otherUserId,
-        jobId: null
-      })
-    });
+    try {
+        const res = await fetch(`${API_BASE}/api/jobpost/${jobId}`, {
+            credentials: "include"
+        });
 
-    window.location.href = "/conversation.html";
+        const data = await res.json();
 
-  } catch (err) {
-    console.error("openChat error:", err);
-    alert("Failed to open chat");
-  }
+        if (!res.ok) {
+            throw new Error(data.error || "Failed to load job details.");
+        }
+
+        document.getElementById("job_name").textContent =
+            data.title || "N/A";
+
+        document.getElementById("company_name").textContent =
+            data.company_name || "N/A";
+
+        const emailElement = document.getElementById("email");
+        const email = data.email || "";
+
+        emailElement.textContent = email || "N/A";
+        emailElement.href = email ? `mailto:${email}` : "#";
+
+        document.getElementById("job_type").textContent =
+            data.job_type || "N/A";
+
+        const description = document.getElementById("description");
+
+        description.textContent = data.description || "N/A";
+        setupDescriptionToggle();
+
+        document.getElementById("location").textContent =
+            data.location || "N/A";
+
+        document.getElementById("contact_no").textContent =
+            data.contact_no || "N/A";
+
+        document.getElementById("salary_min").textContent =
+            data.salary_min !== null &&
+            data.salary_min !== undefined &&
+            data.salary_min !== ""
+                ? `₱${Number(data.salary_min).toLocaleString()}`
+                : "N/A";
+
+        document.getElementById("salary_max").textContent =
+            data.salary_max !== null &&
+            data.salary_max !== undefined &&
+            data.salary_max !== ""
+                ? `₱${Number(data.salary_max).toLocaleString()}`
+                : "N/A";
+
+        const applyBtn = document.getElementById("applyBtn");
+
+        if (applyBtn) {
+            applyBtn.dataset.jobId = data.id ?? jobId;
+        }
+    } catch (error) {
+        console.error("Job load error:", error.message);
+
+        const description = document.getElementById("description");
+
+        if (description) {
+            description.textContent = "Unable to load job details.";
+            setupDescriptionToggle();
+        }
+    }
 }
 
+document.getElementById("applyBtn")?.addEventListener("click", async function () {
+    const selectedJobId = this.dataset.jobId;
 
-// =====================
-// APPLICATIONS
-// =====================
+    if (!selectedJobId) {
+        alert("Job information is not available.");
+        return;
+    }
+
+    this.disabled = true;
+    this.textContent = "Applying...";
+
+    try {
+        const res = await fetch(`${API_BASE}/api/application`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                job_id: selectedJobId
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            throw new Error(data.error || "Failed to apply for this job.");
+        }
+
+        this.textContent = "Applied ✓";
+        this.style.background = "green";
+    } catch (error) {
+        alert(error.message);
+        this.disabled = false;
+        this.textContent = "Apply";
+    }
+});
+
+async function openChat(otherUserId) {
+    try {
+        const res = await fetch(`${API_BASE}/api/chat/conversation/start`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                otherUserId
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.conversationId) {
+            throw new Error(data.error || "Failed to open conversation.");
+        }
+
+        const contextRes = await fetch(`${API_BASE}/api/chat/context/set`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                otherUserId,
+                jobId: null
+            })
+        });
+
+        if (!contextRes.ok) {
+            throw new Error("Unable to set conversation context.");
+        }
+
+        window.location.href = "/conversation.html";
+    } catch (error) {
+        console.error("Open chat error:", error);
+        alert(error.message || "Failed to open chat.");
+    }
+}
 
 let allApplications = [];
 let currentJobId = null;
+let currentFilter = "all";
 
-async function loadApplications(jobId) {
-    currentJobId = jobId;
+async function loadApplications(selectedJobId) {
+    currentJobId = selectedJobId;
 
     const container = document.getElementById("applicationsContainer");
-    if (!container) return;
 
-    const res = await fetch(`${API_BASE}/api/application/${jobId}`, {
-        credentials: "include"
-    });
+    if (!container || !selectedJobId) return;
 
-    const data = await res.json();
-    if (!res.ok) return;
+    try {
+        const res = await fetch(
+            `${API_BASE}/api/application/${selectedJobId}`,
+            {
+                credentials: "include"
+            }
+        );
 
-    allApplications = data;
+        const data = await res.json();
 
-    renderApplications(allApplications);
+        if (!res.ok) {
+            throw new Error(data.error || "Failed to load applications.");
+        }
+
+        allApplications = Array.isArray(data) ? data : [];
+        filterApplications(currentFilter);
+    } catch (error) {
+        console.error("Applications load error:", error);
+        container.textContent = "Unable to load applications.";
+    }
 }
 
 function renderApplications(applications) {
     const container = document.getElementById("applicationsContainer");
-    container.innerHTML = "";
 
-    applications.forEach(app => {
+    if (!container) return;
 
+    container.replaceChildren();
+
+    if (!applications.length) {
+        const emptyMessage = document.createElement("p");
+        emptyMessage.textContent = "No applications found.";
+        container.appendChild(emptyMessage);
+        return;
+    }
+
+    applications.forEach((app) => {
         const row = document.createElement("div");
+
         row.className = "app-row";
         row.dataset.id = app.application_id;
 
-        row.innerHTML = `
-            <div class="app-top">
+        const top = document.createElement("div");
+        top.className = "app-top";
 
-                <div class="app-name">
-                    ${app.first_name} ${app.last_name}
-                </div>
+        const name = document.createElement("div");
+        name.className = "app-name";
+        name.textContent =
+            [app.first_name, app.last_name].filter(Boolean).join(" ") ||
+            "Applicant";
 
-<div class="app-actions">
+        const actions = document.createElement("div");
+        actions.className = "app-actions";
 
-    <button class="msg-btn">Message</button>
+        const messageBtn = document.createElement("button");
+        messageBtn.type = "button";
+        messageBtn.className = "msg-btn";
+        messageBtn.textContent = "Message";
 
-    <div class="status-dropdown">
-
-        <button class="status-btn">
-            ${app.status
-                ? app.status.charAt(0).toUpperCase() + app.status.slice(1)
-                : "Status ▾"}
-        </button>
-
-        <div class="status-menu">
-            <div data-status="viewed">Viewed</div>
-            <div data-status="shortlisted">Shortlist</div>
-            <div data-status="interviewed">Interview</div>
-            <div data-status="hired">Hire</div>
-            <div data-status="rejected">Reject</div>
-        </div>
-
-    </div>
-
-${
-    app.status === "shortlisted"
-        ? app.has_interview
-            ? `<button
-                    class="schedule-btn scheduled"
-                    disabled>
-                    Scheduled ✓
-               </button>`
-            : `<button
-                    class="schedule-btn"
-                    data-name="${app.first_name} ${app.last_name}"
-                    data-application="${app.application_id}"
-                    data-jobseeker="${app.jobseeker_id}">
-                    Schedule Interview
-               </button>`
-        : ""
-}
-
-</div>
-
-            </div>
-
-            <div class="app-date">
-                Applied on: ${new Date(app.applied_at).toLocaleString()}
-            </div>
-        `;
-
-        // Message button
-        row.querySelector(".msg-btn").addEventListener("click", (e) => {
-            e.stopPropagation();
+        messageBtn.addEventListener("click", (event) => {
+            event.stopPropagation();
             openChat(app.jobseeker_id);
         });
 
-      // Schedule Interview button
-const scheduleBtn = row.querySelector(".schedule-btn");
+        actions.appendChild(messageBtn);
 
-if (scheduleBtn) {
+        const statusDropdown = document.createElement("div");
+        statusDropdown.className = "status-dropdown";
 
-   scheduleBtn.addEventListener("click", (e) => {
+        const statusBtn = document.createElement("button");
+        statusBtn.type = "button";
+        statusBtn.className = "status-btn";
+        statusBtn.textContent = app.status
+            ? app.status.charAt(0).toUpperCase() + app.status.slice(1)
+            : "Status";
 
-    console.log("1. Clicked");
-
-    e.stopPropagation();
-
-    console.log("2. Filling applicant");
-
-    document.getElementById("selectedApplicant").value =
-        scheduleBtn.dataset.name;
-
-    console.log("3. Saving IDs");
-
-    document.getElementById("interviewModal").dataset.application =
-        scheduleBtn.dataset.application;
-
-    document.getElementById("interviewModal").dataset.jobseeker =
-        scheduleBtn.dataset.jobseeker;
-
-    console.log("4. Showing modal");
-
-    interviewOverlay.style.display = "flex";
-
-    console.log("5. Done");
-
-});
-
-}
-
-        // Status change
-        row.querySelectorAll(".status-menu div").forEach(btn => {
-
-            btn.addEventListener("click", async (e) => {
-
-                e.stopPropagation();
-
-                const status = btn.dataset.status;
-
-                await setStatus(app.application_id, status);
-
-                // Update local data
-                app.status = status;
-
-                // Update button
-                row.querySelector(".status-btn").textContent =
-                    status.charAt(0).toUpperCase() + status.slice(1);
-
-                // Refresh current filter
-                filterApplications(currentFilter);
-
-            });
-
+        statusBtn.addEventListener("click", (event) => {
+            event.stopPropagation();
         });
 
-        // Open profile
-        row.addEventListener("click", (e) => {
+        const statusMenu = document.createElement("div");
+        statusMenu.className = "status-menu";
 
+        const statuses = [
+            { value: "viewed", label: "Viewed" },
+            { value: "shortlisted", label: "Shortlist" },
+            { value: "interviewed", label: "Interview" },
+            { value: "hired", label: "Hire" },
+            { value: "rejected", label: "Reject" }
+        ];
+
+        statuses.forEach(({ value, label }) => {
+            const statusItem = document.createElement("div");
+
+            statusItem.dataset.status = value;
+            statusItem.textContent = label;
+
+            statusItem.addEventListener("click", async (event) => {
+                event.stopPropagation();
+
+                try {
+                    await setStatus(app.application_id, value);
+
+                    app.status = value;
+                    statusBtn.textContent =
+                        value.charAt(0).toUpperCase() + value.slice(1);
+
+                    filterApplications(currentFilter);
+                } catch (error) {
+                    alert(error.message || "Failed to update application status.");
+                }
+            });
+
+            statusMenu.appendChild(statusItem);
+        });
+
+        statusDropdown.append(statusBtn, statusMenu);
+        actions.appendChild(statusDropdown);
+
+        if (app.status === "shortlisted") {
+            const scheduleBtn = document.createElement("button");
+
+            scheduleBtn.type = "button";
+            scheduleBtn.className = "schedule-btn";
+
+            if (app.has_interview) {
+                scheduleBtn.textContent = "Scheduled ✓";
+                scheduleBtn.disabled = true;
+            } else {
+                scheduleBtn.textContent = "Schedule Interview";
+                scheduleBtn.dataset.name =
+                    [app.first_name, app.last_name].filter(Boolean).join(" ");
+                scheduleBtn.dataset.application = app.application_id;
+                scheduleBtn.dataset.jobseeker = app.jobseeker_id;
+
+                scheduleBtn.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    document.getElementById("selectedApplicant").value =
+                        scheduleBtn.dataset.name;
+
+                    interviewOverlay.dataset.application =
+                        scheduleBtn.dataset.application;
+
+                    interviewOverlay.dataset.jobseeker =
+                        scheduleBtn.dataset.jobseeker;
+
+                    interviewOverlay.style.display = "flex";
+                });
+            }
+
+            actions.appendChild(scheduleBtn);
+        }
+
+        top.append(name, actions);
+
+        const appliedDate = document.createElement("div");
+        appliedDate.className = "app-date";
+
+        const date = app.applied_at
+            ? new Date(app.applied_at)
+            : null;
+
+        appliedDate.textContent =
+            `Applied on: ${
+                date && !Number.isNaN(date.getTime())
+                    ? date.toLocaleString()
+                    : "Date unavailable"
+            }`;
+
+        row.append(top, appliedDate);
+
+        row.addEventListener("click", (event) => {
             if (
-                e.target.closest(".msg-btn") ||
-                e.target.closest(".status-dropdown")
-            ) return;
+                event.target.closest(".msg-btn") ||
+                event.target.closest(".status-dropdown") ||
+                event.target.closest(".schedule-btn")
+            ) {
+                return;
+            }
 
             window.location.href =
-                `/view_jobseeker.html?id=${app.jobseeker_id}`;
-
+                `/view_jobseeker.html?id=${encodeURIComponent(app.jobseeker_id)}`;
         });
 
         container.appendChild(row);
-
     });
 }
 
-
-// =====================
-// FILTER
-// =====================
-
-let currentFilter = "all";
-
 function filterApplications(status) {
-
     currentFilter = status;
 
     if (status === "all") {
@@ -345,304 +489,261 @@ function filterApplications(status) {
         return;
     }
 
-    const filtered = allApplications.filter(app => app.status === status);
-
-    renderApplications(filtered);
-
+    renderApplications(
+        allApplications.filter((app) => app.status === status)
+    );
 }
 
-// Open dropdown
-filterBtn.addEventListener("click", (e) => {
+filterBtn?.addEventListener("click", (event) => {
+    event.stopPropagation();
 
-    e.stopPropagation();
-    filterDropdown.classList.toggle("show");
+    const isOpen = filterDropdown.classList.toggle("show");
 
+    filterBtn.setAttribute("aria-expanded", String(isOpen));
 });
 
-// Close dropdown
 document.addEventListener("click", () => {
-
-    filterDropdown.classList.remove("show");
-
+    filterDropdown?.classList.remove("show");
+    filterBtn?.setAttribute("aria-expanded", "false");
 });
 
-// Select filter
-document.querySelectorAll(".filter-item").forEach(item => {
+filterDropdown?.addEventListener("click", (event) => {
+    event.stopPropagation();
+});
 
+document.querySelectorAll(".filter-item").forEach((item) => {
     item.addEventListener("click", () => {
-
         const value = item.dataset.value;
 
-        filterBtn.textContent = item.textContent + " ▼";
-
+        filterBtn.textContent = `${item.textContent} ▼`;
         filterDropdown.classList.remove("show");
+        filterBtn.setAttribute("aria-expanded", "false");
 
         filterApplications(value);
+    });
+});
 
+async function setStatus(application_id, status) {
+    const res = await fetch(`${API_BASE}/api/application/status`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+            application_id,
+            status
+        })
     });
 
-});
+    let data = {};
 
-// =====================
-// STATUS UPDATE
-// =====================
-async function setStatus(application_id, status) {
-  await fetch(`${API_BASE}/api/application/status`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({ application_id, status })
-  });
+    try {
+        data = await res.json();
+    } catch {
+        // The server may return an empty response.
+    }
+
+    if (!res.ok) {
+        throw new Error(data.error || "Failed to update application status.");
+    }
+
+    return data;
 }
 
-// =====================
-// JOB TOGGLE (FIXED LOGIC)
-// =====================
 let currentJobStatus = 1;
 
-async function loadJobStatus(jobId) {
-const res = await fetch(`${API_BASE}/api/jobpost/${jobId}`, { 
-    credentials: "include"
-});
+async function loadJobStatus(selectedJobId) {
+    if (!selectedJobId) return;
 
-  const data = await res.json();
+    try {
+        const res = await fetch(`${API_BASE}/api/jobpost/${selectedJobId}`, {
+            credentials: "include"
+        });
 
-  currentJobStatus = Number(data.is_active); // IMPORTANT
+        const data = await res.json();
 
-  const btn = document.getElementById("jobToggleBtn");
-  if (!btn) return;
+        if (!res.ok) {
+            throw new Error(data.error || "Failed to load job status.");
+        }
 
-  updateJobButtonUI(btn);
+        currentJobStatus = Number(data.is_active);
+
+        const btn = document.getElementById("jobToggleBtn");
+
+        if (btn) {
+            updateJobButtonUI(btn);
+        }
+    } catch (error) {
+        console.error("Job status error:", error);
+    }
 }
 
 function updateJobButtonUI(btn) {
-  if (currentJobStatus === 1) {
-    btn.textContent = "Close Job";
-    btn.classList.remove("closed");
-  } else {
-    btn.textContent = "Closed";
-    btn.classList.add("closed");
-  }
+    if (currentJobStatus === 1) {
+        btn.textContent = "Close Job";
+        btn.classList.remove("closed");
+    } else {
+        btn.textContent = "Reopen Job";
+        btn.classList.add("closed");
+    }
 }
 
-// CLICK TOGGLE
 document.getElementById("jobToggleBtn")?.addEventListener("click", async () => {
+    const newStatus = currentJobStatus === 1 ? 0 : 1;
+    const btn = document.getElementById("jobToggleBtn");
 
-  const newStatus = currentJobStatus === 1 ? 0 : 1;
+    btn.disabled = true;
 
-  const res = await fetch(`${API_BASE}/api/jobpost/toggle`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({
-      jobId,
-      is_active: newStatus
-    })
-  });
+    try {
+        const res = await fetch(`${API_BASE}/api/jobpost/toggle`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                jobId,
+                is_active: newStatus
+            })
+        });
 
-  if (!res.ok) {
-    alert("Failed to update job status");
-    return;
-  }
+        let data = {};
 
-  currentJobStatus = newStatus;
+        try {
+            data = await res.json();
+        } catch {
+            // The server may return an empty response.
+        }
 
-  const btn = document.getElementById("jobToggleBtn");
-  updateJobButtonUI(btn);
+        if (!res.ok) {
+            throw new Error(data.error || "Failed to update job status.");
+        }
+
+        currentJobStatus = newStatus;
+        updateJobButtonUI(btn);
+    } catch (error) {
+        alert(error.message);
+    } finally {
+        btn.disabled = false;
+    }
 });
 
 function updateInterviewFields() {
+    if (!interviewType || !locationGroup) return;
 
-    if (interviewType.value === "online") {
-        locationGroup.style.display = "none";
+    const isOnsite = interviewType.value === "onsite";
 
-    } else {
+    locationGroup.style.display = isOnsite ? "block" : "none";
 
-        locationGroup.style.display = "block";
-
+    if (!isOnsite) {
+        document.getElementById("interviewLocation").value = "";
     }
-
 }
 
-interviewType.addEventListener("change", updateInterviewFields);
-
+interviewType?.addEventListener("change", updateInterviewFields);
 updateInterviewFields();
-// =====================
-// SEND INTERVIEW
-// =====================
 
-document.getElementById("sendInterview").addEventListener("click", async () => {
-
+document.getElementById("sendInterview")?.addEventListener("click", async () => {
     const modal = document.getElementById("interviewModal");
+    const sendBtn = document.getElementById("sendInterview");
 
     const application_id = modal.dataset.application;
     const jobseeker_id = modal.dataset.jobseeker;
 
-    const interview_date =
-        document.getElementById("interviewDate").value;
+    const interview_date = document.getElementById("interviewDate").value;
+    const start_time = document.getElementById("startTime").value;
+    const end_time = document.getElementById("endTime").value;
+    const interview_type = document.getElementById("interviewType").value;
+    const location = document.getElementById("interviewLocation").value.trim();
+    const notes = document.getElementById("interviewNotes").value.trim();
 
-    const start_time =
-        document.getElementById("startTime").value;
-
-    const end_time =
-        document.getElementById("endTime").value;
-
-    const interview_type =
-        document.getElementById("interviewType").value;
-
-    const location =
-        document.getElementById("interviewLocation").value;
-
-    const notes =
-        document.getElementById("interviewNotes").value;
-
-
-    // =====================
-    // VALIDATION
-    // =====================
-
-    if (!interview_date || !start_time || !end_time) {
-        alert("Please complete all required fields.");
+    if (!application_id || !jobseeker_id) {
+        alert("Please select an applicant first.");
         return;
     }
 
-    if (
-        interview_type === "onsite" &&
-        !location.trim()
-    ) {
+    if (!interview_date || !start_time || !end_time) {
+        alert("Please complete the date, start time, and end time.");
+        return;
+    }
+
+    if (end_time <= start_time) {
+        alert("The end time must be later than the start time.");
+        return;
+    }
+
+    if (interview_type === "onsite" && !location) {
         alert("Please enter the interview location.");
         return;
     }
 
-
-    // =====================
-    // DISABLE BUTTON
-    // =====================
-
-    const sendBtn = document.getElementById("sendInterview");
-
     sendBtn.disabled = true;
     sendBtn.textContent = "Scheduling...";
 
-
     try {
-
         const res = await fetch(`${API_BASE}/api/interview`, {
-
             method: "POST",
-
             credentials: "include",
-
             headers: {
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
-
                 application_id,
                 jobseeker_id,
                 interview_date,
                 start_time,
                 end_time,
                 interview_type,
-                location,
+                location: interview_type === "onsite" ? location : null,
                 notes
-
             })
-
         });
-
 
         const data = await res.json();
 
-
         if (!res.ok) {
-
-            throw new Error(
-                data.error || "Failed to schedule interview."
-            );
-
+            throw new Error(data.error || "Failed to schedule interview.");
         }
 
-
-        // =====================
-        // MARK APPLICATION
-        // =====================
-
         const application = allApplications.find(
-            app => String(app.application_id) === String(application_id)
+            (app) =>
+                String(app.application_id) === String(application_id)
         );
 
         if (application) {
-    application.has_interview = true;
-
-    // IMPORTANT:
-    // Do NOT change application.status.
-    // It should remain "shortlisted".
-    }
-
-
-        // =====================
-        // CLOSE MODAL
-        // =====================
+            application.has_interview = true;
+        }
 
         closeInterviewModal();
 
+        document.getElementById("interviewDate").value = "";
+        document.getElementById("startTime").value = "";
+        document.getElementById("endTime").value = "";
+        document.getElementById("interviewType").value = "online";
+        document.getElementById("interviewLocation").value = "";
+        document.getElementById("interviewNotes").value = "";
 
-        // =====================
-        // RESET BUTTON
-        // =====================
-
-        sendBtn.disabled = false;
-        sendBtn.textContent = "Send Invitation";
-
-
-        // =====================
-        // REFRESH APPLICATIONS
-        // =====================
-
-        renderApplications(
-            currentFilter === "all"
-                ? allApplications
-                : allApplications.filter(
-                    app => app.status === currentFilter
-                )
-        );
-
-
-        // =====================
-        // SUCCESS MESSAGE
-        // =====================
+        updateInterviewFields();
+        filterApplications(currentFilter);
 
         if (data.emailWarning) {
-
             alert(
-                "Interview scheduled successfully!\n\n" +
-                "However, the invitation email could not be sent."
+                "Interview scheduled successfully, but the invitation email could not be sent."
             );
-
         } else {
-
             alert("Interview scheduled successfully!");
-
         }
-
-
-    } catch (err) {
-
-        console.error("Schedule interview error:", err);
-
+    } catch (error) {
+        console.error("Schedule interview error:", error);
+        alert(error.message || "Unable to schedule interview.");
+    } finally {
         sendBtn.disabled = false;
         sendBtn.textContent = "Send Invitation";
-
-        alert(err.message || "Unable to schedule interview.");
-
     }
-
 });
-// =====================
-// INIT
-// =====================
+
+loadRoleUI();
 loadProfile();
 loadApplications(jobId);
 loadJobStatus(jobId);
