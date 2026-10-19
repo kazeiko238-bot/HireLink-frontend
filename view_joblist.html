@@ -4,142 +4,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Job | HireLink</title>
 
     <link rel="stylesheet" href="css/view_joblist.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/mobile.css">
-
     <link rel="icon" type="image/png" href="images/logo.png">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
     <header class="header">
         <div class="brand">
-            <button class="back-btn" type="button" aria-label="Go back">
-                &lt;
-            </button>
-
+            <button class="back-btn" type="button" aria-label="Go back">&lt;</button>
             <h2>HireLink</h2>
         </div>
 
         <div class="auth-area" id="authArea">
-            <button
-                class="signin-btn"
-                id="signInBtn"
-                type="button">
-                Sign In
-            </button>
+            <button class="signin-btn" id="signInBtn" type="button">Sign In</button>
         </div>
     </header>
 
-
-  
     <main>
-
         <div class="profile-container" id="jobProfile">
 
-            <!-- JOB HEADER -->
             <div class="job_name">
-
-                <img
-                    src="images/avatar.png"
-                    class="profile-img"
-                    id="profile_picture"
-                    alt="Company profile picture">
+                <img src="images/avatar.png" class="profile-img" id="profile_picture" alt="Company profile picture">
 
                 <div class="job-heading-info">
-                    <div class="company-name" id="job_name">
-                        Loading job title...
-                    </div>
-
-                    <div class="industry" id="company_name">
-                        Loading company...
-                    </div>
+                    <div class="company-name" id="job_name">Loading job title...</div>
+                    <div class="industry" id="company_name">Loading company...</div>
                 </div>
-
             </div>
 
-
-       
             <div class="section">
-
-                <div class="section-title">
-                    Job Information
-                </div>
+                <div class="section-title">Job Information</div>
 
                 <div class="info-grid">
-
                     <div class="info-box">
                         <div class="label">Job Type</div>
-                        <div class="value" id="job_type">
-                            Loading...
-                        </div>
+                        <div class="value" id="job_type">Loading...</div>
                     </div>
 
                     <div class="info-box">
                         <div class="label">Location</div>
-                        <div class="value" id="location">
-                            Loading...
-                        </div>
+                        <div class="value" id="location">Loading...</div>
                     </div>
 
                     <div class="info-box">
                         <div class="label">Salary Minimum</div>
-                        <div class="value" id="salary_min">
-                            Loading...
-                        </div>
+                        <div class="value" id="salary_min">Loading...</div>
                     </div>
 
                     <div class="info-box">
                         <div class="label">Salary Maximum</div>
-                        <div class="value" id="salary_max">
-                            Loading...
-                        </div>
+                        <div class="value" id="salary_max">Loading...</div>
                     </div>
 
                     <div class="info-box">
                         <div class="label">Contact Number</div>
-                        <div class="value" id="contact_no">
-                            Loading...
-                        </div>
+                        <div class="value" id="contact_no">Loading...</div>
                     </div>
 
                     <div class="info-box">
                         <div class="label">Email Address</div>
-
-                        <a
-                            class="value"
-                            id="email"
-                            href="#">
-                            Loading...
-                        </a>
+                        <a class="value" id="email" href="#">Loading...</a>
                     </div>
-
                 </div>
-
             </div>
 
-
-         
             <div class="section">
+                <div class="section-title">Job Description</div>
 
-                <div class="section-title">
-                    Job Description
-                </div>
-
-                <div
-                    class="description description-preview"
-                    id="description">
-                    Loading job description...
-                </div>
+                <div class="description description-preview" id="description">Loading job description...</div>
 
                 <button
                     type="button"
@@ -149,83 +88,31 @@
                     hidden>
                     See more
                 </button>
-
             </div>
 
-
-            
             <div class="section job-actions-section">
-
-                <!-- Employer: Open/Close Job -->
-                <button
-                    type="button"
-                    id="jobToggleBtn"
-                    class="toggle-job-btn">
-                    Close Job
-                </button>
-
-                <!-- Jobseeker: Apply -->
-                <button
-                    type="button"
-                    class="review-btn"
-                    id="applyBtn"
-                    data-job-id="">
-                    Apply
-                </button>
-
+                <button type="button" id="jobToggleBtn" class="toggle-job-btn">Close Job</button>
+                <button type="button" class="review-btn" id="applyBtn" data-job-id="">Apply</button>
 
                 <div class="filter-container">
-
-                    <button
-                        type="button"
-                        class="filter-btn"
-                        id="filterBtn"
-                        aria-expanded="false">
+                    <button type="button" class="filter-btn" id="filterBtn" aria-expanded="false">
                         Filter ▼
                     </button>
 
-                    <div
-                        class="filter-dropdown"
-                        id="filterDropdown">
-
-                        <div class="filter-item" data-value="all">
-                            All
-                        </div>
-
-                        <div class="filter-item" data-value="viewed">
-                            Viewed
-                        </div>
-
-                        <div class="filter-item" data-value="shortlisted">
-                            Shortlisted
-                        </div>
-
-                        <div class="filter-item" data-value="interviewed">
-                            Interviewed
-                        </div>
-
-                        <div class="filter-item" data-value="hired">
-                            Hired
-                        </div>
-
-                        <div class="filter-item" data-value="rejected">
-                            Rejected
-                        </div>
-
+                    <div class="filter-dropdown" id="filterDropdown">
+                        <div class="filter-item" data-value="all">All</div>
+                        <div class="filter-item" data-value="viewed">Viewed</div>
+                        <div class="filter-item" data-value="shortlisted">Shortlisted</div>
+                        <div class="filter-item" data-value="interviewed">Interviewed</div>
+                        <div class="filter-item" data-value="hired">Hired</div>
+                        <div class="filter-item" data-value="rejected">Rejected</div>
                     </div>
-
                 </div>
 
-
-                <!-- Employer's applicant list -->
                 <div id="applicationsContainer"></div>
-
             </div>
-
         </div>
-
     </main>
-
 
     <div
         id="interviewModal"
@@ -235,231 +122,88 @@
         aria-labelledby="interviewModalTitle">
 
         <div class="interview-modal">
-
-            <!-- MODAL HEADER -->
             <div class="interview-header">
-
-                <h2 id="interviewModalTitle">
-                    Schedule Interview
-                </h2>
-
-                <button
-                    type="button"
-                    id="closeInterviewModal"
-                    class="close-interview-modal"
-                    aria-label="Close interview form">
+                <h2 id="interviewModalTitle">Schedule Interview</h2>
+                <button type="button" id="closeInterviewModal" class="close-interview-modal" aria-label="Close interview form">
                     &times;
                 </button>
-
             </div>
 
-
-            <!-- MODAL BODY -->
             <div class="interview-body">
-
-                <!-- Applicant -->
                 <div class="form-group">
-
-                    <label for="selectedApplicant">
-                        Applicant
-                    </label>
-
-                    <input
-                        type="text"
-                        id="selectedApplicant"
-                        readonly>
-
+                    <label for="selectedApplicant">Applicant</label>
+                    <input type="text" id="selectedApplicant" readonly>
                 </div>
 
-
-                <!-- Date and time -->
                 <div class="form-row">
-
                     <div class="form-group">
-
-                        <label for="interviewDate">
-                            Date
-                        </label>
-
-                        <input
-                            type="date"
-                            id="interviewDate">
-
+                        <label for="interviewDate">Date</label>
+                        <input type="date" id="interviewDate">
                     </div>
 
-
                     <div class="form-group">
-
-                        <label for="startTime">
-                            Start Time
-                        </label>
-
-                        <input
-                            type="time"
-                            id="startTime">
-
+                        <label for="startTime">Start Time</label>
+                        <input type="time" id="startTime">
                     </div>
 
-
                     <div class="form-group">
-
-                        <label for="endTime">
-                            End Time
-                        </label>
-
-                        <input
-                            type="time"
-                            id="endTime">
-
+                        <label for="endTime">End Time</label>
+                        <input type="time" id="endTime">
                     </div>
-
                 </div>
 
-
-                <!-- Interview type -->
                 <div class="form-group">
-
-                    <label for="interviewType">
-                        Interview Type
-                    </label>
-
+                    <label for="interviewType">Interview Type</label>
                     <select id="interviewType">
-
-                        <option value="online">
-                            Online
-                        </option>
-
-                        <option value="onsite">
-                            On-site
-                        </option>
-
+                        <option value="online">Online</option>
+                        <option value="onsite">On-site</option>
                     </select>
-
                 </div>
 
-
-                <!-- On-site location -->
-                <div
-                    class="form-group"
-                    id="locationGroup"
-                    style="display: none;">
-
-                    <label for="interviewLocation">
-                        Location
-                    </label>
-
-                    <input
-                        type="text"
-                        id="interviewLocation"
-                        placeholder="Company address">
-
+                <div class="form-group" id="locationGroup" style="display: none;">
+                    <label for="interviewLocation">Location</label>
+                    <input type="text" id="interviewLocation" placeholder="Company address">
                 </div>
 
-
-                <!-- Notes -->
                 <div class="form-group">
-
-                    <label for="interviewNotes">
-                        Notes / Reminder
-                    </label>
-
-                    <textarea
-                        id="interviewNotes"
-                        rows="5"
-                        placeholder="Additional instructions..."></textarea>
-
+                    <label for="interviewNotes">Notes / Reminder</label>
+                    <textarea id="interviewNotes" rows="5" placeholder="Additional instructions..."></textarea>
                 </div>
-
             </div>
 
-
-            <!-- MODAL FOOTER -->
             <div class="interview-footer">
-
-                <button
-                    type="button"
-                    id="cancelInterview"
-                    class="cancel-btn">
-                    Cancel
-                </button>
-
-                <button
-                    type="button"
-                    id="sendInterview"
-                    class="send-btn">
-                    Send Invitation
-                </button>
-
+                <button type="button" id="cancelInterview" class="cancel-btn">Cancel</button>
+                <button type="button" id="sendInterview" class="send-btn">Send Invitation</button>
             </div>
-
         </div>
-
     </div>
 
-
-   
     <footer class="site-footer">
-
         <div class="footer-content">
-
             <div class="footer-brand">
-
-                <h2 class="footer-logo">
-                    HIRELINK
-                </h2>
-
-                <p class="footer-slogan">
-                    A click-step away from your career success.
-                </p>
-
+                <h2 class="footer-logo">HIRELINK</h2>
+                <p class="footer-slogan">A click-step away from your career success.</p>
             </div>
 
             <hr class="footer-divider">
 
             <ul class="footer-links">
-
-                <li>
-                    <a href="about.html">ABOUT US</a>
-                </li>
-
-                <li>
-                    <a href="contact.html">CONTACT</a>
-                </li>
-
-                <li>
-                    <a href="terms.html">TERMS OF SERVICE</a>
-                </li>
-
-                <li>
-                    <a href="privacy.html">PRIVACY POLICY</a>
-                </li>
-
+                <li><a href="about.html">ABOUT US</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="terms.html">TERMS OF SERVICE</a></li>
+                <li><a href="privacy.html">PRIVACY POLICY</a></li>
             </ul>
 
-            <div
-                id="footer-user-area"
-                class="footer-user-area">
-            </div>
+            <div id="footer-user-area" class="footer-user-area"></div>
 
             <div class="footer-bottom">
-
-                <p>
-                    &copy; 2026 HireLink. All rights reserved.
-                </p>
-
+                <p>&copy; 2026 HireLink. All rights reserved.</p>
             </div>
-
         </div>
-
     </footer>
 
-
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
     <script src="view_joblist.js"></script>
     <script src="overlay.js"></script>
     <script src="footer.js"></script>
-
 </body>
 </html>
