@@ -1,485 +1,375 @@
+
 document.addEventListener("DOMContentLoaded", () => {
+  const API_BASE = "https://hirelink-backend-1.onrender.com";
 
-  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
-
-  const container = document.getElementById("jobsContainer");
-  const nextBtn = document.getElementById("nextBtn");
-
-  // Search elements
-  const titleInput = document.getElementById("jobSearchInput");
-  const provinceInput = document.getElementById("provinceInput");
+  const $ = id => document.getElementById(id);
+  const container = $("jobsContainer");
+  const resultsCount = $("resultsCount");
+  const titleInput = $("jobSearchInput");
+  const provinceInput = $("provinceInput");
+  const companyInput = $("companySearchInput");
+  const industryFilter = $("industryFilter");
+  const jobTypeFilter = $("jobTypeFilter");
+  const salaryMinFilter = $("salaryMinFilter");
+  const salaryMaxFilter = $("salaryMaxFilter");
+  const clearFiltersBtn = $("clearFiltersBtn");
   const searchBtn = document.querySelector(".search-btn");
-
-  // Filter elements
-  const companyInput = document.getElementById("companySearchInput");
-  const industryFilter = document.getElementById("industryFilter");
-  const jobTypeFilter = document.getElementById("jobTypeFilter");
-  const salaryMinFilter = document.getElementById("salaryMinFilter");
-  const salaryMaxFilter = document.getElementById("salaryMaxFilter");
-  const clearFiltersBtn = document.getElementById("clearFiltersBtn");
 
   let allJobs = [];
   let bookmarkedIds = new Set();
+  let searchTimer;
 
-  if (!container) {
-    console.error("jobsContainer not found");
-    return;
+  if (!container) return;
+
+  const normalize = value => String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+
+  const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  })[char]);
+
+  function parseSalary(value) {
+    if (value === null || value === undefined || value === "") return null;
+    const number = Number(String(value).replace(/[₱,\s]/g, ""));
+    return Number.isFinite(number) ? number : null;
   }
 
+  function formatSalary(value) {
+    const number = parseSalary(value);
+    return number === null ? null : `₱${number.toLocaleString("en-PH")}`;
+  }
 
-  // ============================================================
-  // 1. LOAD MY BOOKMARKS
-  // ============================================================
+  function getCompany(job) {
+    return job.company_name ?? job.companyName ??
+      job.company?.company_name ?? job.company?.name ?? "Company Name";
+  }
+
+  function getIndustry(job) {
+    return job.industry ?? job.company_industry ??
+      job.companyIndustry ?? job.company?.industry ?? "";
+  }
+
+  function getId(job) {
+    return String(job.id ?? job.job_id ?? "");
+  }
+
+  function industryMatches(actualValue, selectedValue) {
+    if (!selectedValue) return true;
+
+    const actual = normalize(actualValue);
+    const selected = normalize(selectedValue);
+
+    if (!actual) return false;
+    if (actual === selected || actual.includes(selected)) return true;
+
+    const aliases = {
+      informationtechnology: ["technology", "it", "ict"],
+      healthcare: ["health", "medical"],
+      education: ["educational"],
+      finance: ["financeaccounting", "accounting", "banking"],
+      engineering: ["engineeringconstruction", "construction"],
+      marketing: ["marketingadvertising", "advertising"],
+      bpo: ["customerservice", "customersupport", "callcenter"],
+      manufacturing: ["production"],
+      retail: ["retailsales", "sales"],
+      hospitality: ["hospitalitytourism", "tourism", "hotel", "restaurant"],
+      telecommunication: ["telecommunications", "telecom"],
+      wine: ["winebeverage", "beverage", "winery"]
+    };
+
+    return (aliases[selected] || []).some(alias => {
+      const normalizedAlias = normalize(alias);
+      return actual === normalizedAlias || actual.includes(normalizedAlias);
+    });
+  }
 
   async function loadBookmarks() {
     try {
-      const res = await fetch(`${API_BASE}/api/bookmarks/my`, {
+      const response = await fetch(`${API_BASE}/api/bookmarks/my`, {
         credentials: "include"
       });
 
-      if (!res.ok) {
-        console.warn("Could not load bookmarks:", res.status);
-        return;
+      if (!response.ok) return;
+
+      const data = await response.json();
+
+      if (Array.isArray(data)) {
+        bookmarkedIds = new Set(data.map(item =>
+          String(typeof item === "object"
+            ? item.job_id ?? item.id
+            : item)
+        ));
       }
-
-      const ids = await res.json();
-
-      if (Array.isArray(ids)) {
-        bookmarkedIds = new Set(ids);
-      }
-
-    } catch (err) {
-      console.error("Error loading bookmarks:", err);
+    } catch (error) {
+      console.warn("Could not load bookmarks:", error);
     }
   }
 
-
-  // ============================================================
-  // 2. RENDER JOB CARDS
-  // ============================================================
-
-  function renderJobs(jobsToDisplay) {
+  function renderJobs(jobs) {
     container.innerHTML = "";
 
-    if (!Array.isArray(jobsToDisplay) || jobsToDisplay.length === 0) {
-      container.innerHTML =
-        "<p class='no-ads'>No jobs found matching your search.</p>";
+    if (resultsCount) {
+      resultsCount.textContent =
+        `${jobs.length} ${jobs.length === 1 ? "job" : "jobs"} found`;
+    }
+
+    if (!jobs.length) {
+      const empty = document.createElement("p");
+      empty.className = "no-ads";
+      empty.textContent = "No jobs match your search. Try changing or clearing your filters.";
+      container.appendChild(empty);
       return;
     }
 
-    jobsToDisplay.forEach((job) => {
+    jobs.forEach(job => {
+      const id = getId(job);
+      const title = String(job.title ?? "Untitled Position");
+      const company = getCompany(job);
+      const location = String(job.location ?? "Location not specified");
+      const type = String(job.job_type ?? job.jobType ?? "Not specified");
+      const industry = String(getIndustry(job) || "Career opportunity");
 
-      const minSalary =
-        job.salary_min !== null &&
-        job.salary_min !== undefined &&
-        job.salary_min !== ""
-          ? `₱${Number(job.salary_min).toLocaleString()}`
-          : "N/A";
+      const min = parseSalary(job.salary_min);
+      const max = parseSalary(job.salary_max);
 
-      const maxSalary =
-        job.salary_max !== null &&
-        job.salary_max !== undefined &&
-        job.salary_max !== ""
-          ? `₱${Number(job.salary_max).toLocaleString()}`
-          : "N/A";
+      let salary = "Salary not specified";
 
-      const card = document.createElement("div");
-      card.classList.add("jobs-card");
+      if (min !== null && max !== null) {
+        salary = `${formatSalary(min)} – ${formatSalary(max)}`;
+      } else if (min !== null) {
+        salary = `From ${formatSalary(min)}`;
+      } else if (max !== null) {
+        salary = `Up to ${formatSalary(max)}`;
+      }
 
-      const isBookmarked = bookmarkedIds.has(job.id);
+      const saved = bookmarkedIds.has(id);
+      const card = document.createElement("article");
+      card.className = "jobs-card";
+      card.tabIndex = 0;
+      card.setAttribute("role", "link");
+      card.setAttribute("aria-label", `View ${title} at ${company}`);
 
       card.innerHTML = `
-        <button
-          class="bookmark-btn ${isBookmarked ? "active" : ""}"
-          aria-label="Bookmark job"
-          type="button"
-        >
-          ${isBookmarked ? "★" : "☆"}
+        <button class="bookmark-btn ${saved ? "active" : ""}"
+          type="button" aria-label="${saved ? "Remove bookmark" : "Bookmark job"}"
+          aria-pressed="${saved}">
+          ${saved ? "★" : "☆"}
         </button>
-
-        <h3>${job.title || "No title"}</h3>
-
-        <p class="job-type">${job.job_type || "N/A"}</p>
-
-        <p class="company-name">
-          ${job.company_name || "Company Name"}
-        </p>
-
-        <p class="location">
-          ${job.location || "Location"}
-        </p>
-
-        <p class="salary">
-          ${minSalary} - ${maxSalary}
-        </p>
+        <div class="job-card-top">
+          <span class="job-type">${escapeHTML(type)}</span>
+          <span class="job-industry">${escapeHTML(industry)}</span>
+        </div>
+        <h3>${escapeHTML(title)}</h3>
+        <p class="company-name">${escapeHTML(company)}</p>
+        <p class="location"><span aria-hidden="true">⌖</span> ${escapeHTML(location)}</p>
+        <p class="salary">${escapeHTML(salary)}</p>
+        <div class="job-card-footer">
+          <span>View job details</span><span aria-hidden="true">→</span>
+        </div>
       `;
-
-
-      // --------------------------------------------------------
-      // BOOKMARK BUTTON
-      // --------------------------------------------------------
 
       const bookmarkBtn = card.querySelector(".bookmark-btn");
 
-      bookmarkBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
+      bookmarkBtn.addEventListener("click", async event => {
+        event.stopPropagation();
 
-        const proceed = async () => {
+        const toggleBookmark = async () => {
+          bookmarkBtn.disabled = true;
+
           try {
-            const res = await fetch(`${API_BASE}/api/bookmarks/toggle`, {
+            const response = await fetch(`${API_BASE}/api/bookmarks/toggle`, {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
+              headers: { "Content-Type": "application/json" },
               credentials: "include",
-              body: JSON.stringify({
-                job_id: job.id
-              })
+              body: JSON.stringify({ job_id: job.id ?? job.job_id })
             });
 
-            const data = await res.json();
+            const data = await response.json();
 
-            if (!res.ok) {
-              throw new Error(
-                data.error || "Failed to update bookmark"
-              );
+            if (!response.ok) {
+              throw new Error(data.error || "Could not update bookmark.");
             }
 
-            if (data.bookmarked) {
-              bookmarkedIds.add(job.id);
-              bookmarkBtn.textContent = "★";
-              bookmarkBtn.classList.add("active");
-            } else {
-              bookmarkedIds.delete(job.id);
-              bookmarkBtn.textContent = "☆";
-              bookmarkBtn.classList.remove("active");
-            }
+            if (data.bookmarked) bookmarkedIds.add(id);
+            else bookmarkedIds.delete(id);
 
-          } catch (err) {
-            console.error("Bookmark error:", err);
-            alert(err.message);
+            bookmarkBtn.textContent = data.bookmarked ? "★" : "☆";
+            bookmarkBtn.classList.toggle("active", Boolean(data.bookmarked));
+            bookmarkBtn.setAttribute("aria-pressed", String(Boolean(data.bookmarked)));
+            bookmarkBtn.setAttribute("aria-label",
+              data.bookmarked ? "Remove bookmark" : "Bookmark job");
+          } catch (error) {
+            console.error("Bookmark error:", error);
+            alert(error.message);
+          } finally {
+            bookmarkBtn.disabled = false;
           }
         };
 
         if (typeof window.requireAuth === "function") {
-          if (window.requireAuth(proceed)) proceed();
+          if (window.requireAuth(toggleBookmark)) await toggleBookmark();
+        } else if (localStorage.getItem("userName")) {
+          await toggleBookmark();
         } else {
-          proceed();
+          $("loginOverlay")?.classList.remove("hidden");
         }
       });
 
-
-      // --------------------------------------------------------
-      // JOB CARD CLICK - VIEW JOB DETAILS
-      // --------------------------------------------------------
-
-      card.addEventListener("click", () => {
+      function openJob() {
+        if (!id) {
+          console.error("Job has no ID:", job);
+          return;
+        }
 
         const proceed = () => {
-          window.location.href = `view_joblist.html?id=${job.id}`;
+          window.location.href = `view_joblist.html?id=${encodeURIComponent(id)}`;
         };
 
         if (typeof window.requireAuth === "function") {
-
           if (window.requireAuth(proceed)) proceed();
-
+        } else if (localStorage.getItem("userName")) {
+          proceed();
         } else {
-
-          // Existing login fallback
-          const loggedIn = !!localStorage.getItem("userName");
-
-          if (loggedIn) {
-            proceed();
-          } else {
-            const overlay = document.getElementById("loginOverlay");
-
-            if (overlay) {
-              overlay.classList.remove("hidden");
-            }
-          }
-
+          $("loginOverlay")?.classList.remove("hidden");
         }
+      }
 
+      card.addEventListener("click", event => {
+        if (!event.target.closest(".bookmark-btn")) openJob();
+      });
+
+      card.addEventListener("keydown", event => {
+        if (event.target !== card) return;
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openJob();
+        }
       });
 
       container.appendChild(card);
     });
   }
 
-
-  // ============================================================
-  // 3. FETCH JOBS AND BOOKMARKS
-  // ============================================================
-
-  async function loadJobs() {
-    try {
-
-      const [jobsResponse] = await Promise.all([
-        fetch(`${API_BASE}/api/jobpost/list`, {
-          credentials: "include"
-        }),
-        loadBookmarks()
-      ]);
-
-      if (!jobsResponse.ok) {
-        throw new Error(
-          `Failed to load jobs. HTTP ${jobsResponse.status}`
-        );
-      }
-
-      const jobs = await jobsResponse.json();
-
-      if (!Array.isArray(jobs)) {
-        throw new Error("The jobs API did not return an array.");
-      }
-
-      allJobs = jobs;
-
-      // Apply anything already typed/selected while jobs were loading
-      handleSearch();
-
-    } catch (err) {
-
-      console.error("Error fetching jobs:", err);
-
-      container.innerHTML =
-        "<p class='no-ads'>Error loading jobs. Please try again later.</p>";
-
-    }
-  }
-
-
-  // ============================================================
-  // 4. SEARCH AND FILTER LOGIC
-  // ============================================================
-
   function handleSearch() {
-
-    const titleQuery = (titleInput?.value || "").trim().toLowerCase();
-    const provinceQuery = (provinceInput?.value || "").trim().toLowerCase();
-    const companyQuery = (companyInput?.value || "").trim().toLowerCase();
-    const selectedIndustry = (industryFilter?.value || "").trim().toLowerCase();
-    const selectedJobType = (jobTypeFilter?.value || "").trim().toLowerCase();
+    const title = normalize(titleInput?.value);
+    const province = normalize(provinceInput?.value);
+    const company = normalize(companyInput?.value);
+    const industry = industryFilter?.value || "";
+    const type = normalize(jobTypeFilter?.value);
 
     const minSalary = salaryMinFilter?.value
-      ? Number(salaryMinFilter.value)
-      : null;
-
+      ? Number(salaryMinFilter.value) : null;
     const maxSalary = salaryMaxFilter?.value
-      ? Number(salaryMaxFilter.value)
-      : null;
+      ? Number(salaryMaxFilter.value) : null;
 
-
-    // ----------------------------------------------------------
-    // VALIDATE SALARY RANGE
-    // ----------------------------------------------------------
-
-    if (
-      minSalary !== null &&
-      maxSalary !== null &&
-      minSalary > maxSalary
-    ) {
-      container.innerHTML = `
-        <p class="no-ads">
-          Minimum salary cannot exceed maximum salary.
-        </p>
-      `;
+    if (minSalary !== null && maxSalary !== null && minSalary > maxSalary) {
+      renderJobs([]);
+      const message = container.querySelector(".no-ads");
+      if (message) message.textContent =
+        "Minimum salary cannot exceed maximum salary.";
+      if (resultsCount) resultsCount.textContent = "Invalid salary range";
       return;
     }
 
+    const filtered = allJobs.filter(job => {
+      if (title && !normalize(job.title).includes(title)) return false;
+      if (province && !normalize(job.location).includes(province)) return false;
+      if (company && !normalize(getCompany(job)).includes(company)) return false;
+      if (!industryMatches(getIndustry(job), industry)) return false;
 
-    // ----------------------------------------------------------
-    // FILTER JOBS
-    // ----------------------------------------------------------
+      if (type && normalize(job.job_type ?? job.jobType) !== type) return false;
 
-    const filteredJobs = allJobs.filter((job) => {
+      const jobMin = parseSalary(job.salary_min);
+      const jobMax = parseSalary(job.salary_max);
 
-      const jobTitle = String(job.title || "").toLowerCase();
-      const jobLocation = String(job.location || "").toLowerCase();
-      const companyName = String(job.company_name || "").toLowerCase();
-      const industry = String(job.industry || "").toLowerCase();
+      if (minSalary !== null || maxSalary !== null) {
+        if (jobMin === null && jobMax === null) return false;
 
-      // Normalise job type so "Full-time", "Full Time" and "fulltime" all match
-      const normalize = (value) =>
-        String(value || "").toLowerCase().replace(/[\s-]+/g, "");
+        const lowest = jobMin ?? jobMax;
+        const highest = jobMax ?? jobMin;
 
-      const jobType = normalize(job.job_type);
-
-      // A. Job title
-      if (!jobTitle.includes(titleQuery)) return false;
-
-      // B. Province / location
-      if (!jobLocation.includes(provinceQuery)) return false;
-
-      // C. Company name
-      if (!companyName.includes(companyQuery)) return false;
-
-      // D. Industry
-      if (selectedIndustry && !industry.includes(selectedIndustry)) {
-        return false;
-      }
-
-      // E. Job type
-      if (selectedJobType && jobType !== normalize(selectedJobType)) {
-        return false;
-      }
-
-      // F. Salary range
-      const jobMin =
-        job.salary_min !== null &&
-        job.salary_min !== undefined &&
-        job.salary_min !== ""
-          ? Number(job.salary_min)
-          : null;
-
-      const jobMax =
-        job.salary_max !== null &&
-        job.salary_max !== undefined &&
-        job.salary_max !== ""
-          ? Number(job.salary_max)
-          : null;
-
-      const salaryFilterActive = minSalary !== null || maxSalary !== null;
-
-      if (salaryFilterActive) {
-
-        if (
-          jobMin === null ||
-          jobMax === null ||
-          !Number.isFinite(jobMin) ||
-          !Number.isFinite(jobMax)
-        ) {
-          return false;
-        }
-
-        // The job's maximum must reach the selected minimum
-        if (minSalary !== null && jobMax < minSalary) return false;
-
-        // The job's minimum must not exceed the selected maximum
-        if (maxSalary !== null && jobMin > maxSalary) return false;
+        if (minSalary !== null && highest < minSalary) return false;
+        if (maxSalary !== null && lowest > maxSalary) return false;
       }
 
       return true;
     });
 
-    renderJobs(filteredJobs);
+    renderJobs(filtered);
   }
 
-
-  // ============================================================
-  // 5. CONNECT SEARCH INPUTS AND FILTERS (LIVE SEARCH)
-  // ============================================================
-
-  // Small delay so filtering doesn't run on every single keystroke
-  function debounce(fn, delay = 200) {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn(...args), delay);
-    };
+  function scheduleSearch() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(handleSearch, 180);
   }
 
-  const liveSearch = debounce(handleSearch, 200);
-
-  // Text inputs: search while typing
-  [titleInput, provinceInput, companyInput].forEach((input) => {
-    if (!input) return;
-
-    input.addEventListener("input", liveSearch);
-
-    // "change" is fired by provinces.js when a province is picked from the list
-    input.addEventListener("change", handleSearch);
-
-    // Enter key searches immediately
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
+  [titleInput, provinceInput, companyInput].forEach(input => {
+    input?.addEventListener("input", scheduleSearch);
+    input?.addEventListener("change", handleSearch);
+    input?.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        event.preventDefault();
         handleSearch();
       }
     });
   });
 
-  // Dropdown filters: search as soon as a value is picked
-  [
-    industryFilter,
-    jobTypeFilter,
-    salaryMinFilter,
-    salaryMaxFilter
-  ].forEach((filter) => {
-    if (filter) filter.addEventListener("change", handleSearch);
+  [industryFilter, jobTypeFilter, salaryMinFilter, salaryMaxFilter].forEach(
+    filter => filter?.addEventListener("change", handleSearch)
+  );
+
+  searchBtn?.addEventListener("click", handleSearch);
+
+  clearFiltersBtn?.addEventListener("click", () => {
+    clearTimeout(searchTimer);
+
+    [
+      titleInput, provinceInput, companyInput,
+      industryFilter, jobTypeFilter, salaryMinFilter, salaryMaxFilter
+    ].forEach(input => {
+      if (input) input.value = "";
+    });
+
+    provinceInput?.dispatchEvent(new Event("change", { bubbles: true }));
+    handleSearch();
   });
 
-  // Search button still works too
-  if (searchBtn) {
-    searchBtn.addEventListener("click", handleSearch);
-  }
+  async function loadJobs() {
+    container.innerHTML = '<p class="no-ads">Loading available jobs...</p>';
 
+    try {
+      await loadBookmarks();
 
-  // ============================================================
-  // 6. CLEAR ALL SEARCHES AND FILTERS
-  // ============================================================
-
-  function clearSearch() {
-
-    if (titleInput) titleInput.value = "";
-    if (provinceInput) provinceInput.value = "";
-    if (companyInput) companyInput.value = "";
-    if (industryFilter) industryFilter.value = "";
-    if (jobTypeFilter) jobTypeFilter.value = "";
-    if (salaryMinFilter) salaryMinFilter.value = "";
-    if (salaryMaxFilter) salaryMaxFilter.value = "";
-
-    renderJobs(allJobs);
-  }
-
-  if (clearFiltersBtn) {
-    clearFiltersBtn.addEventListener("click", clearSearch);
-  }
-
-
-  // ============================================================
-  // 7. CAROUSEL
-  // ============================================================
-
-  if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
-      container.scrollBy({
-        left: 300,
-        behavior: "smooth"
+      const response = await fetch(`${API_BASE}/api/jobpost/list`, {
+        credentials: "include"
       });
-    });
-  }
 
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-  // ============================================================
-  // 8. NOTIFICATION DROPDOWN
-  // ============================================================
+      const data = await response.json();
 
-  const btn = document.querySelector(".notif-btn");
-  const dropdown = document.getElementById("notifDropdown");
+      if (!Array.isArray(data)) {
+        throw new Error("The jobs API did not return an array.");
+      }
 
-  if (btn && dropdown) {
-    btn.addEventListener("click", () => {
-      dropdown.classList.toggle("show");
-    });
-  }
+      allJobs = data;
+      handleSearch();
+    } catch (error) {
+      console.error("Error loading jobs:", error);
+      container.innerHTML = "";
 
-  document.addEventListener("click", (e) => {
-    if (
-      btn &&
-      dropdown &&
-      !btn.contains(e.target) &&
-      !dropdown.contains(e.target)
-    ) {
-      dropdown.classList.remove("show");
+      const message = document.createElement("p");
+      message.className = "no-ads";
+      message.textContent = "Unable to load jobs. Please refresh and try again.";
+      container.appendChild(message);
+
+      if (resultsCount) resultsCount.textContent = "Could not load jobs";
     }
-  });
-
-
-  // ============================================================
-  // 9. START
-  // ============================================================
+  }
 
   loadJobs();
-
 });
