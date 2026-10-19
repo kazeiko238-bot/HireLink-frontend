@@ -615,3 +615,67 @@ select:focus-visible,
     transition-duration: .01ms !important;
   }
 }
+
+
+/* ============================================================
+   NAVIGATION HEADER — HIRELINK
+   ============================================================ */
+
+header,
+.main-header,
+.site-header,
+.navbar {
+    box-sizing: border-box;
+}
+
+/* Keep the navigation fixed at the top */
+header,
+.main-header,
+.site-header,
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+/* Navigation links */
+header nav a,
+.main-header nav a,
+.site-header nav a,
+.navbar a {
+    color: #172b4d;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+header nav a:hover,
+.main-header nav a:hover,
+.site-header nav a:hover,
+.navbar a:hover {
+    color: #2d6cdf;
+}
+
+/* Keyboard accessibility */
+header nav a:focus-visible,
+.main-header nav a:focus-visible,
+.site-header nav a:focus-visible,
+.navbar a:focus-visible {
+    outline: 2px solid #2d6cdf;
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* Prevent the page content from hiding behind the header */
+body {
+    padding-top: 70px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding-top: 65px;
+    }
+}
