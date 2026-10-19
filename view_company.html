@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,18 +10,16 @@
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/mobile.css">
-
     <link rel="icon" type="image/png" href="images/logo.png">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
           rel="stylesheet">
 </head>
-
 <body>
 
 <header class="header">
     <div class="brand">
-        <button class="back-btn" type="button">&lt;</button>
+        <button class="back-btn" type="button" aria-label="Go back">&lt;</button>
         <h2>HireLink</h2>
     </div>
 
@@ -42,7 +41,6 @@
                        id="provinceInput"
                        placeholder="Select province"
                        autocomplete="off">
-
                 <ul id="provinceList"></ul>
             </div>
         </div>
@@ -53,14 +51,12 @@
                 <input type="text"
                        placeholder="Search public profiles...">
             </div>
-
             <button class="search-btn" type="button">Search</button>
         </div>
     </div>
 </section>
 
 <div class="profile-container" id="companyProfile">
-
     <div class="company_name">
         <img src="images/avatar.png"
              class="profile-img"
@@ -74,12 +70,10 @@
     </div>
 
     <div class="main-content">
-
         <div class="section">
             <div class="section-title">Company Information</div>
 
             <div class="info-grid">
-
                 <div class="info-box">
                     <div class="label">Industry</div>
                     <div class="value" id="industry">Loading...</div>
@@ -99,41 +93,38 @@
                     <div class="label">Location</div>
                     <div class="value" id="location">Loading...</div>
                 </div>
-
             </div>
         </div>
 
         <div class="description-section">
             <div class="section-title">Company Description</div>
-
             <div class="description-box" id="description">
                 Loading company description...
             </div>
         </div>
-
     </div>
 </div>
 
-<div class="jobs-section">
-    <div>
-        <h2 class="section-heading">Available Positions</h2>
-    </div>
+<section class="jobs-section">
+    <h2 class="section-heading">Available Positions</h2>
 
     <div class="carousel-wrapper">
         <div class="job-grid-cards" id="jobsContainer"></div>
 
-        <button class="nav-btn" id="nextBtn" type="button">
+        <button class="nav-btn"
+                id="nextBtn"
+                type="button"
+                aria-label="Show more jobs">
             &#8250;
         </button>
     </div>
-</div>
+</section>
 
-<div class="review-section">
-
+<section class="review-section">
     <div id="avgRating"></div>
 
     <div class="review-input-row">
-        <select id="starReview">
+        <select id="starReview" aria-label="Select star rating">
             <option value="5">★★★★★ (5)</option>
             <option value="4">★★★★☆ (4)</option>
             <option value="3">★★★☆☆ (3)</option>
@@ -143,18 +134,17 @@
 
         <input type="text"
                id="reviewInput"
-               placeholder="Write a review...">
+               placeholder="Write a review..."
+               aria-label="Write a review">
 
         <button id="sendReviewBtn" type="button">Send</button>
     </div>
 
     <div id="reviewContainer"></div>
-
-</div>
+</section>
 
 <footer class="site-footer">
     <div class="footer-content">
-
         <div class="footer-brand">
             <h2 class="footer-logo">HIRELINK</h2>
             <p class="footer-slogan">
@@ -176,7 +166,6 @@
         <div class="footer-bottom">
             <p>&copy; 2026 HireLink. All rights reserved.</p>
         </div>
-
     </div>
 </footer>
 
