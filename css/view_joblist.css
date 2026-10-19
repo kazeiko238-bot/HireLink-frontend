@@ -522,3 +522,84 @@ body {
     }
 
 }
+
+
+/* ==========================================
+   JOB DESCRIPTION — READABLE FORMATTING
+========================================== */
+
+#description {
+    color: #e2e8f0;
+    font-size: 15px;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+    text-align: left;
+}
+
+#description p {
+    margin: 0 0 16px;
+}
+
+#description p:last-child {
+    margin-bottom: 0;
+}
+
+#description ul,
+#description ol {
+    margin: 10px 0 18px;
+    padding-left: 26px;
+}
+
+#description li {
+    margin-bottom: 8px;
+    padding-left: 4px;
+}
+
+#description strong,
+#description b {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* Description preview */
+#description.description-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+    line-clamp: 7;
+    overflow: hidden;
+}
+
+/* Expand / collapse control */
+.description-toggle {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: #7db4ff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.description-toggle:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+#description.description-expanded {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+}
+
+@media (max-width: 600px) {
+    #description {
+        font-size: 14px;
+        line-height: 1.75;
+    }
+}
