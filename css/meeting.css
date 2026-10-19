@@ -808,3 +808,19 @@ body {
     }
 
 }
+
+
+.meeting-btn.meeting-expired {
+    background: #6b7280;
+    color: #ffffff;
+    cursor: not-allowed;
+    opacity: 0.9;
+}
+
+.meeting-expired-message {
+    margin: 6px 0 0;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 600;
+}
+
