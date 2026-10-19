@@ -585,3 +585,57 @@
     transform: translateY(0);
   }
 }
+
+/* =========================
+   LOGGED-IN USER HEADER FIX
+========================= */
+
+.header {
+    min-width: 0;
+}
+
+.user-name {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 10px;
+    flex-shrink: 0;
+}
+
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* Keep the user name and logout button together */
+.user-name,
+.logout-btn {
+    vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    .user-name {
+        max-width: 120px;
+        font-size: 13px;
+        margin: 0 5px;
+    }
+}
+
+@media (max-width: 600px) {
+    .user-name {
+        max-width: 100px;
+    }
+}
+
