@@ -1,316 +1,484 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Job | HireLink</title>
+
     <link rel="stylesheet" href="css/view_joblist.css">
-      <link rel="stylesheet" href="css/header.css">
-       <link rel="stylesheet" href="css/footer.css">
-  <link rel="stylesheet" href="/css/mobile.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/mobile.css">
 
     <link rel="icon" type="image/png" href="images/logo.png">
 
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 </head>
 
-<header class="header">
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header class="header">
         <div class="brand">
-           <button class="back-btn">&lt;</button>
+            <button class="back-btn" type="button" aria-label="Go back">
+                &lt;
+            </button>
+
             <h2>HireLink</h2>
         </div>
-       
-        <!-- 🔥 RIGHT SIDE -->
+
         <div class="auth-area" id="authArea">
-            <button class="signin-btn" id="signInBtn">Sign In</button>
-
-        </div>
-  </header>
-
-<body>
- 
-
-<div class="profile-container" id="jobProfile">
-
-    <div class="job_name">
-
-        <img src="images/avatar.png" class="profile-img" id="profile_picture">
-
-        <div>
-            <div class="company-name" id="job_name">TechNova Solutions</div>
-            <div class="industry" id="company_name">Software Development</div>
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">Job Information</div>
-
-        <div class="info-grid">
-
-            <div class="info-box">
-                <div class="label">Job Type</div>
-                <div class="value" id="job_type">Technology</div>
-            </div>
-
-           
-
-            <div class="info-box">
-                <div class="label">Location</div>
-                <div class="value" id="location">50 - 100 Employees</div>
-            </div>
-
-            <div class="info-box">
-    <div class="label">Salary Minimum</div>
-    <a class="value" id="salary_min">
-        contact@technova.com
-    </a>
-</div>
-            <div class="info-box">
-                <div class="label">Salary Max</div>
-                <div class="value" id="salary_max">San Francisco, CA</div>
-            </div>
-
-              <div class="info-box">
-                <div class="label">Contact Number</div>
-                <div class="value" id="contact_no">San Francisco, CA</div>
-            </div>
-
-              <div class="info-box">
-                <div class="label">Email Address</div>
-                <a class="value" id="email" href="mailto:contact@technova.com">
-        contact@technova.com
-    </a>
-
-
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">Job Description</div>
-
-        <div class="description" id="description">
-            TechNova Solutions is a leading technology company focused on building scalable
-            software solutions for businesses worldwide.
-        </div>
-
-    </div>
-
-    <div class="section">
-
-    <button id="jobToggleBtn" class="toggle-job-btn">Close Job</button>
-
-
-          <!-- ✅ Add data-job-id so the apply button knows which job -->
-<button class="review-btn" id="applyBtn" data-job-id="">Apply</button>
-
-<div class="filter-container">
-    <button class="filter-btn" id="filterBtn">
-        Filter ▼
-    </button>
-
-    <div class="filter-dropdown" id="filterDropdown">
-        <div class="filter-item" data-value="all">All</div>
-        <div class="filter-item" data-value="viewed">Viewed</div>
-        <div class="filter-item" data-value="shortlisted">Shortlisted</div>
-        <div class="filter-item" data-value="interviewed">Interviewed</div>
-        <div class="filter-item" data-value="hired">Hired</div>
-        <div class="filter-item" data-value="rejected">Rejected</div>
-    </div>
-</div>
-
-
-
-<div id="applicationsContainer">
-</div>
-
-</div>
-
-<!-- Schedule Interview Modal -->
-<div id="interviewModal" class="interview-modal-overlay">
-
-    <div class="interview-modal">
-
-        <!-- HEADER -->
-        <div class="interview-header">
-
-            <h2>Schedule Interview</h2>
-
             <button
-                id="closeInterviewModal"
-                class="close-interview-modal">
-                &times;
+                class="signin-btn"
+                id="signInBtn"
+                type="button">
+                Sign In
             </button>
+        </div>
+    </header>
+
+
+    <!-- =========================
+         JOB PROFILE
+    ========================== -->
+    <main>
+
+        <div class="profile-container" id="jobProfile">
+
+            <!-- JOB HEADER -->
+            <div class="job_name">
+
+                <img
+                    src="images/avatar.png"
+                    class="profile-img"
+                    id="profile_picture"
+                    alt="Company profile picture">
+
+                <div class="job-heading-info">
+                    <div class="company-name" id="job_name">
+                        Loading job title...
+                    </div>
+
+                    <div class="industry" id="company_name">
+                        Loading company...
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 JOB INFORMATION
+            ========================== -->
+            <div class="section">
+
+                <div class="section-title">
+                    Job Information
+                </div>
+
+                <div class="info-grid">
+
+                    <div class="info-box">
+                        <div class="label">Job Type</div>
+                        <div class="value" id="job_type">
+                            Loading...
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="label">Location</div>
+                        <div class="value" id="location">
+                            Loading...
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="label">Salary Minimum</div>
+                        <div class="value" id="salary_min">
+                            Loading...
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="label">Salary Maximum</div>
+                        <div class="value" id="salary_max">
+                            Loading...
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="label">Contact Number</div>
+                        <div class="value" id="contact_no">
+                            Loading...
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="label">Email Address</div>
+
+                        <a
+                            class="value"
+                            id="email"
+                            href="#">
+                            Loading...
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 JOB DESCRIPTION
+            ========================== -->
+            <div class="section">
+
+                <div class="section-title">
+                    Job Description
+                </div>
+
+                <div
+                    class="description description-preview"
+                    id="description">
+                    Loading job description...
+                </div>
+
+                <button
+                    type="button"
+                    id="descriptionToggle"
+                    class="description-toggle"
+                    aria-expanded="false"
+                    hidden>
+                    See more
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 JOB ACTIONS
+            ========================== -->
+            <div class="section job-actions-section">
+
+                <!-- Employer: Open/Close Job -->
+                <button
+                    type="button"
+                    id="jobToggleBtn"
+                    class="toggle-job-btn">
+                    Close Job
+                </button>
+
+                <!-- Jobseeker: Apply -->
+                <button
+                    type="button"
+                    class="review-btn"
+                    id="applyBtn"
+                    data-job-id="">
+                    Apply
+                </button>
+
+
+                <!-- =========================
+                     APPLICATION FILTER
+                ========================== -->
+                <div class="filter-container">
+
+                    <button
+                        type="button"
+                        class="filter-btn"
+                        id="filterBtn"
+                        aria-expanded="false">
+                        Filter ▼
+                    </button>
+
+                    <div
+                        class="filter-dropdown"
+                        id="filterDropdown">
+
+                        <div class="filter-item" data-value="all">
+                            All
+                        </div>
+
+                        <div class="filter-item" data-value="viewed">
+                            Viewed
+                        </div>
+
+                        <div class="filter-item" data-value="shortlisted">
+                            Shortlisted
+                        </div>
+
+                        <div class="filter-item" data-value="interviewed">
+                            Interviewed
+                        </div>
+
+                        <div class="filter-item" data-value="hired">
+                            Hired
+                        </div>
+
+                        <div class="filter-item" data-value="rejected">
+                            Rejected
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Employer's applicant list -->
+                <div id="applicationsContainer"></div>
+
+            </div>
 
         </div>
 
-
-        <!-- BODY -->
-        <div class="interview-body">
-
-            <!-- Applicant -->
-            <div class="form-group">
-
-                <label>Applicant</label>
-
-                <input
-                    type="text"
-                    id="selectedApplicant"
-                    readonly>
-
-            </div>
+    </main>
 
 
-            <!-- Date / Time -->
-            <div class="form-row">
+    <!-- =========================
+         SCHEDULE INTERVIEW
+    ========================== -->
+    <div
+        id="interviewModal"
+        class="interview-modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="interviewModalTitle">
 
-                <div class="form-group">
+        <div class="interview-modal">
 
-                    <label>Date</label>
+            <!-- MODAL HEADER -->
+            <div class="interview-header">
 
-                    <input
-                        type="date"
-                        id="interviewDate">
+                <h2 id="interviewModalTitle">
+                    Schedule Interview
+                </h2>
 
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>Start Time</label>
-
-                    <input
-                        type="time"
-                        id="startTime">
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>End Time</label>
-
-                    <input
-                        type="time"
-                        id="endTime">
-
-                </div>
+                <button
+                    type="button"
+                    id="closeInterviewModal"
+                    class="close-interview-modal"
+                    aria-label="Close interview form">
+                    &times;
+                </button>
 
             </div>
 
 
-            <!-- Interview Type -->
-            <div class="form-group">
+            <!-- MODAL BODY -->
+            <div class="interview-body">
 
-                <label>Interview Type</label>
+                <!-- Applicant -->
+                <div class="form-group">
 
-                <select id="interviewType">
+                    <label for="selectedApplicant">
+                        Applicant
+                    </label>
 
-                    <option value="online">
-                        Online
-                    </option>
+                    <input
+                        type="text"
+                        id="selectedApplicant"
+                        readonly>
 
-                    <option value="onsite">
-                        On-site
-                    </option>
+                </div>
 
-                </select>
+
+                <!-- Date and time -->
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="interviewDate">
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="interviewDate">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="startTime">
+                            Start Time
+                        </label>
+
+                        <input
+                            type="time"
+                            id="startTime">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="endTime">
+                            End Time
+                        </label>
+
+                        <input
+                            type="time"
+                            id="endTime">
+
+                    </div>
+
+                </div>
+
+
+                <!-- Interview type -->
+                <div class="form-group">
+
+                    <label for="interviewType">
+                        Interview Type
+                    </label>
+
+                    <select id="interviewType">
+
+                        <option value="online">
+                            Online
+                        </option>
+
+                        <option value="onsite">
+                            On-site
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- On-site location -->
+                <div
+                    class="form-group"
+                    id="locationGroup"
+                    style="display: none;">
+
+                    <label for="interviewLocation">
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        id="interviewLocation"
+                        placeholder="Company address">
+
+                </div>
+
+
+                <!-- Notes -->
+                <div class="form-group">
+
+                    <label for="interviewNotes">
+                        Notes / Reminder
+                    </label>
+
+                    <textarea
+                        id="interviewNotes"
+                        rows="5"
+                        placeholder="Additional instructions..."></textarea>
+
+                </div>
 
             </div>
 
 
-            <!-- On-site Location -->
+            <!-- MODAL FOOTER -->
+            <div class="interview-footer">
+
+                <button
+                    type="button"
+                    id="cancelInterview"
+                    class="cancel-btn">
+                    Cancel
+                </button>
+
+                <button
+                    type="button"
+                    id="sendInterview"
+                    class="send-btn">
+                    Send Invitation
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="site-footer">
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+
+                <h2 class="footer-logo">
+                    HIRELINK
+                </h2>
+
+                <p class="footer-slogan">
+                    A click-step away from your career success.
+                </p>
+
+            </div>
+
+            <hr class="footer-divider">
+
+            <ul class="footer-links">
+
+                <li>
+                    <a href="about.html">ABOUT US</a>
+                </li>
+
+                <li>
+                    <a href="contact.html">CONTACT</a>
+                </li>
+
+                <li>
+                    <a href="terms.html">TERMS OF SERVICE</a>
+                </li>
+
+                <li>
+                    <a href="privacy.html">PRIVACY POLICY</a>
+                </li>
+
+            </ul>
+
             <div
-                class="form-group"
-                id="locationGroup"
-                style="display:none;">
-
-                <label>Location</label>
-
-                <input
-                    type="text"
-                    id="interviewLocation"
-                    placeholder="Company address">
-
+                id="footer-user-area"
+                class="footer-user-area">
             </div>
 
+            <div class="footer-bottom">
 
-            <!-- Notes -->
-            <div class="form-group">
-
-                <label>Notes / Reminder</label>
-
-                <textarea
-                    id="interviewNotes"
-                    rows="5"
-                    placeholder="Additional instructions..."></textarea>
+                <p>
+                    &copy; 2026 HireLink. All rights reserved.
+                </p>
 
             </div>
 
         </div>
-        <!-- END interview-body -->
+
+    </footer>
 
 
-        <!-- FOOTER -->
-        <div class="interview-footer">
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+    <script src="view_joblist.js"></script>
+    <script src="overlay.js"></script>
+    <script src="footer.js"></script>
 
-            <button
-                type="button"
-                id="cancelInterview"
-                class="cancel-btn">
-                Cancel
-            </button>
-
-
-            <button
-                type="button"
-                id="sendInterview"
-                class="send-btn">
-                Send Invitation
-            </button>
-
-        </div>
-        <!-- END interview-footer -->
-
-    </div>
-    <!-- END interview-modal -->
-
-</div>
-<!-- END interviewModal -->
-
-</div>
-        
-<script src="view_joblist.js"></script>
-<script src="overlay.js"></script>
-        <script src="footer.js"></script>
 </body>
-
-<footer class="site-footer">
-    <div class="footer-content">
-        <div class="footer-brand">
-            <h2 class="footer-logo">HIRELINK</h2>
-            <p class="footer-slogan">A click-step away from your career success.</p>
-        </div>
-
-        <hr class="footer-divider">
-
-        <ul class="footer-links">
-            <li><a href="about.html">ABOUT US</a></li>
-                <li><a href="contact.html">CONTACT</a></li>
-                <li><a href="terms.html">TERMS OF SERVICE</a></li>
-                <li><a href="privacy.html">PRIVACY POLICY</a></li>
-        </ul>
-
-      
-
-        <div id="footer-user-area" class="footer-user-area"></div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 HireLink. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
 </html>
