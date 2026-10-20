@@ -1,15 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   
-const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
   
   const logoutBtn = document.getElementById("logoutBtn");
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("userName");
-      localStorage.removeItem("userRole");
-      window.location.href = "index-company.html";
-    });
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userRole");
+    window.location.href = "index-company.html";
+  });
   
-   const storedName = localStorage.getItem("userName");
+  const storedName = localStorage.getItem("userName");
 
   const profileName = document.getElementById("profileName");
   const companyNameinput = document.getElementById("companyNameinput");
@@ -27,53 +27,91 @@ const API_BASE = "https://hirelink-backend-qnww.onrender.com";
   const imageInput = document.getElementById("profileImageInput");
   const preview = document.getElementById("profilePreview");
 
-
-  /* Profile Image Preview */
+  // =====================
+  // COMPANY PROFILE IMAGE: preview and save
+  // =====================
   if (imageInput) {
-    imageInput.addEventListener("change", function () {
+    imageInput.addEventListener("change", async function () {
       const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
+      if (!file) return;
+
+      // Preview the selected image immediately
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        if (preview) {
           preview.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+        }
+      };
+
+      reader.readAsDataURL(file);
+
+      // Upload the image to the backend
+      const formData = new FormData();
+      formData.append("profileImage", file);
+
+      try {
+        const res = await fetch(`${API_BASE}/api/profile/upload-image`, {
+          method: "POST",
+          credentials: "include",
+          body: formData
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to upload company profile image");
+        }
+
+        // Display the saved image returned by the backend
+        if (data.path && preview) {
+          preview.src = data.path;
+        }
+
+        alert("Company profile image updated!");
+      } catch (err) {
+        console.error("Company profile image upload error:", err);
+        alert(err.message);
       }
     });
   }
 
+  const tabs = document.querySelectorAll('.tab');
 
-const tabs = document.querySelectorAll('.tab');
-
-tabs.forEach(tab => {
+  tabs.forEach(tab => {
     tab.addEventListener('click', () => {
-        // Remove 'active' class from all tabs
-        tabs.forEach(t => t.classList.remove('active'));
-        // Add 'active' class to the clicked tab
-        tab.classList.add('active');
+      // Remove 'active' class from all tabs
+      tabs.forEach(t => t.classList.remove('active'));
+      // Add 'active' class to the clicked tab
+      tab.classList.add('active');
 
-        // Get the target section ID
-        const targetId = tab.getAttribute('data-target');
-        const targetSection = document.getElementById(targetId);
+      // Get the target section ID
+      const targetId = tab.getAttribute('data-target');
+      const targetSection = document.getElementById(targetId);
 
-        // Scroll smoothly to the section
-        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Scroll smoothly to the section
+      targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-});
-document.querySelector('.back-btn').addEventListener('click', () => {
+  });
+
+  document.querySelector('.back-btn').addEventListener('click', () => {
     // Go back to previous page in history
     if (document.referrer) {
-        window.history.back();
+      window.history.back();
     } else {
-        // fallback: go to homepage if no referrer
-        window.location.href = '/';
+      // fallback: go to homepage if no referrer
+      window.location.href = '/';
     }
-});
+  });
 
-async function loadProfile() {
+  async function loadProfile() {
     try {
-      const res = await fetch(`${API_BASE}/api/profile/company`, { credentials: "include" });
+      const res = await fetch(`${API_BASE}/api/profile/company`, {
+        credentials: "include"
+      });
+
       if (!res.ok) throw new Error("Failed to load profile");
+
       const data = await res.json();
       console.log("Profile data:", data);
 
@@ -84,36 +122,44 @@ async function loadProfile() {
       document.getElementById("introductionInput").value = data.description || "";
       document.getElementById("locationInput").value = data.location || "";
       document.getElementById("companysizeInput").value = data.company_size || "";
-      
+
+      // Load the saved company profile image
+      if (data.profile_picture && preview) {
+        preview.src = data.profile_picture;
+      }
+
       document.getElementById("location").textContent = data.location || "";
       document.getElementById("industry").textContent = data.industry || "";
+
     } catch (err) {
       console.error("Error loading profile:", err);
     }
   }
+
   loadProfile();
 
   // -------- Update Button --------
   document.getElementById("updateBtn")?.addEventListener("click", async () => {
     const payload = {
-    company_name: document.getElementById("companyNameinput").value,
-    company_email: document.getElementById("emailInput").value,
-    industry: document.getElementById("industryInput").value,
-    description: document.getElementById("introductionInput").value,
-    location: document.getElementById("locationInput").value,
-    company_size: document.getElementById("companysizeInput").value
-
+      company_name: document.getElementById("companyNameinput").value,
+      company_email: document.getElementById("emailInput").value,
+      industry: document.getElementById("industryInput").value,
+      description: document.getElementById("introductionInput").value,
+      location: document.getElementById("locationInput").value,
+      company_size: document.getElementById("companysizeInput").value
     };
 
     try {
       const res = await fetch(`${API_BASE}/api/profile/company`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include" ,
+        credentials: "include",
         body: JSON.stringify(payload),
       });
+
       const result = await res.json();
       alert(result.success ? "Profile updated!" : result.error || "Error updating profile");
+
     } catch (err) {
       console.error("Error updating profile:", err);
     }
