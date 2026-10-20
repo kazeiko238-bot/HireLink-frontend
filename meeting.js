@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
 
     const API_BASE = "https://hirelink-backend-qnww.onrender.com";
@@ -72,28 +71,95 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /*
     =====================================================
-    CHECK WHETHER THE SCHEDULED MEETING HAS EXPIRED
+    CHECK THE SCHEDULED MEETING TIME
     =====================================================
-    Uses the scheduled interview end date and end time.
+    The meeting cannot be entered before its start time.
+    The meeting expires when its end time is reached.
     */
 
-    function isMeetingExpired(meeting) {
-        if (!meeting || !meeting.interview_date || !meeting.end_time) {
-            return false;
+    function getMeetingTimes(meeting) {
+        if (
+            !meeting ||
+            !meeting.interview_date ||
+            !meeting.start_time ||
+            !meeting.end_time
+        ) {
+            return null;
         }
 
         const datePart = String(meeting.interview_date).slice(0, 10);
-        const timePart = String(meeting.end_time).slice(0, 8);
+        const startTimePart = String(meeting.start_time).slice(0, 8);
+        const endTimePart = String(meeting.end_time).slice(0, 8);
 
         // Interpret the scheduled time in the user's local timezone.
-        const scheduledEnd = new Date(`${datePart}T${timePart}`);
+        const scheduledStart = new Date(
+            `${datePart}T${startTimePart}`
+        );
 
-        if (Number.isNaN(scheduledEnd.getTime())) {
+        const scheduledEnd = new Date(
+            `${datePart}T${endTimePart}`
+        );
+
+        if (
+            Number.isNaN(scheduledStart.getTime()) ||
+            Number.isNaN(scheduledEnd.getTime())
+        ) {
             console.warn("Invalid scheduled meeting date/time:", meeting);
+            return null;
+        }
+
+        return {
+            start: scheduledStart.getTime(),
+            end: scheduledEnd.getTime()
+        };
+    }
+
+    function isMeetingNotStarted(meeting) {
+        const times = getMeetingTimes(meeting);
+
+        if (!times) {
             return false;
         }
 
-        return Date.now() >= scheduledEnd.getTime();
+        return Date.now() < times.start;
+    }
+
+    function isMeetingExpired(meeting) {
+        const times = getMeetingTimes(meeting);
+
+        if (!times) {
+            return false;
+        }
+
+        return Date.now() >= times.end;
+    }
+
+    function canEnterMeeting(meeting) {
+        const times = getMeetingTimes(meeting);
+
+        if (!times) {
+            return false;
+        }
+
+        const now = Date.now();
+
+        return now >= times.start && now < times.end;
+    }
+
+    function getMeetingTimeMessage(meeting) {
+        if (isMeetingNotStarted(meeting)) {
+            return "This meeting has not started yet";
+        }
+
+        if (isMeetingExpired(meeting)) {
+            return "This meeting room expired";
+        }
+
+        if (!getMeetingTimes(meeting)) {
+            return "The scheduled meeting time is unavailable";
+        }
+
+        return "";
     }
 
     async function getCurrentUser() {
@@ -332,9 +398,13 @@ document.addEventListener("DOMContentLoaded", () => {
             personName = interview.company_name || "-";
         }
 
+        const notStarted = isMeetingNotStarted(interview);
         const expired = isMeetingExpired(interview);
+        const timeUnavailable = !getMeetingTimes(interview);
 
-        const buttonText = expired
+        const cannotEnter = notStarted || expired || timeUnavailable;
+
+        const buttonText = cannotEnter
             ? "Cannot Enter"
             : isEmployer
                 ? "Start Meeting"
@@ -343,6 +413,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const statusClass = String(meetingStatus)
             .toLowerCase()
             .replace(/\s+/g, "-");
+
+        const timeMessage = getMeetingTimeMessage(interview);
 
         card.innerHTML = `
             <div class="meeting-card-header">
@@ -397,17 +469,20 @@ document.addEventListener("DOMContentLoaded", () => {
                             : "You are the applicant"}
                     </span>
 
-                    ${expired ? `
+                    ${cannotEnter ? `
                         <p class="meeting-expired-message">
-                            This meeting room expired
+                            ${escapeHTML(
+                                timeMessage ||
+                                "The scheduled meeting time is unavailable"
+                            )}
                         </p>
                     ` : ""}
                 </div>
 
                 <button
                     type="button"
-                    class="meeting-btn ${expired ? "meeting-expired" : ""}"
-                    aria-disabled="${expired ? "true" : "false"}"
+                    class="meeting-btn ${cannotEnter ? "meeting-expired" : ""}"
+                    aria-disabled="${cannotEnter ? "true" : "false"}"
                 >
                     ${buttonText}
                 </button>
@@ -419,21 +494,31 @@ document.addEventListener("DOMContentLoaded", () => {
         meetingBtn.addEventListener("click", event => {
             event.preventDefault();
 
-            // Check the time again at click time, not just page-load time.
-            if (isMeetingExpired(interview)) {
+            // Check the scheduled start and end times again when clicked.
+            if (!canEnterMeeting(interview)) {
                 meetingBtn.textContent = "Cannot Enter";
                 meetingBtn.classList.add("meeting-expired");
+                meetingBtn.setAttribute("aria-disabled", "true");
 
                 const info = card.querySelector(".meeting-info");
+                const messageText = getMeetingTimeMessage(interview) ||
+                    "The scheduled meeting time is unavailable";
 
-                if (info && !info.querySelector(".meeting-expired-message")) {
-                    const message = document.createElement("p");
-                    message.className = "meeting-expired-message";
-                    message.textContent = "This meeting room expired";
-                    info.appendChild(message);
+                if (info) {
+                    let message = info.querySelector(
+                        ".meeting-expired-message"
+                    );
+
+                    if (!message) {
+                        message = document.createElement("p");
+                        message.className = "meeting-expired-message";
+                        info.appendChild(message);
+                    }
+
+                    message.textContent = messageText;
                 }
 
-                alert("Cannot Enter\nThis meeting room expired");
+                alert(`Cannot Enter\n${messageText}`);
                 return;
             }
 
@@ -449,9 +534,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function startMeeting(meeting) {
-        // Prevent an employer from starting an expired meeting.
-        if (isMeetingExpired(meeting)) {
-            alert("Cannot Enter\nThis meeting room expired");
+        // Prevent an employer from starting a meeting outside its schedule.
+        if (!canEnterMeeting(meeting)) {
+            const message = getMeetingTimeMessage(meeting) ||
+                "The scheduled meeting time is unavailable";
+
+            alert(`Cannot Enter\n${message}`);
             return;
         }
 
@@ -472,9 +560,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function enterMeeting(meeting) {
-        // Prevent a jobseeker from entering an expired meeting.
-        if (isMeetingExpired(meeting)) {
-            alert("Cannot Enter\nThis meeting room expired");
+        // Prevent a jobseeker from entering before the start or after the end.
+        if (!canEnterMeeting(meeting)) {
+            const message = getMeetingTimeMessage(meeting) ||
+                "The scheduled meeting time is unavailable";
+
+            alert(`Cannot Enter\n${message}`);
             return;
         }
 
