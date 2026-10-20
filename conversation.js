@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentConversationId = null;
   let currentUserId = null;
+  let currentUserRole = null;
   let refreshInterval = null;
 
   // =====================
@@ -32,6 +34,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const data = await res.json();
     currentUserId = data.userId;
+    currentUserRole = data.role;
+
+    // Hide suggested questions for company/employer accounts
+    if (currentUserRole === "employer" || currentUserRole === "company") {
+      suggestedQuestions?.classList.add("hidden");
+    } else {
+      suggestedQuestions?.classList.remove("hidden");
+    }
+
     return data;
   }
 
@@ -83,8 +94,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     chatHeader.textContent = "Chat with " + (name || "Unknown");
 
-    // SHOW suggested questions once a conversation is selected
-    suggestedQuestions?.classList.remove("hidden");
+    // SHOW suggested questions only for jobseekers
+    if (currentUserRole !== "employer" && currentUserRole !== "company") {
+      suggestedQuestions?.classList.remove("hidden");
+    } else {
+      suggestedQuestions?.classList.add("hidden");
+    }
 
     await loadMessages();
 
@@ -236,6 +251,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   questionBoxes.forEach(box => {
     box.addEventListener("click", () => {
+      // Do not allow employers to use suggested questions
+      if (currentUserRole === "employer" || currentUserRole === "company") {
+        return;
+      }
+
       const question = box.getAttribute("data-question");
       messageInput.value = question;
       messageInput.focus();
