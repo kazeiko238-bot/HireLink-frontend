@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  const API_BASE = "https://hirelink-backend-qnw.onrender.com";
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
   
   const reviewList = document.getElementById("reviewList");
   const avgBox = document.getElementById("avgRating");
