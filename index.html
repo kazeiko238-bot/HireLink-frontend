@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -306,24 +305,19 @@
             </div>
 
             <div class="form-group">
-                <label>Verification Code</label>
-
-                <div class="reset-code-inputs" aria-label="Six-digit password reset verification code">
-                    <input type="text" class="reset-code-digit" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Verification digit 1" required>
-                    <input type="text" class="reset-code-digit" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Verification digit 2" required>
-                    <input type="text" class="reset-code-digit" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Verification digit 3" required>
-                    <input type="text" class="reset-code-digit" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Verification digit 4" required>
-                    <input type="text" class="reset-code-digit" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Verification digit 5" required>
-                    <input type="text" class="reset-code-digit" inputmode="numeric" pattern="[0-9]" maxlength="1" aria-label="Verification digit 6" required>
-                </div>
-
-                <!-- Preserves the original ID for existing JavaScript integrations.
-                     Update index-jobseeker.js to populate this field from the six boxes. -->
+                <label for="reset-code">Verification Code</label>
                 <input
-                    type="hidden"
+                    type="text"
                     id="reset-code"
                     name="code"
-                    value=""
+                    class="form-control"
+                    placeholder="Enter your 6-digit code"
+                    inputmode="numeric"
+                    pattern="[0-9]{6}"
+                    minlength="6"
+                    maxlength="6"
+                    autocomplete="one-time-code"
+                    required
                 >
             </div>
 
@@ -407,4 +401,3 @@
 
 </body>
 </html>
-```
