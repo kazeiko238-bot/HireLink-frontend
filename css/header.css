@@ -219,12 +219,14 @@
     font-weight: 700;
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     margin-bottom: 12px;
+     color: #000000;
 }
 
 .hero p {
     opacity: 0.9;
     font-size: 16px;
     max-width: 600px;
+     color: #000000;
 }
 
 /* Inner spacing */
