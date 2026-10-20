@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
@@ -298,6 +297,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       return true;
     });
+
+    // Sort job cards alphabetically by job title (A–Z).
+    // This applies to the filtered results without changing allJobs.
+    filtered.sort((a, b) =>
+      String(a.title ?? "Untitled Position").localeCompare(
+        String(b.title ?? "Untitled Position"),
+        "en",
+        { sensitivity: "base", numeric: true }
+      )
+    );
 
     renderJobs(filtered);
   }
