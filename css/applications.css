@@ -101,9 +101,9 @@ body {
 ============================================================ */
 .application-container {
     width: 100%;
-    max-width: 1400px;
+    max-width: none;
     margin: 110px auto 60px;
-    padding: 0 24px;
+    padding: 0 10px;
     box-sizing: border-box;
 
     display: grid;
@@ -561,8 +561,14 @@ body {
    6. APPLICATION GRID: TWO CARDS SIDE BY SIDE
 ============================================================ */
 
-/* Keep the cards evenly spaced and contained within the page. */
+/* Use almost the full screen width to reduce excess side spacing. */
 .application-container {
+    width: 100%;
+    max-width: none;
+    margin: 110px 0 60px;
+    padding: 0 10px;
+    box-sizing: border-box;
+
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;
@@ -589,7 +595,7 @@ body {
 @media (max-width: 768px) {
     .application-container {
         grid-template-columns: 1fr;
-        padding: 0 16px;
+        padding: 0 10px;
         gap: 18px;
         margin-top: 95px;
     }
@@ -631,7 +637,7 @@ body {
 /* Smaller mobile screens */
 @media (max-width: 480px) {
     .application-container {
-        padding: 0 12px;
+        padding: 0 8px;
         gap: 14px;
     }
 
