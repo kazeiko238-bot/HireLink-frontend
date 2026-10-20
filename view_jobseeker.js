@@ -1,3 +1,4 @@
+
 document.querySelector('.back-btn')?.addEventListener('click', () => {
   if (document.referrer) window.history.back();
   else window.location.href = '/';
@@ -15,15 +16,27 @@ const resumeFrame = document.getElementById("resumeFrame");
 
 let resumePath = null;
 
+// Hide resume and hire buttons by default.
+// Only employers can see these buttons.
+if (resumeBtn) resumeBtn.style.display = "none";
+if (hireBtn) hireBtn.style.display = "none";
+
 fetch(`${API_BASE}/api/me`, { credentials: "include" })
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error("Failed to check user role");
+    return res.json();
+  })
   .then(user => {
-    if (user?.role === "jobseeker") {
-      if (resumeBtn) resumeBtn.style.display = "none";
-      if (hireBtn) hireBtn.style.display = "none";
+    if (user?.role === "employer") {
+      if (resumeBtn) resumeBtn.style.display = "";
+      if (hireBtn) hireBtn.style.display = "";
     }
   })
-  .catch(() => {});
+  .catch(err => {
+    if (resumeBtn) resumeBtn.style.display = "none";
+    if (hireBtn) hireBtn.style.display = "none";
+    console.error("Error checking user role:", err);
+  });
 
 async function loadProfile() {
   try {
