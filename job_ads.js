@@ -138,6 +138,15 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      // Sort job cards alphabetically by job title (A–Z).
+      jobs.sort((a, b) =>
+        String(a.title || "No title").localeCompare(
+          String(b.title || "No title"),
+          "en",
+          { sensitivity: "base", numeric: true }
+        )
+      );
+
       jobs.forEach(job => {
 
         const card = document.createElement("div");
