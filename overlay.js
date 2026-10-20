@@ -1,4 +1,4 @@
-```javascript
+
 document.addEventListener("DOMContentLoaded", () => {
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
   const authArea = document.getElementById("authArea");
@@ -119,4 +119,4 @@ document.addEventListener("DOMContentLoaded", () => {
     return false;
   };
 });
-```
+
