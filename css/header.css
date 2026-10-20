@@ -1,4 +1,4 @@
-
+```css
 /* HEADER LAYOUT */
 .header {
     display: flex;
@@ -210,7 +210,7 @@
     align-items: center;
     padding: 60px 20px;
     text-align: center;
-    color: white;
+    color: #000000;
 }
 
 .hero h2 {
@@ -218,12 +218,14 @@
     font-weight: 700;
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     margin-bottom: 12px;
+    color: #000000;
 }
 
 .hero p {
     opacity: 0.9;
     font-size: 16px;
     max-width: 600px;
+    color: #000000;
 }
 
 /* Inner spacing */
@@ -785,3 +787,4 @@
         font-size: 11px;
     }
 }
+```
