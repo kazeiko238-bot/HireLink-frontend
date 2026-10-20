@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const API_BASE = "https://hirelink-backend-1.onrender.com";
+  const API_BASE = "https://hirelink-backend-qnw.onrender.com";
   const authArea = document.getElementById("authArea");
   const overlay = document.getElementById("loginOverlay");
   const loginBtn = document.getElementById("loginBtn");
