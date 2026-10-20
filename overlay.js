@@ -1,5 +1,6 @@
+```javascript
 document.addEventListener("DOMContentLoaded", () => {
-   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
   const authArea = document.getElementById("authArea");
   const overlay = document.getElementById("loginOverlay");
   const loginBtn = document.getElementById("loginBtn");
@@ -11,9 +12,20 @@ document.addEventListener("DOMContentLoaded", () => {
     '.navpages a[href="applications.html"], .navpages a[href="application.html"]'
   );
 
+  // Meeting Room and Bookmark navigation links
+  const meetingRoomLink = document.querySelector(
+    '.navpages a[href="meeting.html"], .navpages a[href="meeting_room.html"], .navpages a[href="meeting-room.html"]'
+  );
+
+  const bookmarkLink = document.querySelector(
+    '.navpages a[href="bookmark.html"], .navpages a[href="bookmarks.html"]'
+  );
+
   function updateAuthOnlyNav(loggedIn) {
     if (chatsLink) chatsLink.style.display = loggedIn ? "" : "none";
     if (applicationsLink) applicationsLink.style.display = loggedIn ? "" : "none";
+    if (meetingRoomLink) meetingRoomLink.style.display = loggedIn ? "" : "none";
+    if (bookmarkLink) bookmarkLink.style.display = loggedIn ? "" : "none";
   }
 
   function renderLoggedInHeader(name) {
@@ -107,3 +119,4 @@ document.addEventListener("DOMContentLoaded", () => {
     return false;
   };
 });
+```
