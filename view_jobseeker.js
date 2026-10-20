@@ -4,7 +4,7 @@ document.querySelector('.back-btn')?.addEventListener('click', () => {
   else window.location.href = '/';
 });
 
-const API_BASE = "https://hirelink-backend-qnw.onrender.com";
+ const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
 const params = new URLSearchParams(window.location.search);
 const jobseekerId = params.get("id");
