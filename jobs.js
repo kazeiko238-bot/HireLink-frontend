@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-  const API_BASE = "https://hirelink-backend-1.onrender.com";
+  const API_BASE = "https://hirelink-backend-qnw.onrender.com";
 
   const $ = id => document.getElementById(id);
   const container = $("jobsContainer");
