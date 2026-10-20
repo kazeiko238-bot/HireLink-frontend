@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   const bookmarkLink = document.querySelector(
-    '.navpages a[href="bookmark.html"], .navpages a[href="bookmarks.html"]'
+    '.navpages a[href="saved_jobs.html"], .navpages a[href="saved_jobs.html"]'
   );
 
   function updateAuthOnlyNav(loggedIn) {
