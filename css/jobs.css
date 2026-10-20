@@ -1,3 +1,4 @@
+
 :root {
   --primary: #2d6cdf;
   --primary-hover: #1f56c2;
@@ -85,13 +86,13 @@ select:focus-visible,
 
 .search-bar {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   grid-template-areas:
-    "location search search"
-    "company industry reset"
-    "jobtype salarymin salarymax";
-  align-items: end;
-  gap: 14px;
+    "location location search search search search"
+    "company company industry industry reset reset"
+    "jobtype jobtype salarymin salarymin salarymax salarymax";
+  align-items: center;
+  gap: 10px 14px;
   width: 100%;
 }
 
@@ -126,6 +127,8 @@ select:focus-visible,
 .salary-max-filter {
   grid-area: salarymax;
 }
+
+/* Main search fields: row 1 */
 
 .location-group,
 .search-group {
@@ -222,7 +225,7 @@ select:focus-visible,
   gap: 8px;
 }
 
-/* Filter fields */
+/* Compact filter fields: rows 2 and 3 */
 
 .filter-group {
   display: flex;
@@ -242,8 +245,8 @@ select:focus-visible,
 .filter-group select {
   width: 100%;
   min-width: 0;
-  height: 52px;
-  padding: 0 11px;
+  height: 40px;
+  padding: 0 10px;
   border: 1px solid #d8e1ed;
   border-radius: 12px;
   background: #fff;
@@ -258,7 +261,7 @@ select:focus-visible,
   box-shadow: 0 0 0 3px rgba(45, 108, 223, 0.09);
 }
 
-/* Distinct reset button */
+/* Distinct reset button beside Industry */
 
 .reset-filter {
   display: flex;
@@ -269,8 +272,8 @@ select:focus-visible,
 #clearFiltersBtn {
   width: 100%;
   min-width: 0;
-  min-height: 52px;
-  padding: 10px 12px;
+  height: 40px;
+  padding: 8px 10px;
   border: 1px solid #d89b08;
   border-radius: 12px;
   background: #fff1cc;
@@ -516,26 +519,12 @@ select:focus-visible,
   }
 
   .search-bar {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     grid-template-areas:
-      "location search"
-      "company industry"
-      "reset reset"
-      "jobtype salarymin"
-      "salarymax salarymax";
-  }
-
-  .reset-filter {
-    align-items: stretch;
-  }
-
-  .reset-filter button {
-    min-height: 44px;
-  }
-
-  .filter-group input,
-  .filter-group select {
-    height: 46px;
+      "location location location search search search"
+      "company company industry industry reset reset"
+      "jobtype jobtype salarymin salarymin salarymax salarymax";
+    gap: 10px;
   }
 }
 
@@ -577,7 +566,7 @@ select:focus-visible,
       "jobtype"
       "salarymin"
       "salarymax";
-    gap: 12px;
+    gap: 10px;
   }
 
   .location-group,
@@ -589,12 +578,12 @@ select:focus-visible,
 
   .filter-group input,
   .filter-group select {
-    height: 45px;
+    height: 42px;
     font-size: 13px;
   }
 
   #clearFiltersBtn {
-    min-height: 45px;
+    height: 42px;
   }
 
   .jobs-section {
