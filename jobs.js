@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
@@ -31,15 +32,52 @@ document.addEventListener("DOMContentLoaded", () => {
     '"': "&quot;", "'": "&#39;"
   })[char]);
 
+  // Parse numeric salary values from database/API fields.
+  // Supports values such as 18000, "18,000", and "₱18,000".
   function parseSalary(value) {
-    if (value === null || value === undefined || value === "") return null;
-    const number = Number(String(value).replace(/[₱,\s]/g, ""));
-    return Number.isFinite(number) ? number : null;
+    if (value === null || value === undefined || value === "") {
+      return null;
+    }
+
+    if (typeof value === "number") {
+      return Number.isFinite(value) && value >= 0 ? value : null;
+    }
+
+    const cleaned = String(value)
+      .trim()
+      .replace(/,/g, "")
+      .replace(/[^\d.-]/g, "");
+
+    if (!cleaned || cleaned === "." || cleaned === "-") {
+      return null;
+    }
+
+    const number = Number(cleaned);
+
+    return Number.isFinite(number) && number >= 0 ? number : null;
   }
 
   function formatSalary(value) {
     const number = parseSalary(value);
     return number === null ? null : `₱${number.toLocaleString("en-PH")}`;
+  }
+
+  function getSalaryMin(job) {
+    return parseSalary(
+      job.salary_min ??
+      job.salaryMin ??
+      job.min_salary ??
+      job.minimum_salary
+    );
+  }
+
+  function getSalaryMax(job) {
+    return parseSalary(
+      job.salary_max ??
+      job.salaryMax ??
+      job.max_salary ??
+      job.maximum_salary
+    );
   }
 
   function getCompany(job) {
@@ -132,8 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const type = String(job.job_type ?? job.jobType ?? "Not specified");
       const industry = String(getIndustry(job) || "Career opportunity");
 
-      const min = parseSalary(job.salary_min);
-      const max = parseSalary(job.salary_max);
+      const min = getSalaryMin(job);
+      const max = getSalaryMax(job);
 
       let salary = "Salary not specified";
 
@@ -199,8 +237,10 @@ document.addEventListener("DOMContentLoaded", () => {
             bookmarkBtn.textContent = data.bookmarked ? "★" : "☆";
             bookmarkBtn.classList.toggle("active", Boolean(data.bookmarked));
             bookmarkBtn.setAttribute("aria-pressed", String(Boolean(data.bookmarked)));
-            bookmarkBtn.setAttribute("aria-label",
-              data.bookmarked ? "Remove bookmark" : "Bookmark job");
+            bookmarkBtn.setAttribute(
+              "aria-label",
+              data.bookmarked ? "Remove bookmark" : "Bookmark job"
+            );
           } catch (error) {
             console.error("Bookmark error:", error);
             alert(error.message);
@@ -260,46 +300,85 @@ document.addEventListener("DOMContentLoaded", () => {
     const industry = industryFilter?.value || "";
     const type = normalize(jobTypeFilter?.value);
 
-    const minSalary = salaryMinFilter?.value
-      ? Number(salaryMinFilter.value) : null;
-    const maxSalary = salaryMaxFilter?.value
-      ? Number(salaryMaxFilter.value) : null;
+    const minSalary = salaryMinFilter?.value !== ""
+      && salaryMinFilter?.value != null
+      ? Number(salaryMinFilter.value)
+      : null;
+
+    const maxSalary = salaryMaxFilter?.value !== ""
+      && salaryMaxFilter?.value != null
+      ? Number(salaryMaxFilter.value)
+      : null;
+
+    if (
+      (minSalary !== null && !Number.isFinite(minSalary)) ||
+      (maxSalary !== null && !Number.isFinite(maxSalary))
+    ) {
+      renderJobs([]);
+      if (resultsCount) resultsCount.textContent = "Invalid salary filter";
+      return;
+    }
 
     if (minSalary !== null && maxSalary !== null && minSalary > maxSalary) {
       renderJobs([]);
       const message = container.querySelector(".no-ads");
-      if (message) message.textContent =
-        "Minimum salary cannot exceed maximum salary.";
+      if (message) {
+        message.textContent = "Minimum salary cannot exceed maximum salary.";
+      }
       if (resultsCount) resultsCount.textContent = "Invalid salary range";
       return;
     }
 
     const filtered = allJobs.filter(job => {
-      if (title && !normalize(job.title).includes(title)) return false;
-      if (province && !normalize(job.location).includes(province)) return false;
-      if (company && !normalize(getCompany(job)).includes(company)) return false;
+      const jobTitle = normalize(job.title);
+      const jobCompany = normalize(getCompany(job));
+      const jobLocation = normalize(job.location);
+
+      // Job title must begin with the entered search text.
+      if (title && !jobTitle.startsWith(title)) return false;
+
+      // Location matching remains a partial match.
+      if (province && !jobLocation.includes(province)) return false;
+
+      // Company name must begin with the entered search text.
+      if (company && !jobCompany.startsWith(company)) return false;
+
       if (!industryMatches(getIndustry(job), industry)) return false;
 
-      if (type && normalize(job.job_type ?? job.jobType) !== type) return false;
+      if (type && normalize(job.job_type ?? job.jobType) !== type) {
+        return false;
+      }
 
-      const jobMin = parseSalary(job.salary_min);
-      const jobMax = parseSalary(job.salary_max);
+      const jobMin = getSalaryMin(job);
+      const jobMax = getSalaryMax(job);
 
-      if (minSalary !== null || maxSalary !== null) {
-        if (jobMin === null && jobMax === null) return false;
+      // A selected minimum applies to the job's actual minimum salary.
+      // Jobs with missing minimum salary cannot satisfy this filter.
+      if (minSalary !== null) {
+        if (jobMin === null || jobMin < minSalary) return false;
+      }
 
-        const lowest = jobMin ?? jobMax;
-        const highest = jobMax ?? jobMin;
+      // A selected maximum applies to the job's actual maximum salary.
+      // Jobs with missing maximum salary cannot satisfy this filter.
+      if (maxSalary !== null) {
+        if (jobMax === null || jobMax > maxSalary) return false;
+      }
 
-        if (minSalary !== null && highest < minSalary) return false;
-        if (maxSalary !== null && lowest > maxSalary) return false;
+      // If the database has an inverted salary range, do not show it
+      // when salary filtering is being used.
+      if (
+        (minSalary !== null || maxSalary !== null) &&
+        jobMin !== null &&
+        jobMax !== null &&
+        jobMin > jobMax
+      ) {
+        return false;
       }
 
       return true;
     });
 
-    // Sort job cards alphabetically by job title (A–Z).
-    // This applies to the filtered results without changing allJobs.
+    // Sort filtered job cards alphabetically by job title (A–Z).
     filtered.sort((a, b) =>
       String(a.title ?? "Untitled Position").localeCompare(
         String(b.title ?? "Untitled Position"),
@@ -366,6 +445,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       allJobs = data;
+
+      // Helpful diagnostic: inspect the salary values returned by the API
+      // in DevTools if salary filters still appear inconsistent.
+      console.log("Jobs loaded from API:", allJobs.length);
+      console.log(
+        "Sample salary fields:",
+        allJobs.slice(0, 5).map(job => ({
+          id: job.id ?? job.job_id,
+          title: job.title,
+          salary_min: job.salary_min ?? job.salaryMin,
+          salary_max: job.salary_max ?? job.salaryMax
+        }))
+      );
+
       handleSearch();
     } catch (error) {
       console.error("Error loading jobs:", error);
