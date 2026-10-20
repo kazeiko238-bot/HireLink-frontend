@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  const API_BASE = "https://hirelink-backend-qnw.onrender.com";
+  const API_BASE = "https://hirelink-backend-qnww.onrender.com";
 
   const threadContainer = document.getElementById("threadContainer");
   const searchInput = document.getElementById("threadSearch");
